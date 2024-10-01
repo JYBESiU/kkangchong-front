@@ -1,3 +1,4 @@
+import FacilityDetail from 'components/FacilityDetail';
 import FacilityList from 'components/FacilityList';
 import KakaoMap from 'components/KakaoMap';
 
