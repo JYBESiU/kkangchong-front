@@ -8,7 +8,9 @@ function KakaoMapLayout() {
       <LeftPanel>
         <Outlet />
       </LeftPanel>
-      <KakaoMap />
+      <RightPanel>
+        <KakaoMap />
+      </RightPanel>
     </Flex>
   );
 }
@@ -23,4 +25,8 @@ const LeftPanel = styled.div`
   width: 670px;
   height: 100vh;
   background: white;
+`;
+const RightPanel = styled.div`
+  flex: 1;
+  height: 100vh;
 `;
