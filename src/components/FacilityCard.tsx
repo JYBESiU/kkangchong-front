@@ -17,6 +17,7 @@ const FacilityFrame = styled.div`
 
   padding: 30px 30px;
   position: relative;
+  margin: 20px;
 `;
 
 const FacilityName = styled.div`
@@ -56,11 +57,19 @@ const FacilityDistance = styled.div`
   line-height: normal;
 `;
 
-const FacilityImg = styled.div`
+const FacilityImg = styled.div<{ imgUrl?: string }>`
   width: 137px;
   height: 137px;
   border-radius: 8px;
-  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+  background: ${({ imgUrl }) =>
+    imgUrl ? `url(${imgUrl}) lightgray 50% / cover no-repeat` : 'none'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #797982;
+  font-size: 14px;
+  font-family: 'Noto Sans KR';
+  border: 1px solid #e9e9e9;
 
   position: absolute;
   right: 30px;
@@ -88,9 +97,16 @@ function FacilityCard({ facility }: FacilityCardProps) {
         </FacilityWrap>
         <FacilityGap></FacilityGap>
         <FacilityInfo></FacilityInfo>
-        <FacilityImg></FacilityImg>
+        <FacilityImg
+          imgUrl={
+            facility.imgUrls && facility.imgUrls.length > 0
+              ? facility.imgUrls[0]
+              : undefined
+          }
+        >
+          {!(facility.imgUrls && facility.imgUrls.length > 0) && 'No image'}
+        </FacilityImg>
       </FacilityFrame>
-      <br></br>
     </div>
   );
 }
