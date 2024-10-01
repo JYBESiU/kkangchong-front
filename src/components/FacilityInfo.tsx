@@ -1,5 +1,6 @@
 import { Facility } from 'types';
 import styled from '@emotion/styled';
+import { blue2, blue3 } from 'utils/color';
 
 const InfoBg = styled.div`
   display: flex;
@@ -9,10 +10,10 @@ const InfoBg = styled.div`
   gap: 10px;
 
   border-radius: 24px;
-  border: 1px solid #4a77ea;
-  background: #eeefff;
+  border: 1px solid ${blue3};
+  background: ${blue2};
 
-  color: #4a77ea;
+  color: ${blue3};
   font-family: 'Noto Sans KR';
   font-size: 12px;
   font-style: normal;
@@ -27,21 +28,22 @@ const InfoWrap = styled.div`
   align-content: flex-start;
   gap: 8px 5px;
   flex-wrap: wrap;
+  margin-bottom: 8px;
 `;
 
 const InfoGap = styled.div`
-  height: 8px;
+  margin-top: 11px;
 `;
 
 function FacilityInfo() {
   return (
     <div>
+      <InfoGap />
       <InfoWrap>
         <InfoBg>장애인 주차장</InfoBg>
         <InfoBg>장애인 화장실</InfoBg>
         <InfoBg>엘리베이터</InfoBg>
       </InfoWrap>
-      <InfoGap></InfoGap>
       <InfoWrap>
         <InfoBg>안내시설</InfoBg>
         <InfoBg>배려 접수대</InfoBg>
