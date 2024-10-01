@@ -2,11 +2,7 @@ import FacilityList from 'components/FacilityList';
 import KakaoMap from 'components/KakaoMap';
 
 function Home() {
-  return (
-    <div>
-      <FacilityList></FacilityList>
-    </div>
-  );
+  return <div></div>;
 }
 
 export default Home;

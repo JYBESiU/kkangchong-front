@@ -16,6 +16,7 @@ const FacilityFrame = styled.div`
   background: #fff;
 
   padding: 30px 30px;
+  position: relative;
 `;
 
 const FacilityName = styled.div`
@@ -58,10 +59,13 @@ const FacilityDistance = styled.div`
 const FacilityImg = styled.div`
   width: 137px;
   height: 137px;
-  flex-shrink: 0;
-
   border-radius: 8px;
   background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 function FacilityCard({ facility }: FacilityCardProps) {
@@ -84,6 +88,7 @@ function FacilityCard({ facility }: FacilityCardProps) {
         </FacilityWrap>
         <FacilityGap></FacilityGap>
         <FacilityInfo></FacilityInfo>
+        <FacilityImg></FacilityImg>
       </FacilityFrame>
       <br></br>
     </div>

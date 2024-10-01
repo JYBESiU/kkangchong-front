@@ -14,7 +14,9 @@ const facilityName: Facility[] = [
     subjectIds: [1, 2],
     levelIds: [1, 2],
     disabilityTypeIds: [1],
-    imgUrls: [],
+    imgUrls: [
+      'https://cdn.daejonilbo.com/news/photo/201411/1144857_168245_3653.jpg',
+    ],
   },
   {
     id: 2,
