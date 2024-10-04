@@ -1,6 +1,9 @@
 import { Facility } from 'types';
 import styled from '@emotion/styled';
 import DetailTop from './DetailTop';
+import DetailMid from './DetailMid';
+import DetailBasic from './DetailBasic';
+import DetailInfo from './DetailInfo';
 
 export interface FacilityDetailProps {}
 
@@ -37,6 +40,9 @@ function FacilityDetail({}: FacilityDetailProps) {
   return (
     <div>
       <DetailTop facility={facilityName[0]}></DetailTop>
+      <DetailMid></DetailMid>
+      <DetailBasic facility={facilityName[0]}></DetailBasic>
+      <DetailInfo facility={facilityName[0]}></DetailInfo>
     </div>
   );
 }
