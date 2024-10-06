@@ -1,20 +1,20 @@
-export { default as ClubComplete } from './ClubComplete';
-export * from './ClubComplete';
+export { default as ClubCompletePage } from './ClubCompletePage';
+export * from './ClubCompletePage';
 
-export { default as ClubInfo } from './ClubInfo';
-export * from './ClubInfo';
+export { default as ClubInfoPage } from './ClubInfoPage';
+export * from './ClubInfoPage';
 
-export { default as FacilityInfo } from './FacilityInfo';
-export * from './FacilityInfo';
+export { default as FacilityInfoPage } from './FacilityInfoPage';
+export * from './FacilityInfoPage';
 
-export { default as FacilityList } from './FacilityList';
-export * from './FacilityList';
+export { default as FacilityListPage } from './FacilityListPage';
+export * from './FacilityListPage';
 
-export { default as FacilityReserve } from './FacilityReserve';
-export * from './FacilityReserve';
+export { default as FacilityReservePage } from './FacilityReservePage';
+export * from './FacilityReservePage';
 
-export { default as FacilitySelect } from './FacilitySelect';
-export * from './FacilitySelect';
+export { default as FacilitySelectPage } from './FacilitySelectPage';
+export * from './FacilitySelectPage';
 
 export { default as KakaoMapLayout } from './KakaoMapLayout';
 export * from './KakaoMapLayout';
