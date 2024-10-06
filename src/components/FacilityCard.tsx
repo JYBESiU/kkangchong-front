@@ -1,7 +1,7 @@
 import { Facility } from 'types';
 import styled from '@emotion/styled';
 import FacilityInfo from './FacilityInfo';
-import { black, blue3, grey0, grey1 } from 'utils/color';
+import { black, blue3, grey0, grey2 } from 'utils/color';
 
 export interface FacilityCardProps {
   facility: Facility;
@@ -31,7 +31,7 @@ const FacilityName = styled.div`
 `;
 
 const FacilityAddress = styled.div`
-  color: ${grey1};
+  color: ${grey2};
   font-family: 'Noto Sans KR';
   font-size: 14px;
   font-style: normal;
@@ -64,7 +64,7 @@ const FacilityImg = styled.div<{ imgUrl?: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${grey1};
+  color: ${grey2};
   font-size: 14px;
   font-family: 'Noto Sans KR';
   border: 1px solid ${grey0};
