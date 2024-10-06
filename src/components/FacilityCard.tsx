@@ -18,7 +18,10 @@ const FacilityFrame = styled.div`
 
   padding: 30px 30px;
   position: relative;
+<<<<<<< HEAD
   margin: 20px;
+=======
+>>>>>>> c868777 (img working)
 `;
 
 const FacilityName = styled.div`
