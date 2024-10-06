@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { colors } from 'utils/color';
+import Text from './Text';
 
 export interface ButtonProps {
   variant?: 'primary' | 'secondary';
@@ -23,7 +24,9 @@ function Button({
       height={height}
       onClick={onClick}
     >
-      {label}
+      <Text fontSize={16} color={'white'}>
+        {label}
+      </Text>
     </StyledButton>
   );
 }
@@ -38,6 +41,4 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
     variant === 'primary' ? colors.blue3 : colors.grey2};
   border-radius: 8px;
   border: none;
-
-  color: white;
 `;
