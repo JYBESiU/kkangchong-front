@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { blue3, grey2 } from 'utils/color';
+import { colors } from 'utils/color';
 
 export interface ButtonProps {
   variant?: 'primary' | 'secondary';
@@ -34,7 +34,8 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
   width: ${({ width }) => (typeof width === 'number' ? `${width}px` : width)};
   height: ${({ height }) =>
     typeof height === 'number' ? `${height}px` : height};
-  background-color: ${({ variant }) => (variant === 'primary' ? blue3 : grey2)};
+  background-color: ${({ variant }) =>
+    variant === 'primary' ? colors.blue3 : colors.grey2};
   border-radius: 8px;
   border: none;
 

@@ -1,7 +1,7 @@
 import { Facility } from 'types';
 import styled from '@emotion/styled';
 import FacilityInfo from './FacilityInfo';
-import { black, blue3, grey0, grey2 } from 'utils/color';
+import { colors } from 'utils/color';
 
 export interface FacilityCardProps {
   facility: Facility;
@@ -13,7 +13,7 @@ const FacilityFrame = styled.div`
   align-self: stretch;
 
   border-radius: 8px;
-  border: 1px solid ${grey0};
+  border: 1px solid ${colors.grey0};
   background: #fff;
 
   padding: 30px 30px;
@@ -22,7 +22,7 @@ const FacilityFrame = styled.div`
 `;
 
 const FacilityName = styled.div`
-  color: ${black};
+  color: ${colors.black};
   font-family: 'Noto Sans KR';
   font-size: 16px;
   font-style: normal;
@@ -31,7 +31,7 @@ const FacilityName = styled.div`
 `;
 
 const FacilityAddress = styled.div`
-  color: ${grey2};
+  color: ${colors.grey2};
   font-family: 'Noto Sans KR';
   font-size: 14px;
   font-style: normal;
@@ -47,7 +47,7 @@ const FacilityWrap = styled.div`
 `;
 
 const FacilityDistance = styled.div`
-  color: ${blue3};
+  color: ${colors.blue3};
   font-family: 'Noto Sans KR';
   font-size: 14px;
   font-style: normal;
@@ -64,10 +64,10 @@ const FacilityImg = styled.div<{ imgUrl?: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${grey2};
+  color: ${colors.grey2};
   font-size: 14px;
   font-family: 'Noto Sans KR';
-  border: 1px solid ${grey0};
+  border: 1px solid ${colors.grey0};
 
   position: absolute;
   right: 30px;
