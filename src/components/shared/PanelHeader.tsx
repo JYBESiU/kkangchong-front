@@ -1,11 +1,16 @@
 import styled from '@emotion/styled';
+import Text from './Text';
 
 export interface PanelHeaderProps {
   title: string;
 }
 
 function PanelHeader({ title }: PanelHeaderProps) {
-  return <Root>{title}</Root>;
+  return (
+    <Root>
+      <Text fontSize={20}>{title}</Text>
+    </Root>
+  );
 }
 
 export default PanelHeader;

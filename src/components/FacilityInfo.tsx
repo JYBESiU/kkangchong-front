@@ -1,6 +1,6 @@
 import { Facility } from 'types';
 import styled from '@emotion/styled';
-import { blue2, blue3 } from 'utils/color';
+import { colors } from 'utils/color';
 
 const InfoBg = styled.div`
   display: flex;
@@ -10,10 +10,10 @@ const InfoBg = styled.div`
   gap: 10px;
 
   border-radius: 24px;
-  border: 1px solid ${blue3};
-  background: ${blue2};
+  border: 1px solid ${colors.blue3};
+  background: ${colors.blue2};
 
-  color: ${blue3};
+  color: ${colors.blue3};
   font-family: 'Noto Sans KR';
   font-size: 12px;
   font-style: normal;
