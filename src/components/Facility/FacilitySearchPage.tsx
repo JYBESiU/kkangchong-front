@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPage from './StyledButton';
+import MainPage from './FacilitySelect';
 
 const FacilitySearch: React.FC = () => {
   return (
