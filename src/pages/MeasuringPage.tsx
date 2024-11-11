@@ -12,7 +12,6 @@ export interface MeasuringPageProps {}
 
 function MeasuringPage({}: MeasuringPageProps) {
   const [currentStep, setCurrentStep] = useState(MeasuringStep.MOVE_READY);
-  console.log('currentStep: ', currentStep);
   const goNextStep = () => setCurrentStep((prev) => prev + 1);
 
   const handleComplete = () => {
@@ -24,7 +23,7 @@ function MeasuringPage({}: MeasuringPageProps) {
       {isReadyStep(currentStep) ? (
         <ReadyInformation step={currentStep} onNext={goNextStep} />
       ) : isCameraMeasureStep(currentStep) ? (
-        <PoseMeasuring onComplete={handleComplete} />
+        <PoseMeasuring step={currentStep} onComplete={handleComplete} />
       ) : (
         <TimerMeasuring />
       )}
