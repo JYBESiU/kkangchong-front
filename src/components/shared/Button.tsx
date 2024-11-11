@@ -7,7 +7,7 @@ export interface ButtonProps {
   width?: number | string;
   height: number | string;
   label: string;
-  onClick?: () => {};
+  onClick?: VoidFunction;
 }
 
 function Button({
@@ -24,7 +24,7 @@ function Button({
       height={height}
       onClick={onClick}
     >
-      <Text fontSize={16} color={'white'}>
+      <Text fontSize={20} color={'white'}>
         {label}
       </Text>
     </StyledButton>
@@ -39,6 +39,6 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
     typeof height === 'number' ? `${height}px` : height};
   background-color: ${({ variant }) =>
     variant === 'primary' ? colors.blue3 : colors.grey2};
-  border-radius: 8px;
+  border-radius: 30px;
   border: none;
 `;
