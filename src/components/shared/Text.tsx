@@ -35,4 +35,5 @@ const StyledText = styled.span<TextProps>`
   font-weight: ${({ fontWeight }) => fontWeight};
   color: ${({ color }) => colors[color!]};
   text-align: ${({ textAlign }) => textAlign};
+  white-space: pre-line;
 `;

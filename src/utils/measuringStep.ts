@@ -10,34 +10,22 @@ export enum MeasuringStep {
   TILT_MEASURE_LEFT = 8,
   TILT_MEASURE_RIGHT = 9,
   CORE_STRENGTH_READY = 10,
-  CORE_STRENGTH_MEASURE = 11,
+  CORE_STRENGTH_TIMER = 11,
   ARM_STRENGTH_READY = 12,
-  ARM_STRENGTH_MEASURE = 13,
+  ARM_STRENGTH_TIMER = 13,
   FINISH = 14,
 }
 
-const readySteps = [
-  MeasuringStep.MOVE_READY,
-  MeasuringStep.ARM_READY,
-  MeasuringStep.ROTATE_READY,
-  MeasuringStep.TILT_READY,
-  MeasuringStep.CORE_STRENGTH_READY,
-  MeasuringStep.ARM_STRENGTH_READY,
-];
+const getSteps = (stepName: string) => {
+  return Object.entries(MeasuringStep).reduce((acc, cur) => {
+    if (cur[0].includes(stepName)) acc.push(cur[1] as MeasuringStep);
+    return acc;
+  }, [] as MeasuringStep[]);
+};
 
-const cameraMeasureSteps = [
-  MeasuringStep.MOVE_MEASURE,
-  MeasuringStep.ARM_MEASURE,
-  MeasuringStep.ROTATE_MEASURE_LEFT,
-  MeasuringStep.ROTATE_MEASURE_RIGHT,
-  MeasuringStep.TILT_MEASURE_LEFT,
-  MeasuringStep.TILT_MEASURE_RIGHT,
-];
-
-const timerMeasureSteps = [
-  MeasuringStep.CORE_STRENGTH_MEASURE,
-  MeasuringStep.ARM_STRENGTH_MEASURE,
-];
+const readySteps = getSteps('READY');
+const cameraMeasureSteps = getSteps('MEASURE');
+const timerMeasureSteps = getSteps('TIMER');
 
 export const isReadyStep = (step: MeasuringStep) => readySteps.includes(step);
 export const isCameraMeasureStep = (step: MeasuringStep) =>
