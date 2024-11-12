@@ -5,17 +5,24 @@ import { colors } from 'utils/color';
 export interface TextProps {
   fontSize?: number;
   fontWeight?: number;
+  textAlign?: 'left' | 'right' | 'center';
   color?: keyof typeof colors;
 }
 
 function Text({
-  fontSize = 14,
+  fontSize = 20,
   fontWeight = 400,
+  textAlign = 'left',
   color = 'black',
   children,
 }: PropsWithChildren<TextProps>) {
   return (
-    <StyledText fontSize={fontSize} fontWeight={fontWeight} color={color}>
+    <StyledText
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+      textAlign={textAlign}
+      color={color}
+    >
       {children}
     </StyledText>
   );
@@ -27,4 +34,6 @@ const StyledText = styled.span<TextProps>`
   font-size: ${({ fontSize }) => fontSize}px;
   font-weight: ${({ fontWeight }) => fontWeight};
   color: ${({ color }) => colors[color!]};
+  text-align: ${({ textAlign }) => textAlign};
+  white-space: pre-line;
 `;

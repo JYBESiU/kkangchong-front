@@ -3,11 +3,11 @@ import { colors } from 'utils/color';
 import Text from './Text';
 
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'text';
   width?: number | string;
   height: number | string;
   label: string;
-  onClick?: () => {};
+  onClick?: VoidFunction;
 }
 
 function Button({
@@ -24,7 +24,7 @@ function Button({
       height={height}
       onClick={onClick}
     >
-      <Text fontSize={16} color={'white'}>
+      <Text fontSize={20} color={variant === 'text' ? 'blue3' : 'white'}>
         {label}
       </Text>
     </StyledButton>
@@ -38,7 +38,11 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
   height: ${({ height }) =>
     typeof height === 'number' ? `${height}px` : height};
   background-color: ${({ variant }) =>
-    variant === 'primary' ? colors.blue3 : colors.grey2};
-  border-radius: 8px;
+    variant === 'primary'
+      ? colors.blue3
+      : variant === 'text'
+        ? 'white'
+        : colors.grey2};
+  border-radius: 30px;
   border: none;
 `;
