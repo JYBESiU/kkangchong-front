@@ -5,6 +5,7 @@ import { useState } from 'react';
 import {
   isCameraMeasureStep,
   isReadyStep,
+  isTimerMeasureStep,
   MeasuringStep,
 } from 'utils/measuringStep';
 
@@ -24,8 +25,10 @@ function MeasuringPage({}: MeasuringPageProps) {
         <ReadyInformation step={currentStep} onNext={goNextStep} />
       ) : isCameraMeasureStep(currentStep) ? (
         <PoseMeasuring step={currentStep} onComplete={handleComplete} />
+      ) : isTimerMeasureStep(currentStep) ? (
+        <TimerMeasuring onComplete={handleComplete} />
       ) : (
-        <TimerMeasuring />
+        <></>
       )}
     </div>
   );
