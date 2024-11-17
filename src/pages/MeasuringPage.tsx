@@ -230,8 +230,13 @@ function MeasuringPage({}: MeasuringPageProps) {
           </div>
         </div>
       )}
-    </div>
+    </Root>
   );
 }
 
 export default MeasuringPage;
+
+const Root = styled.div`
+  height: 100vh;
+  width: 100%;
+`;

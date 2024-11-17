@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { MeasuringStep } from 'utils/measuringStep';
+import { isTimerReadyStep, MeasuringStep } from 'utils/measuringStep';
 import { Button, Text } from './shared';
 import { useEffect } from 'react';
 
@@ -20,7 +20,7 @@ export interface ReadyInformationProps {
 function ReadyInformation({ step, onNext }: ReadyInformationProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onNext(); // Always go to the next step after 5 seconds
+      if (!isTimerReadyStep(step)) onNext();
     }, 5000);
 
     return () => {
@@ -36,7 +36,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           측정 중 넘어지지 않도록 주의하세요
         </Text>
       )}
-      {isTimerReady(step) && (
+      {isTimerReadyStep(step) && (
         <Button
           width={'314px'}
           height={'60px'}
@@ -49,12 +49,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
 }
 
 export default ReadyInformation;
-
-const isTimerReady = (step: MeasuringStep) =>
-  [
-    MeasuringStep.CORE_STRENGTH_READY,
-    MeasuringStep.ARM_STRENGTH_READY,
-  ].includes(step);
 
 const getNotice = (step: MeasuringStep) => {
   switch (step) {
