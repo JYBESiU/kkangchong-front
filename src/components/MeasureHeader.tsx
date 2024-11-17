@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 // Header 컨테이너 스타일 정의
 const HeaderContainer = styled.div`
-  margin: 74px 40px 0 40px; /* 위 74px, 좌우 40px */
+  margin: 74px 40px 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;

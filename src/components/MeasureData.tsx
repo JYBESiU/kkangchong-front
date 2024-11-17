@@ -7,7 +7,7 @@ const MeasureDataContainer = styled.div`
   align-items: center;
   gap: 10px;
   align-self: stretch;
-  padding: 20px 40px 0 40px;
+  padding: 10px 40px 0 40px;
   width: 313px; /* 폭 고정 */
 `;
 

@@ -6,7 +6,7 @@ const MeasureMidContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 43px 0; /* 바 위아래 간격 */
+  padding: 20px 0; /* 바 위아래 간격 */
 `;
 
 // 바(bar) 스타일
