@@ -32,3 +32,9 @@ export const isCameraMeasureStep = (step: MeasuringStep) =>
   cameraMeasureSteps.includes(step);
 export const isTimerMeasureStep = (step: MeasuringStep) =>
   timerMeasureSteps.includes(step);
+
+export const isTimerReadyStep = (step: MeasuringStep) =>
+  [
+    MeasuringStep.CORE_STRENGTH_READY,
+    MeasuringStep.ARM_STRENGTH_READY,
+  ].includes(step);

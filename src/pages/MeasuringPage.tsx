@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import PoseMeasuring from 'components/PoseMeasuring';
 import ReadyInformation from 'components/ReadyInformation';
 import TimerMeasuring from 'components/TimerMeasuring';
@@ -5,6 +6,7 @@ import { useState } from 'react';
 import {
   isCameraMeasureStep,
   isReadyStep,
+  isTimerMeasureStep,
   MeasuringStep,
 } from 'utils/measuringStep';
 
@@ -19,16 +21,23 @@ function MeasuringPage({}: MeasuringPageProps) {
   };
 
   return (
-    <div>
+    <Root>
       {isReadyStep(currentStep) ? (
         <ReadyInformation step={currentStep} onNext={goNextStep} />
       ) : isCameraMeasureStep(currentStep) ? (
         <PoseMeasuring step={currentStep} onComplete={handleComplete} />
+      ) : isTimerMeasureStep(currentStep) ? (
+        <TimerMeasuring onComplete={handleComplete} />
       ) : (
-        <TimerMeasuring />
+        <></>
       )}
-    </div>
+    </Root>
   );
 }
 
 export default MeasuringPage;
+
+const Root = styled.div`
+  height: 100vh;
+  width: 100%;
+`;
