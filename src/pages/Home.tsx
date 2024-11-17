@@ -10,6 +10,7 @@ import StickManArm2 from 'components/StickManArm2';
 function Home() {
   return (
     <div>
+      <MeasureResult />
       <RecommendSport />
     </div>
   );

@@ -41,9 +41,10 @@ const SmallFrame = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   background: var(--blue-1, #f7f8fc);
+  cursor: pointer; /* 클릭 가능한 스타일 */
 `;
 
-// 상단 텍스트
+// 텍스트 스타일
 const SmallFrameTopText = styled.div`
   color: #000;
   font-family: 'Noto Sans KR';
@@ -53,7 +54,6 @@ const SmallFrameTopText = styled.div`
   line-height: normal;
 `;
 
-// 중간 텍스트
 const SmallFrameMiddleText = styled.div`
   align-self: stretch;
   color: #000;
@@ -64,17 +64,15 @@ const SmallFrameMiddleText = styled.div`
   line-height: normal;
 `;
 
-// 하단 텍스트와 별점 컨테이너
 const BottomContainer = styled.div`
   display: flex;
-  justify-content: flex-start; /* 텍스트와 별 왼쪽 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: flex-start;
+  align-items: center;
   align-self: stretch;
-  width: 100%; /* 하단 텍스트와 별점 전체를 채움 */
-  gap: 4px; /* 텍스트와 별 사이 간격 */
+  width: 100%;
+  gap: 4px;
 `;
 
-// 하단 텍스트
 const BottomText = styled.div`
   color: #000;
   font-family: 'Noto Sans KR';
@@ -84,18 +82,16 @@ const BottomText = styled.div`
   line-height: normal;
 `;
 
-// 별점 컨테이너
 const StarContainer = styled.div`
   display: flex;
-  gap: 1px; /* 별 사이 간격 */
+  gap: 1px;
   align-items: center;
 `;
 
-// 별 모양
 const Star = styled.div`
   width: 10px;
   height: 10px;
-  background: var(--blue3, #4a77ea); /* 색상을 blue3으로 설정 */
+  background: var(--blue3, #4a77ea);
   clip-path: polygon(
     50% 0%,
     61% 35%,
@@ -107,13 +103,14 @@ const Star = styled.div`
     32% 57%,
     2% 35%,
     39% 35%
-  ); /* 별 모양 */
+  );
 `;
 
 interface SmallFrameData {
   topText: string;
   middleText: string;
   stars: number /* 별 개수 */;
+  onClick: () => void;
 }
 
 interface MeasureHowProps {
@@ -129,7 +126,7 @@ const MeasureHow: React.FC<MeasureHowProps> = ({ data }) => {
       {/* 3x2 프레임 */}
       <FrameContainer>
         {data.map((frame, index) => (
-          <SmallFrame key={index}>
+          <SmallFrame key={index} onClick={frame.onClick}>
             <SmallFrameTopText>{frame.topText}</SmallFrameTopText>
             <SmallFrameMiddleText>{frame.middleText}</SmallFrameMiddleText>
             <BottomContainer>

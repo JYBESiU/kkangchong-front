@@ -22,6 +22,7 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  cursor: pointer; /* 클릭 가능한 스타일 */
 `;
 
 // 위쪽 박스 스타일
@@ -45,13 +46,21 @@ const BoxText = styled.div`
   line-height: normal;
 `;
 
-const MeasureBottom: React.FC = () => {
+interface MeasureBottomProps {
+  onTopBoxClick: () => void;
+  onBottomBoxClick: () => void;
+}
+
+const MeasureBottom: React.FC<MeasureBottomProps> = ({
+  onTopBoxClick,
+  onBottomBoxClick,
+}) => {
   return (
     <BottomContainer>
-      <TopBox>
+      <TopBox onClick={onTopBoxClick}>
         <BoxText>추천 동호회 구경하기</BoxText>
       </TopBox>
-      <BottomBox>
+      <BottomBox onClick={onBottomBoxClick}>
         <BoxText>재측정</BoxText>
       </BottomBox>
     </BottomContainer>

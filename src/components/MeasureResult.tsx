@@ -64,29 +64,42 @@ const MeasureResult: React.FC = () => {
       topText: '휠체어 농구',
       middleText: '휠체어 농구에 대한 짧은 설명',
       stars: 5,
+      onClick: () => alert('휠체어 농구 클릭됨'),
     },
     {
       topText: '댄스 스포츠',
       middleText: '댄스 스포츠에 대한 짧은 설명',
       stars: 4,
+      onClick: () => alert('댄스 스포츠 클릭됨'),
     },
     {
       topText: '휠체어 럭비',
       middleText: '휠체어 럭비에 대한 짧은 설명',
       stars: 3,
+      onClick: () => alert('휠체어 럭비 클릭됨'),
     },
     {
       topText: '휠체어 탁구',
       middleText: '휠체어 탁구에 대한 짧은 설명',
       stars: 5,
+      onClick: () => alert('휠체어 탁구 클릭됨'),
     },
     {
       topText: '휠체어 펜싱',
       middleText: '휠체어 펜싱에 대한 짧은 설명',
       stars: 2,
+      onClick: () => alert('휠체어 펜싱 클릭됨'),
     },
-    { topText: '육상', middleText: '육상에 대한 짧은 설명', stars: 4 },
+    {
+      topText: '육상',
+      middleText: '육상에 대한 짧은 설명',
+      stars: 4,
+      onClick: () => alert('육상 클릭됨'),
+    },
   ];
+
+  const handleTopBoxClick = () => alert('추천 동호회 구경하기 클릭됨');
+  const handleBottomBoxClick = () => alert('재측정 클릭됨');
 
   return (
     <Container>
@@ -107,7 +120,10 @@ const MeasureResult: React.FC = () => {
 
       <MeasureHow data={measureHowData} />
 
-      <MeasureBottom />
+      <MeasureBottom
+        onTopBoxClick={handleTopBoxClick}
+        onBottomBoxClick={handleBottomBoxClick}
+      />
     </Container>
   );
 };
