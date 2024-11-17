@@ -1,3 +1,4 @@
+import CamAngle from 'components/CamAngle';
 import FacilityDetail from 'components/FacilityDetail';
 import FacilityList from 'components/FacilityList';
 import KakaoMap from 'components/KakaoMap';
@@ -7,8 +8,7 @@ import StickManArm2 from 'components/StickManArm2';
 function Home() {
   return (
     <div>
-      <StickManArm1></StickManArm1>
-      <StickManArm2></StickManArm2>
+      <CamAngle></CamAngle>
     </div>
   );
 }
