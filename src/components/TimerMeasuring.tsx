@@ -9,7 +9,10 @@ export interface TimerMeasuringProps {
 function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
   const [isFinished, setIsFinished] = useState(false);
   const [time, setTime] = useState(0);
+<<<<<<< HEAD
   // Number((time/100).toFixed(1)) 이 값으로 설정하기
+=======
+>>>>>>> f535302 (Screen flow (#11))
   const maxTime = 5999;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
