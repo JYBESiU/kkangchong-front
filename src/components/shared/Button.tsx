@@ -43,6 +43,6 @@ const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
       : variant === 'text'
         ? 'white'
         : colors.grey2};
-  border-radius: 30px;
+  border-radius: 8px;
   border: none;
 `;

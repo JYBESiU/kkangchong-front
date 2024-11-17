@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Text } from './shared';
 import styled from '@emotion/styled';
 
@@ -7,8 +7,10 @@ export interface TimerMeasuringProps {
 }
 
 function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
+  const [isFinished, setIsFinished] = useState(false);
   const [time, setTime] = useState(0);
   const maxTime = 5999;
+  const timerRef = useRef(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -20,43 +22,84 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
         return prevTime + 1;
       });
     }, 10);
+    timerRef.current = timer;
 
     return () => clearInterval(timer);
   }, []);
 
-  const handleRetry = () => {
-    setTime(0);
+  const handleFinish = () => {
+    setIsFinished(true);
+    clearInterval(timerRef.current);
   };
 
-  const seconds = String(Math.floor(time / 100)).padStart(2, '0');
-  const milliseconds = String(time % 100).padStart(2, '0');
+  const handleRetry = () => {
+    setTime(0);
+    setIsFinished(false);
+    clearInterval(timerRef.current);
+
+    const timer = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime >= maxTime) {
+          clearInterval(timer);
+          return prevTime;
+        }
+        return prevTime + 1;
+      });
+    }, 10);
+    timerRef.current = timer;
+  };
+
+  const seconds = String(Math.floor(time / 100)).padStart(1, '0');
+  const milliseconds = Math.floor((time % 100) / 10);
 
   return (
     <Root>
-      <Text fontSize={80} fontWeight={700} color={'blue3'}>
-        {seconds}.{milliseconds}
-      </Text>
-      <Button
-        width={314}
-        height={60}
-        label={'측정 완료'}
-        onClick={onComplete}
-      />
-      <Button
-        variant={'secondary'}
-        width={314}
-        height={60}
-        label={'다시하기'}
-        onClick={handleRetry}
-      />
+      <Flex>
+        <Text fontSize={80} fontWeight={700} color={'blue3'}>
+          {seconds}.{milliseconds} 초
+        </Text>
+        <Button
+          width={314}
+          height={60}
+          label={isFinished ? '다음' : '측정 완료'}
+          onClick={isFinished ? onComplete : handleFinish}
+        />
+        <Button
+          variant={'secondary'}
+          width={314}
+          height={60}
+          label={'다시하기'}
+          onClick={handleRetry}
+        />
+      </Flex>
+      {isFinished && (
+        <Wrapper>
+          <Text>코어 힘 측정이 {'\n'}완료되었습니다</Text>
+        </Wrapper>
+      )}
     </Root>
   );
 }
 
 export default TimerMeasuring;
 
-const Root = styled.div`
+const Flex = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
+  height: 100%;
+`;
+
+const Root = styled.div`
+  position: relative;
+  height: 100%;
+`;
+
+const Wrapper = styled.div`
+  position: absolute;
+  top: 174px;
+  width: 100%;
+  text-align: center;
 `;
