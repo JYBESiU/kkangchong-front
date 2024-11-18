@@ -1,5 +1,5 @@
 export interface Club {
-  id: number;
+  id?: number;
 
   location: string;
   club_name: string;
@@ -7,7 +7,8 @@ export interface Club {
   subject: string;
   disability_type: string;
   permission_date: string;
+  other_objects?: string;
 
-  description: string;
+  description?: string;
   imageUrl?: string;
 }

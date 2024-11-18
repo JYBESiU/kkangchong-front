@@ -22,7 +22,7 @@ function ClubsPage({}: ClubsPageProps) {
   }, [selectedSports]);
 
   return (
-    <div>
+    <Root>
       <TagContainer>
         {sportsList.map((sports) => (
           <Tag
@@ -33,7 +33,7 @@ function ClubsPage({}: ClubsPageProps) {
           />
         ))}
       </TagContainer>
-      <div>
+      <ClubList>
         {clubs.map((club) => (
           <ClubInfo
             key={club.club_name}
@@ -43,8 +43,8 @@ function ClubsPage({}: ClubsPageProps) {
             imageUrl={club.imageUrl}
           />
         ))}
-      </div>
-    </div>
+      </ClubList>
+    </Root>
   );
 }
 
@@ -52,9 +52,24 @@ export default ClubsPage;
 
 const sportsList = ['농구', '럭비', '탁구', '펜싱', '육상', '댄스스포츠'];
 
-const TagContainer = styled.div`
+const Root = styled.div`
+  position: relative;
   display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+const ClubList = styled.div`
+  flex: 1;
+  overflow: hidden;
+`;
+
+const TagContainer = styled.div`
+  position: sticky;
+  top: 0;
+  display: flex;
+  gap: 16px;
   overflow-x: auto;
-  padding: 16px;
-  background-color: #f9f9f9;
+  padding: 16px 32px;
+  background-color: white;
 `;
