@@ -13,7 +13,7 @@ function ClubsPage({}: ClubsPageProps) {
 
   useEffect(() => {
     const fetchClubs = async () => {
-      const response = await axios.get<Club[]>('');
+      const response = await axios.get<Club[]>(`/club/${selectedSports}`);
 
       setClubs(response.data);
     };
