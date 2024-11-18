@@ -42,6 +42,7 @@ const ClubImage = styled.img`
   height: 74px;
   border-radius: 8px;
   margin-right: 12px;
+  object-fit: cover;
 `;
 
 const ClubDetails = styled.div`

@@ -1,5 +1,5 @@
 export interface Club {
-  id?: number;
+  id: number;
 
   location: string;
   club_name: string;

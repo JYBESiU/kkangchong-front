@@ -36,7 +36,7 @@ function ClubsPage({}: ClubsPageProps) {
       <ClubList>
         {clubs.map((club) => (
           <ClubInfo
-            key={club.club_name}
+            key={club.id}
             name={club.club_name}
             location={club.location}
             time={club.active_time}
