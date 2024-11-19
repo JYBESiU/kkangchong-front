@@ -9,6 +9,7 @@ export interface TimerMeasuringProps {
 function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
   const [isFinished, setIsFinished] = useState(false);
   const [time, setTime] = useState(0);
+  // Number((time/100).toFixed(1)) 이 값으로 설정하기
   const maxTime = 5999;
   const timerRef = useRef(0);
 
@@ -80,6 +81,8 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
     </Root>
   );
 }
+
+export default TimerMeasuring;
 
 const Flex = styled.div`
   display: flex;
