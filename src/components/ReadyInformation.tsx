@@ -26,7 +26,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [step, onNext]); // Add `step` to trigger when it changes
 
   return (
     <Root>
