@@ -82,6 +82,8 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
   );
 }
 
+export default TimerMeasuring;
+
 const Flex = styled.div`
   display: flex;
   flex-direction: column;
