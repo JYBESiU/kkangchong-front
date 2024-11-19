@@ -13,13 +13,6 @@ import { MeasurementContext } from 'components/MeasurementContext';
 
 export interface MeasuringPageProps {}
 
-/**
- * TODO
- * 3. 5 -> 4 3 2 -> (1 -> 0 -> )화면전환 0.2초 간격으로 10번 측정해서 평균내기
- * 4. PoseMeasuring&TimerMeasuring 컴포넌트에서 setState prop은 다 지우고 onComplete 함수로 처리
- * 7. timer 측정 값 state 추가
- */
-
 function MeasuringPage({}: MeasuringPageProps) {
   const [currentStep, setCurrentStep] = useState<MeasuringStep>(
     MeasuringStep.MOVE_READY
@@ -77,6 +70,24 @@ function MeasuringPage({}: MeasuringPageProps) {
     }
     goNextStep();
   };
+
+  useEffect(() => {
+    if (isTimerActive) {
+      if (timer > 0) {
+        console.log(`Timer active: ${timer} seconds remaining.`);
+        const timeoutId = setTimeout(() => {
+          setTimer((prev) => prev - 1);
+        }, 1000);
+        return () => clearTimeout(timeoutId); // Cleanup timeout
+      } else {
+        // Timer has finished, proceed to next step
+        console.log('Timer finished. Proceeding to next step.');
+        setIsTimerActive(false);
+        setTimer(5); // Reset timer for the next step
+        goNextStep();
+      }
+    }
+  }, [isTimerActive, timer, goNextStep]);
 
   useEffect(() => {
     if (currentStep === MeasuringStep.FINISH) {
