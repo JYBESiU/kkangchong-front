@@ -20,13 +20,13 @@ export interface ReadyInformationProps {
 function ReadyInformation({ step, onNext }: ReadyInformationProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!isTimerReady(step)) onNext();
+      onNext(); // Always go to the next step after 5 seconds
     }, 5000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [step, onNext]); // Add `step` to trigger when it changes
 
   return (
     <Root>
