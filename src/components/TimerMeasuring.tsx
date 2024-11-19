@@ -14,7 +14,7 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
 =======
 >>>>>>> f535302 (Screen flow (#11))
   const maxTime = 5999;
-  const timerRef = useRef(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,13 +33,13 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
 
   const handleFinish = () => {
     setIsFinished(true);
-    clearInterval(timerRef.current);
+    clearInterval(timerRef.current!);
   };
 
   const handleRetry = () => {
     setTime(0);
     setIsFinished(false);
-    clearInterval(timerRef.current);
+    clearInterval(timerRef.current!);
 
     const timer = setInterval(() => {
       setTime((prevTime) => {
