@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import { Text } from './shared';
-import { MeasuringStep } from 'utils/measuringStep';
+import { isCameraMeasureStep, MeasuringStep } from 'utils/measuringStep';
 import styled from '@emotion/styled';
 import * as posenet from '@tensorflow-models/posenet';
+import { MeasurementContext } from './MeasurementContext';
 
 const Root = styled.div`
   position: relative;
@@ -12,82 +13,71 @@ const Root = styled.div`
 
 export interface PoseMeasuringProps {
   step: MeasuringStep;
-  onComplete: () => void;
-  originalShoulderLength?: number | null;
-  setOriginalShoulderLength?: (length: number) => void;
-  originalWristLength?: number | null;
-  setOriginalWristLength?: (length: number) => void;
-  originalShoulderAngle?: number | null;
-  setOriginalShoulderAngle?: (angle: number) => void;
-  leftWaistRotationValue?: number | null;
-  setLeftWaistRotationValue?: (value: number) => void;
-  rightWaistRotationValue?: number | null;
-  setRightWaistRotationValue?: (value: number) => void;
-  leftTorsoRotationValue?: number | null;
-  setLeftTorsoRotationValue?: (value: number) => void;
-  rightTorsoRotationValue?: number | null;
-  setRightTorsoRotationValue?: (value: number) => void;
-  leftArmRotationValue?: number | null;
-  setLeftArmRotationValue?: (value: number) => void;
-  rightArmRotationValue?: number | null;
-  setRightArmRotationValue?: (value: number) => void;
+  onComplete: (data: number) => void;
 }
 
-function PoseMeasuring({
-  step,
-  onComplete,
-  originalShoulderLength,
-  setOriginalShoulderLength,
-  originalWristLength,
-  setOriginalWristLength,
-  originalShoulderAngle,
-  setOriginalShoulderAngle,
-  leftWaistRotationValue,
-  setLeftWaistRotationValue,
-  rightWaistRotationValue,
-  setRightWaistRotationValue,
-  leftTorsoRotationValue,
-  setLeftTorsoRotationValue,
-  rightTorsoRotationValue,
-  setRightTorsoRotationValue,
-  leftArmRotationValue,
-  setLeftArmRotationValue,
-  rightArmRotationValue,
-  setRightArmRotationValue,
-}: PoseMeasuringProps) {
-  const [count, setCount] = useState(
-    step === MeasuringStep.MOVE_MEASURE ? 15 : 5
-  );
+function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
+  const context = useContext(MeasurementContext);
+
+  if (!context) {
+    throw new Error('MeasuringPage must be used within a MeasurementProvider.');
+  }
+  const {
+    setLeftArmRotationValue,
+    setRightArmRotationValue,
+    setArmRotationValue,
+    originalWristLength,
+    setOriginalWristLength,
+    setLeftWaistRotationValue,
+    setRightWaistRotationValue,
+    setLeftWaistTiltValue,
+    setRightWaistTiltValue,
+  } = context;
+  const [timerCount, setTimerCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
+    setIsChecking(false);
+    setValidDataCount(0);
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
+  }, [step]);
+
   const [isChecking, setIsChecking] = useState(false);
-  const [checkCount, setCheckCount] = useState(0);
+  const [validDataCount, setValidDataCount] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const latestPoseRef = useRef<posenet.Pose | null>(null);
 
-  const wristLengthsRef = useRef<number[]>([]);
-  const torsoAnglesRef = useRef<number[]>([]);
-  const leftArmRotationsRef = useRef<number[]>([]);
-  const rightArmRotationsRef = useRef<number[]>([]);
+  const measuredDataRef = useRef<number[]>([]);
+  const measuredSecondRef = useRef<number[]>([]);
 
   // Maximum number of attempts to prevent infinite loops
   const MAX_ATTEMPTS = 30;
 
   useEffect(() => {
+    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
+    setIsChecking(false);
+    setValidDataCount(0);
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
+  }, [step]);
+
+  useEffect(() => {
     console.log(`Current step: ${MeasuringStep[step]}`);
 
-    if (count > 1) {
-      const countdownTimer = setInterval(() => {
-        setCount((prevCount) => prevCount - 1);
+    if (timerCount !== null && timerCount > 0) {
+      const countdownTimer = setTimeout(() => {
+        setTimerCount((prevCount) =>
+          prevCount !== null ? prevCount - 1 : null
+        );
       }, 1000);
-
-      return () => clearInterval(countdownTimer);
-    }
-
-    if (count === 1) {
+      return () => clearTimeout(countdownTimer);
+    } else if (timerCount === 0) {
       console.log('Countdown finished. Starting measurement.');
       setIsChecking(true);
     }
-  }, [count, step]);
+  }, [timerCount, step]);
 
   useEffect(() => {
     let net: posenet.PoseNet | null = null;
@@ -97,33 +87,11 @@ function PoseMeasuring({
       return;
     }
 
-    // Define measuring steps
-    const measuringSteps = [
-      MeasuringStep.ARM_MEASURE,
-      MeasuringStep.ROTATE_MEASURE_FRONT,
-      MeasuringStep.ROTATE_MEASURE_LEFT,
-      MeasuringStep.ROTATE_MEASURE_RIGHT,
-      MeasuringStep.TILT_MEASURE_LEFT,
-      MeasuringStep.TILT_MEASURE_RIGHT,
-    ];
-
-    if (!measuringSteps.includes(step)) {
-      console.log(`Step ${MeasuringStep[step]} is not a measuring step.`);
-      onComplete();
-      return;
-    }
-
-    // Remove dependencies on original measurements for tilt steps
-    // No longer checking for originalShoulderAngle or originalWristLength for tilt measurements
-
-    // Initialize measurement counters and data arrays
     let checkCounter = 0;
-    wristLengthsRef.current = [];
-    torsoAnglesRef.current = [];
-    leftArmRotationsRef.current = [];
-    rightArmRotationsRef.current = [];
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
 
-    // Function to start webcam stream
+    // Start webcam stream
     const startWebcam = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -138,7 +106,7 @@ function PoseMeasuring({
         }
       } catch (error) {
         console.error('Error accessing webcam:', error);
-        onComplete(); // Exit if webcam access fails
+        onComplete(0); // Exit if webcam access fails
       }
     };
 
@@ -156,7 +124,7 @@ function PoseMeasuring({
           console.log('TensorFlow backend set to CPU.');
         } catch (cpuError) {
           console.error('Failed to set TensorFlow backend to CPU.', cpuError);
-          onComplete(); // Exit if backend setup fails
+          onComplete(0); // Exit if backend setup fails
         }
       }
       try {
@@ -164,7 +132,7 @@ function PoseMeasuring({
         console.log('PoseNet model loaded.');
       } catch (modelError) {
         console.error('Failed to load PoseNet model:', modelError);
-        onComplete(); // Exit if model fails to load
+        onComplete(0); // Exit if model fails to load
       }
     };
 
@@ -211,7 +179,7 @@ function PoseMeasuring({
           {} as { [key: string]: posenet.Keypoint }
         );
 
-        const minConfidence = 0.2; // Adjusted to increase keypoint detection
+        const minConfidence = 0.6; // Adjusted to increase keypoint detection
 
         const leftShoulder = keypoints['leftShoulder'];
         const rightShoulder = keypoints['rightShoulder'];
@@ -219,32 +187,79 @@ function PoseMeasuring({
         const rightElbow = keypoints['rightElbow'];
         const leftWrist = keypoints['leftWrist'];
         const rightWrist = keypoints['rightWrist'];
+        let wristLength = 0;
+        let wristVector;
+        console.log('Keypoints:', keypoints);
 
-        // Measurement based on the current step
+        if (
+          leftWrist?.score >= minConfidence &&
+          rightWrist?.score >= minConfidence
+        ) {
+          wristLength = Math.hypot(
+            leftWrist.position.x - rightWrist.position.x,
+            leftWrist.position.y - rightWrist.position.y
+          );
+          wristVector = {
+            x: leftWrist.position.x - rightWrist.position.x,
+            y: leftWrist.position.y - rightWrist.position.y,
+          };
+        }
+
         if (step === MeasuringStep.ARM_MEASURE) {
           if (
-            leftShoulder?.score >= minConfidence &&
-            rightShoulder?.score >= minConfidence &&
             leftElbow?.score >= minConfidence &&
-            rightElbow?.score >= minConfidence
+            leftShoulder?.score >= minConfidence &&
+            rightElbow?.score >= minConfidence &&
+            rightShoulder?.score >= minConfidence
           ) {
+            // Left arm vector (shoulder to elbow)
             const leftArmVector = {
-              x: Math.abs(leftElbow.position.x - leftShoulder.position.x),
-              y: Math.abs(leftElbow.position.y - leftShoulder.position.y),
+              x: leftElbow.position.x - leftShoulder.position.x,
+              y: leftElbow.position.y - leftShoulder.position.y,
             };
+            const leftArmLength = Math.hypot(leftArmVector.x, leftArmVector.y);
+
+            // Right arm vector (shoulder to elbow)
             const rightArmVector = {
-              x: Math.abs(rightElbow.position.x - rightShoulder.position.x),
-              y: Math.abs(rightElbow.position.y - rightShoulder.position.y),
+              x: rightElbow.position.x - rightShoulder.position.x,
+              y: rightElbow.position.y - rightShoulder.position.y,
             };
+            const rightArmLength = Math.hypot(
+              rightArmVector.x,
+              rightArmVector.y
+            );
+            // Reference vector (positive y-axis)
+            const refVector = { x: 0, y: 1 };
+            const refLength = 1; // Since the reference vector is (0, 1)
+            /** the y is smaller value when it is higher */
 
-            const leftArmAngle =
-              (Math.atan2(leftArmVector.y, leftArmVector.x) * 180) / Math.PI;
-            const rightArmAngle =
-              (Math.atan2(rightArmVector.y, rightArmVector.x) * 180) / Math.PI;
+            let leftArmAngle = 0;
+            let rightArmAngle = 0;
 
-            leftArmRotationsRef.current.push(Math.abs(leftArmAngle));
-            rightArmRotationsRef.current.push(Math.abs(rightArmAngle));
+            if (leftArmLength > 0) {
+              const dotProduct =
+                leftArmVector.x * refVector.x + leftArmVector.y * refVector.y;
+              const cosTheta = dotProduct / (leftArmLength * refLength);
+              const angleRad = Math.acos(cosTheta);
+              leftArmAngle = (angleRad * 180) / Math.PI;
+            } else {
+              console.log('Left arm vector length is zero.');
+            }
+            if (rightArmLength > 0) {
+              const dotProduct =
+                rightArmVector.x * refVector.x + rightArmVector.y * refVector.y;
+              const cosTheta = dotProduct / (rightArmLength * refLength);
+              const angleRad = Math.acos(cosTheta);
+              rightArmAngle = (angleRad * 180) / Math.PI;
+            } else {
+              console.log('Right arm vector length is zero.');
+            }
 
+            // Store the angles
+            measuredDataRef.current.push(leftArmAngle);
+            measuredSecondRef.current.push(rightArmAngle);
+
+            // Log the angles
             console.log(
               `ARM_MEASURE - Left Arm Angle: ${leftArmAngle.toFixed(2)} degrees`
             );
@@ -252,55 +267,39 @@ function PoseMeasuring({
               `ARM_MEASURE - Right Arm Angle: ${rightArmAngle.toFixed(2)} degrees`
             );
           } else {
-            console.log('ARM_MEASURE - Keypoints not detected.');
+            console.log(
+              'ARM_MEASURE - Keypoints not detected or confidence too low.'
+            );
           }
         } else if (step === MeasuringStep.ROTATE_MEASURE_FRONT) {
           if (
             leftWrist?.score >= minConfidence &&
             rightWrist?.score >= minConfidence
           ) {
-            const wristLength = Math.hypot(
-              leftWrist.position.x - rightWrist.position.x,
-              leftWrist.position.y - rightWrist.position.y
-            );
-            wristLengthsRef.current.push(wristLength);
+            measuredDataRef.current.push(wristLength);
             console.log(
               `ROTATE_MEASURE_FRONT - Wrist Length: ${wristLength.toFixed(2)} pixels`
             );
           } else {
             console.log('ROTATE_MEASURE_FRONT - Wrist keypoints not detected.');
           }
-        } else if (step === MeasuringStep.ROTATE_MEASURE_LEFT) {
+        } else if (
+          step === MeasuringStep.ROTATE_MEASURE_LEFT ||
+          step === MeasuringStep.ROTATE_MEASURE_RIGHT
+        ) {
           if (
             leftWrist?.score >= minConfidence &&
             rightWrist?.score >= minConfidence
           ) {
-            const wristLength = Math.hypot(
-              leftWrist.position.x - rightWrist.position.x,
-              leftWrist.position.y - rightWrist.position.y
-            );
-            wristLengthsRef.current.push(wristLength);
-            console.log(
-              `ROTATE_MEASURE_LEFT - Wrist Length: ${wristLength.toFixed(2)} pixels`
-            );
+            if (originalWristLength) {
+              measuredDataRef.current.push(
+                (Math.acos(wristLength / originalWristLength) * 180) / Math.PI
+              );
+            } else {
+              console.log('Original Wrist Length not set. ');
+            }
           } else {
             console.log('ROTATE_MEASURE_LEFT - Wrist keypoints not detected.');
-          }
-        } else if (step === MeasuringStep.ROTATE_MEASURE_RIGHT) {
-          if (
-            leftWrist?.score >= minConfidence &&
-            rightWrist?.score >= minConfidence
-          ) {
-            const wristLength = Math.hypot(
-              leftWrist.position.x - rightWrist.position.x,
-              leftWrist.position.y - rightWrist.position.y
-            );
-            wristLengthsRef.current.push(wristLength);
-            console.log(
-              `ROTATE_MEASURE_RIGHT - Wrist Length: ${wristLength.toFixed(2)} pixels`
-            );
-          } else {
-            console.log('ROTATE_MEASURE_RIGHT - Wrist keypoints not detected.');
           }
         } else if (
           step === MeasuringStep.TILT_MEASURE_LEFT ||
@@ -308,63 +307,58 @@ function PoseMeasuring({
         ) {
           if (
             leftWrist?.score >= minConfidence &&
-            rightWrist?.score >= minConfidence
+            rightWrist?.score >= minConfidence &&
+            wristVector
           ) {
-            const wristVector = {
-              x: rightWrist.position.x - leftWrist.position.x,
-              y: rightWrist.position.y - leftWrist.position.y,
-            };
+            const dx = rightWrist.position.x - leftWrist.position.x;
+            const invertedDy = -rightWrist.position.y + leftWrist.position.y; // y increases downward in image coordinates
+            let angle = Math.atan2(invertedDy, dx) * (180 / Math.PI);
+            angle = Math.abs(angle);
+            if (angle > 90) {
+              angle = 180 - angle;
+            }
+            measuredDataRef.current.push(angle);
 
-            const wristAngle =
-              (Math.atan2(Math.abs(wristVector.y), Math.abs(wristVector.x)) *
-                180) /
-              Math.PI;
-            torsoAnglesRef.current.push(Math.abs(wristAngle));
-
+            // Log the angle
             console.log(
-              `TILT_MEASURE_${step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'} - Wrist Angle: ${Math.abs(wristAngle).toFixed(2)} degrees`
+              `TILT_MEASURE_${
+                step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
+              } - Wrist Angle: ${angle.toFixed(2)} degrees`
             );
           } else {
             console.log(
-              `TILT_MEASURE_${step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'} - Wrist keypoints not detected.`
+              `TILT_MEASURE_${
+                step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
+              } - Wrist keypoints not detected.`
             );
           }
         }
 
-        // Determine if any valid measurement was taken
         let anyMeasurementTaken = false;
         if (
-          step === MeasuringStep.ARM_MEASURE &&
-          leftArmRotationsRef.current.length > checkCounter
+          isCameraMeasureStep(step) &&
+          measuredDataRef.current.length > validDataCount
         ) {
-          anyMeasurementTaken = true;
-        } else if (
-          [
-            MeasuringStep.ROTATE_MEASURE_FRONT,
-            MeasuringStep.ROTATE_MEASURE_LEFT,
-            MeasuringStep.ROTATE_MEASURE_RIGHT,
-          ].includes(step) &&
-          wristLengthsRef.current.length > checkCounter
-        ) {
-          anyMeasurementTaken = true;
-        } else if (
-          (step === MeasuringStep.TILT_MEASURE_LEFT ||
-            step === MeasuringStep.TILT_MEASURE_RIGHT) &&
-          torsoAnglesRef.current.length > checkCounter
-        ) {
-          anyMeasurementTaken = true;
+          if (
+            step === MeasuringStep.ARM_MEASURE &&
+            measuredSecondRef.current.length > validDataCount
+          ) {
+            anyMeasurementTaken = true;
+          } else {
+            anyMeasurementTaken = true;
+          }
         }
 
         if (anyMeasurementTaken) {
           checkCounter += 1;
-          setCheckCount((prev) => prev + 1);
+          setValidDataCount((prev) => prev + 1);
           console.log(`Measurement count: ${checkCounter}`);
         } else {
           console.log('No valid measurements taken in this interval.');
         }
 
         // After collecting 10 measurements or reaching max attempts, calculate averages
-        if (checkCounter >= 10 || checkCount >= MAX_ATTEMPTS) {
+        if (checkCounter >= 10 || validDataCount >= MAX_ATTEMPTS) {
           console.log(
             'Reached 10 measurements or max attempts. Calculating averages...'
           );
@@ -372,170 +366,97 @@ function PoseMeasuring({
             clearInterval(intervalId);
           }
           setIsChecking(false);
-          setCheckCount(0);
+          setValidDataCount(0);
 
-          const handleMeasure = () => {
-            // Handle ARM_MEASURE
+          const handleMeasure = (): number => {
+            let data = 0;
             if (step === MeasuringStep.ARM_MEASURE) {
-              const validLeftArmAngles = leftArmRotationsRef.current.filter(
+              const validLeftArmAngles = measuredDataRef.current.filter(
                 (angle) => !isNaN(angle)
               );
-              const validRightArmAngles = rightArmRotationsRef.current.filter(
+              const validRightArmAngles = measuredSecondRef.current.filter(
                 (angle) => !isNaN(angle)
               );
+
+              let avgLeftArmAngle = 0,
+                avgRightArmAngle = 0;
 
               if (validLeftArmAngles.length > 0 && setLeftArmRotationValue) {
-                const avgLeftArmAngle =
+                avgLeftArmAngle =
                   validLeftArmAngles.reduce((a, b) => a + b, 0) /
                   validLeftArmAngles.length;
                 setLeftArmRotationValue(avgLeftArmAngle);
-                console.log(
-                  `Average Left Arm Rotation Angle: ${avgLeftArmAngle.toFixed(
-                    2
-                  )} degrees`
-                );
               } else {
                 console.log('No valid left arm angles recorded.');
               }
 
               if (validRightArmAngles.length > 0 && setRightArmRotationValue) {
-                const avgRightArmAngle =
+                avgRightArmAngle =
                   validRightArmAngles.reduce((a, b) => a + b, 0) /
                   validRightArmAngles.length;
                 setRightArmRotationValue(avgRightArmAngle);
-                console.log(
-                  `Average Right Arm Rotation Angle: ${avgRightArmAngle.toFixed(
-                    2
-                  )} degrees`
-                );
               } else {
                 console.log('No valid right arm angles recorded.');
               }
-            }
 
-            // Handle ROTATE_MEASURE_FRONT
-            if (step === MeasuringStep.ROTATE_MEASURE_FRONT) {
-              const validWristLengths = wristLengthsRef.current.filter(
+              if (avgLeftArmAngle > 0 && avgRightArmAngle > 0) {
+                data = (avgLeftArmAngle + avgRightArmAngle) / 2;
+                setArmRotationValue((avgLeftArmAngle + avgRightArmAngle) / 2);
+              } else {
+                console.log('No valid arm angles recorded.');
+              }
+            } else if (isCameraMeasureStep(step)) {
+              const validData = measuredDataRef.current.filter(
                 (len) => !isNaN(len)
               );
-              if (validWristLengths.length > 0 && setOriginalWristLength) {
-                const avgWristLength =
-                  validWristLengths.reduce((a, b) => a + b, 0) /
-                  validWristLengths.length;
-                setOriginalWristLength(avgWristLength);
-                console.log(
-                  `Average Original Wrist Length: ${avgWristLength.toFixed(
-                    2
-                  )} pixels`
-                );
+              if (validData.length > 0) {
+                const avgData =
+                  validData.reduce((a, b) => a + b, 0) / validData.length;
+                data = avgData;
+                switch (step) {
+                  case MeasuringStep.ROTATE_MEASURE_FRONT:
+                    if (setOriginalWristLength) {
+                      setOriginalWristLength(avgData);
+                    }
+                    break;
+                  case MeasuringStep.ROTATE_MEASURE_LEFT:
+                    if (setLeftWaistRotationValue) {
+                      setLeftWaistRotationValue(avgData);
+                    }
+                    break;
+                  case MeasuringStep.ROTATE_MEASURE_RIGHT:
+                    if (setRightWaistRotationValue) {
+                      setRightWaistRotationValue(avgData);
+                    }
+                    break;
+                  case MeasuringStep.TILT_MEASURE_LEFT:
+                    if (setLeftWaistTiltValue) {
+                      setLeftWaistTiltValue(avgData);
+                    }
+                    break;
+                  case MeasuringStep.TILT_MEASURE_RIGHT:
+                    if (setRightWaistTiltValue) {
+                      setRightWaistTiltValue(avgData);
+                    }
+                    break;
+                  default:
+                    break;
+                }
               } else {
                 console.log(
                   'No valid wrist lengths recorded for ROTATE_MEASURE_FRONT.'
                 );
               }
             }
-
-            // Handle ROTATE_MEASURE_LEFT
-            if (step === MeasuringStep.ROTATE_MEASURE_LEFT) {
-              const validWristLengths = wristLengthsRef.current.filter(
-                (len) => !isNaN(len)
-              );
-              if (validWristLengths.length > 0 && setLeftWaistRotationValue) {
-                const avgWristLength =
-                  validWristLengths.reduce((a, b) => a + b, 0) /
-                  validWristLengths.length;
-                // Directly set the wrist angle without ratio comparison
-                setLeftWaistRotationValue(avgWristLength);
-                console.log(
-                  `Average Left Waist Rotation Angle (Wrist Angle): ${avgWristLength.toFixed(
-                    2
-                  )} degrees`
-                );
-              } else {
-                console.log(
-                  'No valid wrist lengths recorded for ROTATE_MEASURE_LEFT.'
-                );
-              }
-            }
-
-            // Handle ROTATE_MEASURE_RIGHT
-            if (step === MeasuringStep.ROTATE_MEASURE_RIGHT) {
-              const validWristLengths = wristLengthsRef.current.filter(
-                (len) => !isNaN(len)
-              );
-              if (validWristLengths.length > 0 && setRightWaistRotationValue) {
-                const avgWristLength =
-                  validWristLengths.reduce((a, b) => a + b, 0) /
-                  validWristLengths.length;
-                // Directly set the wrist angle without ratio comparison
-                setRightWaistRotationValue(avgWristLength);
-                console.log(
-                  `Average Right Waist Rotation Angle (Wrist Angle): ${avgWristLength.toFixed(
-                    2
-                  )} degrees`
-                );
-              } else {
-                console.log(
-                  'No valid wrist lengths recorded for ROTATE_MEASURE_RIGHT.'
-                );
-              }
-            }
-
-            // Handle TILT_MEASURE_LEFT
-            if (step === MeasuringStep.TILT_MEASURE_LEFT) {
-              const validTorsoAngles = torsoAnglesRef.current.filter(
-                (angle) => !isNaN(angle)
-              );
-              if (validTorsoAngles.length > 0 && setLeftTorsoRotationValue) {
-                const avgTorsoAngle =
-                  validTorsoAngles.reduce((a, b) => a + b, 0) /
-                  validTorsoAngles.length;
-                setLeftTorsoRotationValue(avgTorsoAngle);
-                console.log(
-                  `Average Left Torso Tilt Angle: ${avgTorsoAngle.toFixed(
-                    2
-                  )} degrees`
-                );
-              } else {
-                console.log(
-                  'No valid torso angles recorded for TILT_MEASURE_LEFT.'
-                );
-              }
-            }
-
-            // Handle TILT_MEASURE_RIGHT
-            if (step === MeasuringStep.TILT_MEASURE_RIGHT) {
-              const validTorsoAngles = torsoAnglesRef.current.filter(
-                (angle) => !isNaN(angle)
-              );
-              if (validTorsoAngles.length > 0 && setRightTorsoRotationValue) {
-                const avgTorsoAngle =
-                  validTorsoAngles.reduce((a, b) => a + b, 0) /
-                  validTorsoAngles.length;
-                setRightTorsoRotationValue(avgTorsoAngle);
-                console.log(
-                  `Average Right Torso Tilt Angle: ${avgTorsoAngle.toFixed(
-                    2
-                  )} degrees`
-                );
-              } else {
-                console.log(
-                  'No valid torso angles recorded for TILT_MEASURE_RIGHT.'
-                );
-              }
-            }
+            return data;
           };
-
-          const handleComplete = () => {
-            console.log('Measurement complete for step:', MeasuringStep[step]);
-            onComplete();
-          };
-
-          handleMeasure();
-          handleComplete();
+          const data = handleMeasure();
+          console.log('Measurement complete for step:', MeasuringStep[step]);
+          console.log('Average Value ', data);
+          onComplete(data);
         }
       }
-    }, 500); // Adjusted interval time for better responsiveness
+    }, 200);
 
     // Cleanup function
     return () => {
@@ -554,22 +475,18 @@ function PoseMeasuring({
     isChecking,
     step,
     onComplete,
-    setOriginalShoulderLength,
     setOriginalWristLength,
-    originalWristLength,
     setLeftWaistRotationValue,
     setRightWaistRotationValue,
-    setLeftTorsoRotationValue,
-    setRightTorsoRotationValue,
-    setLeftArmRotationValue,
-    setRightArmRotationValue,
+    setLeftWaistTiltValue,
+    setRightWaistTiltValue,
   ]);
 
   return (
     <Root>
       <Text fontWeight={700}>{getNotice(step)}</Text>
       <Text fontSize={80} fontWeight={700}>
-        {count}
+        {timerCount}
       </Text>
       {/* Video Element for Debugging */}
       <video
@@ -593,17 +510,17 @@ const getNotice = (step: MeasuringStep) => {
     case MeasuringStep.MOVE_MEASURE:
       return `선에 맞춰 뒤로 이동하세요`;
     case MeasuringStep.ARM_MEASURE:
-      return `팔을 양 옆으로 최대한 드세요`;
+      return `어깨와 팔꿈치가 보이도록 팔을 양 옆으로 최대한 드세요`;
     case MeasuringStep.ROTATE_MEASURE_FRONT:
-      return `앞을 향해 서세요`;
+      return `양 손을 어깨에 올리고 정면을 바라보세요`;
     case MeasuringStep.ROTATE_MEASURE_LEFT:
-      return `허리를 왼쪽으로 돌리세요`;
+      return `양 손을 어깨에 올리고 허리를 왼쪽으로 돌리세요`;
     case MeasuringStep.ROTATE_MEASURE_RIGHT:
-      return `허리를 오른쪽으로 돌리세요`;
+      return `양 손을 어깨에 올리고 허리를 오른쪽으로 돌리세요`;
     case MeasuringStep.TILT_MEASURE_LEFT:
-      return `왼쪽과 오른쪽 손목 사이의 각도를 유지하세요`;
+      return `상체를 왼쪽으로 기울이세요`;
     case MeasuringStep.TILT_MEASURE_RIGHT:
-      return `왼쪽과 오른쪽 손목 사이의 각도를 유지하세요`;
+      return `상체를 오른쪽으로 기울이세요`;
     default:
       return `지시에 따라 주세요`;
   }
