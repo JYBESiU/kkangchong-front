@@ -46,12 +46,15 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const latestPoseRef = useRef<posenet.Pose | null>(null);
 
-  const wristLengthsRef = useRef<number[]>([]);
-  const torsoAnglesRef = useRef<number[]>([]);
-  const leftArmRotationsRef = useRef<number[]>([]);
-  const rightArmRotationsRef = useRef<number[]>([]);
-
   // Maximum number of attempts to prevent infinite loops
+
+  useEffect(() => {
+    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
+    setIsChecking(false);
+    setValidDataCount(0);
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
+  }, [step]);
 
   useEffect(() => {
     setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
