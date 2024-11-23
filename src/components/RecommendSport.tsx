@@ -5,16 +5,6 @@ import RecommendMid, { RecommendMidProps } from './recommend/RecommendMid';
 import RecommendBottom from './recommend/RecommendBottom';
 import { useNavigate } from 'react-router-dom';
 
-// type RecommendMidProps = {
-//   title: string;
-//   summary: string;
-//   descriptionTitle: string;
-//   descriptionContent: string;
-//   effectsTitle: string;
-//   effectsContent: string;
-//   stars: number | null;
-// };
-// 전체 컨테이너 스타일
 const Container = styled.div`
   display: flex;
   flex-direction: column;

@@ -2,15 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { colors } from 'utils/color';
 import { Text } from 'components/shared';
-
-const MeasureHowContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  width: 100%;
-  padding: 0 40px;
-  margin-bottom: 30px;
-`;
+import { useNavigate } from 'react-router-dom';
 
 const SmallFrame = styled.div`
   display: flex;
@@ -53,34 +45,31 @@ const Star = styled.div<{ isValid: boolean }>`
   );
 `;
 
-interface SmallFrameData {
+interface RecommendCardProps {
   name: string;
-  stars: number;
-  onClick: () => void;
+  score: number;
 }
 
-interface MeasureHowProps {
-  data: SmallFrameData[];
-}
+const RecommendCard = ({ name, score }: RecommendCardProps) => {
+  const navigate = useNavigate();
 
-const MeasureHow: React.FC<MeasureHowProps> = ({ data }) => {
+  const handleClick = () => {
+    navigate(`/recommend/${name}`);
+  };
+
   return (
-    <MeasureHowContainer>
-      {data.map((frame, index) => (
-        <SmallFrame key={index} onClick={frame.onClick}>
-          <Text fontSize={14}>{frame.name}</Text>
-          <BottomContainer>
-            <Text fontSize={8}>추천도</Text>
-            <StarContainer>
-              {Array.from({ length: 5 }, (_, index) => (
-                <Star key={index} isValid={index < frame.stars} />
-              ))}
-            </StarContainer>
-          </BottomContainer>
-        </SmallFrame>
-      ))}
-    </MeasureHowContainer>
+    <SmallFrame onClick={handleClick}>
+      <Text fontSize={14}>{name}</Text>
+      <BottomContainer>
+        <Text fontSize={8}>추천도</Text>
+        <StarContainer>
+          {Array.from({ length: 5 }, (_, index) => (
+            <Star key={index} isValid={index < score} />
+          ))}
+        </StarContainer>
+      </BottomContainer>
+    </SmallFrame>
   );
 };
 
-export default MeasureHow;
+export default RecommendCard;

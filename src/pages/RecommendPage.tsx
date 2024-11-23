@@ -7,6 +7,7 @@ export interface RecommendPageProps {}
 
 function RecommendPage({}: RecommendPageProps) {
   const params = useParams<{ recommendId: string }>();
+
   return (
     <Root>
       {params.recommendId ? (
