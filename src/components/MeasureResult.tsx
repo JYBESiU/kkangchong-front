@@ -1,34 +1,58 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import MeasureHeader from './measure/MeasureHeader';
 import MeasureData from './measure/MeasureData';
-import MeasureMid from './measure/MeasureMid';
-import MeasureHow from './measure/MeasureHow';
-import MeasureBottom from './measure/MeasureBottom';
+import MeasureHow from './measure/RecommendCard';
 import { useNavigate } from 'react-router-dom';
+import { colors } from 'utils/color';
+import { Button, Text } from './shared';
+import { RecommendResult, RecommendSports } from 'types';
+import RecommendCard from './measure/RecommendCard';
 
-// 스타일 정의
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; /* 가로 중앙 정렬 */
-  justify-content: flex-start;
-  width: 393px;
-  height: 852px;
-  gap: 20px;
-  border: 1px solid black;
-  box-sizing: border-box;
+  align-items: center;
 
-  overflow-y: auto; /* 세로 스크롤 활성화 */
-  overflow-x: hidden; /* 가로 스크롤 비활성화 */
+  gap: 10px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
 
   /* 스크롤바 숨김 */
   &::-webkit-scrollbar {
     width: 0;
   }
+  width: 100%;
 `;
 
-const MeasureResult: React.FC = () => {
+const MidBar = styled.div`
+  width: 100%;
+  height: 10px;
+  background: ${colors.grey0};
+  margin: 30px 0;
+`;
+
+const Box = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 0 40px;
+  margin-bottom: 10px;
+`;
+
+const MeasureHowContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding: 0 40px;
+  margin-bottom: 30px;
+`;
+
+interface MeasureResultProps {
+  recommend: RecommendResult;
+  handleCardClick: (name: RecommendSports) => VoidFunction;
+}
+const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
   const navigate = useNavigate();
 
   const measureDataList = [
@@ -62,42 +86,30 @@ const MeasureResult: React.FC = () => {
     },
   ];
 
-  const measureHowData = [
+  const recommendResults = [
     {
-      topText: '휠체어 농구',
-      middleText: '휠체어 농구에 대한 짧은 설명',
-      stars: 5,
-      onClick: () => navigate('/result/basketball'),
+      name: RecommendSports.BASKETBALL,
+      score: recommend.basketball_score,
     },
     {
-      topText: '댄스 스포츠',
-      middleText: '댄스 스포츠에 대한 짧은 설명',
-      stars: 4,
-      onClick: () => navigate('/result/dance'),
+      name: RecommendSports.DANCING_SPORTS,
+      score: recommend.dance_sports_score,
     },
     {
-      topText: '휠체어 럭비',
-      middleText: '휠체어 럭비에 대한 짧은 설명',
-      stars: 3,
-      onClick: () => navigate('/result/rugby'),
+      name: RecommendSports.RUGBY,
+      score: recommend.rugby_score,
     },
     {
-      topText: '휠체어 탁구',
-      middleText: '휠체어 탁구에 대한 짧은 설명',
-      stars: 5,
-      onClick: () => navigate('/result/pingpong'),
+      name: RecommendSports.TABLE_TENNIS,
+      score: recommend.table_tennis_score,
     },
     {
-      topText: '휠체어 펜싱',
-      middleText: '휠체어 펜싱에 대한 짧은 설명',
-      stars: 2,
-      onClick: () => navigate('/result/fencing'),
+      name: RecommendSports.FENCING,
+      score: recommend.fencing_score,
     },
     {
-      topText: '육상',
-      middleText: '육상에 대한 짧은 설명',
-      stars: 4,
-      onClick: () => navigate('/result/athletics'),
+      name: RecommendSports.ATHLETICS,
+      score: recommend.athletics_score,
     },
   ];
 
@@ -106,10 +118,7 @@ const MeasureResult: React.FC = () => {
 
   return (
     <Container>
-      <MeasureHeader
-        leftText="측정 결과"
-        rightText={new Date().toLocaleDateString()}
-      />
+      <MeasureHeader />
 
       {measureDataList.map((data, index) => (
         <MeasureData
@@ -121,14 +130,36 @@ const MeasureResult: React.FC = () => {
           bottomRightText={data.bottomRightText}
         />
       ))}
+      <MidBar />
 
-      <MeasureMid />
+      <Box>
+        <Text fontWeight={700}>이런 운동은 어때요?</Text>
+      </Box>
 
-      <MeasureHow data={measureHowData} />
+      <MeasureHowContainer>
+        {recommendResults
+          .filter((res) => res.score != 0)
+          .map(({ name, score }) => (
+            <RecommendCard
+              name={name}
+              score={score}
+              handleClick={handleCardClick(name)}
+            />
+          ))}
+      </MeasureHowContainer>
 
-      <MeasureBottom
-        onTopBoxClick={handleTopBoxClick}
-        onBottomBoxClick={handleBottomBoxClick}
+      <Button
+        width={320}
+        height={60}
+        label="추천 동호회 구경하기"
+        onClick={handleTopBoxClick}
+      />
+      <Button
+        width={320}
+        height={60}
+        variant="secondary"
+        label="재측정하기"
+        onClick={handleBottomBoxClick}
       />
     </Container>
   );

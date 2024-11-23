@@ -42,5 +42,6 @@ const Root = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  max-width: 400px;
   background-color: ${colors.blue1};
 `;
