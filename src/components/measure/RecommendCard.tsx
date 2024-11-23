@@ -1,8 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { colors } from 'utils/color';
-import { Text } from 'components/shared';
-import { useNavigate } from 'react-router-dom';
+import Star, { Text } from 'components/shared';
 
 const SmallFrame = styled.div`
   display: flex;
@@ -27,36 +25,13 @@ const StarContainer = styled.div`
   align-items: center;
 `;
 
-const Star = styled.div<{ isValid: boolean }>`
-  width: 10px;
-  height: 10px;
-  background: ${({ isValid }) => (isValid ? colors.blue3 : colors.grey1)};
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-`;
-
 interface RecommendCardProps {
   name: string;
   score: number;
+  handleClick: VoidFunction;
 }
 
-const RecommendCard = ({ name, score }: RecommendCardProps) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(`/recommend/${name}`);
-  };
-
+const RecommendCard = ({ name, score, handleClick }: RecommendCardProps) => {
   return (
     <SmallFrame onClick={handleClick}>
       <Text fontSize={14}>{name}</Text>
@@ -64,7 +39,7 @@ const RecommendCard = ({ name, score }: RecommendCardProps) => {
         <Text fontSize={8}>추천도</Text>
         <StarContainer>
           {Array.from({ length: 5 }, (_, index) => (
-            <Star key={index} isValid={index < score} />
+            <Star key={index} isValid={index < score} size={10} />
           ))}
         </StarContainer>
       </BottomContainer>
