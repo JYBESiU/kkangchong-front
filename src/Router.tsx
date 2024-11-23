@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from 'pages/Home';
 import MeasuringPage from 'pages/MeasuringPage';
 import ClubsPage from 'pages/ClubsPage';
-import RecommendPage from 'pages/RecommendPage';
 import ResultPage from 'pages/ResultPage';
 
 function Router() {
@@ -13,7 +12,6 @@ function Router() {
         <Route path="/" element={<Home />} />
         <Route path="measuring" element={<MeasuringPage />} />
         <Route path="clubs" element={<ClubsPage />} />
-        <Route path="result/:recommendId" element={<RecommendPage />} />
         <Route path="result" element={<ResultPage />} />
       </Routes>
     </BrowserRouter>
