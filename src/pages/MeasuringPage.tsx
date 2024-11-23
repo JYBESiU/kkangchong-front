@@ -40,4 +40,5 @@ export default MeasuringPage;
 const Root = styled.div`
   height: 100vh;
   width: 100%;
+  max-width: 400px;
 `;

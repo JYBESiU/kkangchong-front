@@ -1,55 +1,37 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Text } from 'components/shared';
+import { colors } from 'utils/color';
 
-// Header 컨테이너 스타일 정의
 const HeaderContainer = styled.div`
-  margin: 74px 40px 0 40px;
+  padding: 20px 40px 0 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 313px; /* 내부 요소를 정렬하기 위한 고정 폭 */
-`;
-
-// 좌측 텍스트 스타일
-const LeftText = styled.div`
-  color: var(--black, #222325);
-  font-family: 'Noto Sans KR';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+  width: 100%;
+  margin-bottom: 10px;
 `;
 
 // 우측 텍스트 스타일
-const RightText = styled.div`
+const Box = styled.div`
   display: flex;
-  padding: 5px 10px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  padding: 0px 10px;
+  height: 32px;
   border-radius: 8px;
-  background: var(--blue-1, #f7f8fc);
-  font-family: 'Noto Sans KR';
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  color: var(--black, #222325);
+  background-color: ${colors.blue1};
 `;
 
-interface MeasureHeaderProps {
-  leftText: string;
-  rightText: string;
-}
+interface MeasureHeaderProps {}
 
-const MeasureHeader: React.FC<MeasureHeaderProps> = ({
-  leftText,
-  rightText,
-}) => {
+const MeasureHeader: React.FC<MeasureHeaderProps> = ({}) => {
   return (
     <HeaderContainer>
-      <LeftText>{leftText}</LeftText>
-      <RightText>{rightText}</RightText>
+      <Text fontWeight={700}>측정 결과</Text>
+      <Box>
+        <Text fontSize={16}>{new Date().toLocaleDateString()}</Text>
+      </Box>
     </HeaderContainer>
   );
 };
