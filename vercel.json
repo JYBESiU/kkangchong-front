@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "@REACT_APP_API_BASE_URL/:path*"
+    }
+  ]
+}
