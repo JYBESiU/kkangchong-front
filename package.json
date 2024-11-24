@@ -17,7 +17,6 @@
     "typescript": "^4.4.2"
   },
   "scripts": {
-    "prebuild": "node generate-vercel-config.js",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

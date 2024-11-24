@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const target = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+const target = 'http://211.188.53.9:80';
 
 // API 요청을 프록시하도록 설정
 module.exports = function (app) {
