@@ -37,11 +37,15 @@ const Contents = styled.div`
   gap: 20px;
 `;
 
-const GreyBox = styled.div`
+const VideoWrapper = styled.div`
   width: 100%;
-  height: 215px;
+  height: 190px;
   flex-shrink: 0;
-  background: var(--grey-1, #e9e9e9);
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 `;
 
 const Flex = styled.div`
@@ -66,6 +70,7 @@ interface RecommendSportProps {
   sports: string;
   score?: number;
   reason?: string;
+  youtubeLink?: string;
   explanation?: string;
   handleBackClick: VoidFunction;
 }
@@ -73,6 +78,7 @@ const RecommendSport = ({
   sports,
   score = 3,
   reason,
+  youtubeLink,
   explanation,
   handleBackClick,
 }: RecommendSportProps) => {
@@ -90,7 +96,15 @@ const RecommendSport = ({
       </Header>
 
       <Contents>
-        <GreyBox />
+        {youtubeLink ? (
+          <VideoWrapper>
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeLink}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </VideoWrapper>
+        ) : null}
         <Text fontSize={24} fontWeight={700}>
           {sports}
         </Text>

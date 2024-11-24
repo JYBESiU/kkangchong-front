@@ -23,6 +23,7 @@ function ResultPage({}: ResultPageProps) {
           score={getScore(recommendDummy, selectedSports)}
           reason={getReason(recommendDummy, selectedSports)}
           explanation={explanations[selectedSports]}
+          youtubeLink={youtubeLinks[selectedSports]}
           handleBackClick={() => setSelectedSports(null)}
         />
       ) : (
@@ -77,6 +78,15 @@ const explanations = {
     '휠체어 럭비는 사각형 코트에서 특별히 설계된 휠체어를 사용해 공을 골라인으로 운반하며 팀워크, 전략, 강렬한 몸싸움이 결합된 스포츠입니다.',
   [RecommendSports.TABLE_TENNIS]:
     '휠체어 탁구는 휠체어를 이용해 테이블 위에서 정교한 기술과 빠른 반사 신경으로 진행되는 역동적인 스포츠입니다.',
+};
+
+const youtubeLinks = {
+  [RecommendSports.ATHLETICS]: 'J5wh8dyl1Vg',
+  [RecommendSports.BASKETBALL]: 'LLK3AJQXnZw',
+  [RecommendSports.DANCING_SPORTS]: 'EEZ-7emCGCo',
+  [RecommendSports.FENCING]: 'JgHbuhI_TCE',
+  [RecommendSports.RUGBY]: 'Q52WtlK-qqg',
+  [RecommendSports.TABLE_TENNIS]: 'd7CMGfsObBk',
 };
 
 const getScore = (recommend: RecommendResult, sports: RecommendSports) => {
