@@ -20,10 +20,6 @@ const vercelConfig = {
       source: '/api/:path*',
       destination: `${apiBaseUrl}/:path*`,
     },
-    {
-      source: '/(.*)',
-      destination: '/',
-    },
   ],
 };
 
@@ -34,4 +30,3 @@ const vercelConfigPath = path.join(__dirname, 'vercel.json');
 fs.writeFileSync(vercelConfigPath, JSON.stringify(vercelConfig, null, 2));
 
 console.log(`vercel.json 파일이 생성되었습니다: ${vercelConfigPath}`);
-console.log('API_BASE_URL:', apiBaseUrl);
