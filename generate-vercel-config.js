@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({ path: '.env.local' });
-}
-
 // 환경 변수에서 API_BASE_URL 가져오기
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
@@ -24,7 +20,7 @@ const vercelConfig = {
 };
 
 // vercel.json 파일 경로
-const vercelConfigPath = path.join(__dirname, 'vercel.json');
+const vercelConfigPath = path.join(process.cwd(), 'vercel.json');
 
 // vercel.json 파일 생성
 fs.writeFileSync(vercelConfigPath, JSON.stringify(vercelConfig, null, 2));
