@@ -142,17 +142,13 @@ function MeasuringPage({}: MeasuringPageProps) {
       {isReadyStep(currentStep) && (
         <ReadyInformation step={currentStep} onNext={goNextStep} />
       )}
-      {currentStep === MeasuringStep.MOVE_MEASURE && (
-        <ReadyInformation step={currentStep} onNext={goNextStep} />
+      {isCameraMeasureStep(currentStep) && (
+        <PoseMeasuring
+          key={currentStep}
+          step={currentStep}
+          onComplete={handleComplete}
+        />
       )}
-      {isCameraMeasureStep(currentStep) &&
-        currentStep !== MeasuringStep.MOVE_MEASURE && (
-          <PoseMeasuring
-            key={currentStep}
-            step={currentStep}
-            onComplete={handleComplete}
-          />
-        )}
       {/**currentStep === MeasuringStep.CORE_STRENGTH_READY && <TimerMeasuring />*/}
       {/* Final Step: Display all measurements */}
       {isTimerMeasureStep(currentStep) && (
@@ -186,7 +182,6 @@ function MeasuringPage({}: MeasuringPageProps) {
 export default MeasuringPage;
 
 const Root = styled.div`
-  height: 100vh;
-  width: 100%;
-  max-width: 400px;
+  height: 852px;
+  width: 393px;
 `;
