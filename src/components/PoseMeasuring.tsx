@@ -34,15 +34,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
     setRightWaistTiltValue,
   } = context;
   const [timerCount, setTimerCount] = useState<number | null>(null);
-
-  useEffect(() => {
-    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
-    setIsChecking(false);
-    setValidDataCount(0);
-    measuredDataRef.current = [];
-    measuredSecondRef.current = [];
-  }, [step]);
-
   const [isChecking, setIsChecking] = useState(false);
   const [validDataCount, setValidDataCount] = useState(0);
 
