@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { isTimerReadyStep, MeasuringStep } from 'utils/measuringStep';
 import { Button, Text } from './shared';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import SubNoticeText from './SubNoticeLineBreak';
 
 const Root = styled.div`
   display: flex;
@@ -27,14 +28,56 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     }
   }, [step, onNext]);
 
+  const [isWindow, setIsWindow] = useState<boolean>(false);
+  useEffect(() => {
+    setIsWindow(true);
+  }, []);
+
   return (
     <Root>
-      <Text textAlign="center">{getNotice(step)}</Text>
-      {step === MeasuringStep.TILT_READY && (
-        <Text fontSize={16} color={'blue3'}>
-          측정 중 넘어지지 않도록 주의하세요
-        </Text>
+      {step === MeasuringStep.MOVE_READY && isWindow && (
+        <div>
+          <iframe
+            height="377"
+            width="671px"
+            src="https://www.youtube.com/embed/XP0Sc6WAh0A?autoplay=1&mute=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          ></iframe>
+        </div>
       )}
+      {step === MeasuringStep.ARM_READY && isWindow && (
+        <div>
+          <iframe
+            height="377px"
+            width="671px"
+            src="https://www.youtube.com/embed/qGh0-mqbjb8?autoplay=1&mute=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          ></iframe>
+        </div>
+      )}
+      {step === MeasuringStep.ROTATE_READY && isWindow && (
+        <div>
+          <iframe
+            height="377px"
+            width="671px"
+            src="https://www.youtube.com/embed/oYQnLmo-Cm8?autoplay=1&mute=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          ></iframe>
+        </div>
+      )}
+      {step === MeasuringStep.TILT_READY && isWindow && (
+        <div>
+          <iframe
+            height="377px"
+            width="671px"
+            src="https://www.youtube.com/embed/MaC9BJFeV-4?autoplay=1&mute=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          ></iframe>
+        </div>
+      )}
+      <Text textAlign="center">{getNotice(step)}</Text>
+      <SubNoticeText step={step} />
+
       {isTimerReadyStep(step) && (
         <Button
           width={'314px'}
@@ -78,5 +121,18 @@ const getNotice = (step: MeasuringStep) => {
               영상과 같이 10초 동안
               팔을 최대한 빠르게 반복하여 뻗고
               뻗은 횟수를 직접 입력하세요.`;
+  }
+};
+
+export const getSubNotice = (step: MeasuringStep) => {
+  switch (step) {
+    case MeasuringStep.ARM_READY:
+      return `어깨와 팔꿈치가 보여야 합니다.`;
+    case MeasuringStep.ROTATE_READY:
+      return `손을 어깨에 올리기 어려운 경우\n어깨의 방향에 따라 손을 이동해주세요.`;
+    case MeasuringStep.TILT_READY:
+      return `측정 중 넘어지지 않도록 주의하세요!\n손을 어깨에 올리기 어려운 경우\n어깨의 방향에 따라 손을 이동해주세요.`;
+    default:
+      ``;
   }
 };
