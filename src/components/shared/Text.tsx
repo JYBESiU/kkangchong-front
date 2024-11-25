@@ -7,7 +7,10 @@ export interface TextProps {
   fontWeight?: number;
   textAlign?: 'left' | 'right' | 'center';
   whiteSpace?: 'pre-line' | 'nowrap';
+  fontFamily?: string;
   color?: keyof typeof colors;
+  backgroundColor?: 'transparent' | 'white';
+  top?: number;
 }
 
 function Text({
@@ -16,6 +19,8 @@ function Text({
   textAlign = 'left',
   color = 'black',
   whiteSpace = 'pre-line',
+  backgroundColor = 'transparent',
+  top = 0,
   children,
 }: PropsWithChildren<TextProps>) {
   return (
@@ -25,6 +30,8 @@ function Text({
       textAlign={textAlign}
       color={color}
       whiteSpace={whiteSpace}
+      backgroundColor={backgroundColor}
+      top={top}
     >
       {children}
     </StyledText>
@@ -39,4 +46,7 @@ const StyledText = styled.span<TextProps>`
   color: ${({ color }) => colors[color!]};
   text-align: ${({ textAlign }) => textAlign};
   white-space: ${({ whiteSpace }) => whiteSpace};
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  top: ${({ top }) => top}px;
 `;
