@@ -10,7 +10,6 @@ import {
 } from 'utils/measuringStep';
 import styled from '@emotion/styled';
 import { MeasurementContext } from 'components/MeasurementContext';
-import { CameraProvider } from 'components/CameraContext';
 
 export interface MeasuringPageProps {}
 
