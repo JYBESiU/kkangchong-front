@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import MeasureHeader from './measure/MeasureHeader';
 import MeasureData from './measure/MeasureData';
-import MeasureHow from './measure/RecommendCard';
 import { useNavigate } from 'react-router-dom';
 import { colors } from 'utils/color';
 import { Button, Text } from './shared';
 import { RecommendResult, RecommendSports } from 'types';
 import RecommendCard from './measure/RecommendCard';
+import { MeasurementContext } from './MeasurementContext';
+import { useContext } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -54,12 +55,26 @@ interface MeasureResultProps {
 }
 const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
   const navigate = useNavigate();
+  const context = useContext(MeasurementContext);
+  if (!context) {
+    throw new Error('MeasuringPage must be used within a MeasurementProvider.');
+  }
+  const {
+    leftArmRotationValue,
+    rightArmRotationValue,
+    leftWaistRotationValue,
+    rightWaistRotationValue,
+    leftWaistTiltValue,
+    rightWaistTiltValue,
+    coreDuration,
+    punchCount,
+  } = context;
 
   const measureDataList = [
     {
       leftText: '상체',
       topLeftText: '좌',
-      topRightText: '95%',
+      topRightText: `${((leftArmRotationValue! / 180) * 100).toFixed(0)}%`,
       bottomLeftText: '우',
       bottomRightText: '90%',
     },

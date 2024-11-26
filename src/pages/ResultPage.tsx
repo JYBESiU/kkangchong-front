@@ -1,15 +1,26 @@
 import styled from '@emotion/styled';
 import MeasureResult from 'components/MeasureResult';
 import RecommendSport from 'components/RecommendSport';
-import { useState } from 'react';
+import { Text } from 'components/shared';
+import { useEffect, useState } from 'react';
 import { RecommendResult, RecommendSports } from 'types';
+import { colors } from 'utils/color';
 
 export interface ResultPageProps {}
 
 function ResultPage({}: ResultPageProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedSports, setSelectedSports] = useState<RecommendSports | null>(
     null
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCardClick = (name: RecommendSports) => () => {
     setSelectedSports(name);
@@ -17,7 +28,16 @@ function ResultPage({}: ResultPageProps) {
 
   return (
     <Root>
-      {selectedSports ? (
+      {isLoading ? (
+        <Loading>
+          <img src="/images/wheelchair.png" width={130} height={130} />
+          <Text textAlign="center">
+            신체 데이터를 바탕으로
+            <br /> 운동을 선정하고 있어요
+            <br /> 잠시만 기다려주세요
+          </Text>
+        </Loading>
+      ) : selectedSports ? (
         <RecommendSport
           sports={selectedSports}
           score={getScore(recommendDummy, selectedSports)}
@@ -42,6 +62,17 @@ const Root = styled.div`
   height: 100vh;
   width: 100%;
   max-width: 400px;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: ${colors.blue1};
+  gap: 30px;
 `;
 
 const recommendDummy = {

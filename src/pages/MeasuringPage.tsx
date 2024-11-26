@@ -11,17 +11,13 @@ import {
 import styled from '@emotion/styled';
 import { MeasurementContext } from 'components/MeasurementContext';
 import CountMeasuring from 'components/CountMeasuring';
+import { useNavigate } from 'react-router-dom';
 
 export interface MeasuringPageProps {}
 
-/**
- * TODO
- * 3. 5 -> 4 3 2 -> (1 -> 0 -> )화면전환 0.2초 간격으로 10번 측정해서 평균내기
- * 4. PoseMeasuring&TimerMeasuring 컴포넌트에서 setState prop은 다 지우고 onComplete 함수로 처리
- * 7. timer 측정 값 state 추가
- */
-
 function MeasuringPage({}: MeasuringPageProps) {
+  const navigate = useNavigate();
+
   const [currentStep, setCurrentStep] = useState<MeasuringStep>(
     MeasuringStep.MOVE_READY
   );
@@ -34,21 +30,13 @@ function MeasuringPage({}: MeasuringPageProps) {
     throw new Error('MeasuringPage must be used within a MeasurementProvider.');
   }
   const {
-    armRotationValue,
-    originalWristLength,
-    leftWaistRotationValue,
-    rightWaistRotationValue,
-    leftWaistTiltValue,
-    rightWaistTiltValue,
     setArmRotationValue,
     setOriginalWristLength,
     setLeftWaistRotationValue,
     setRightWaistRotationValue,
     setLeftWaistTiltValue,
     setRightWaistTiltValue,
-    coreDuration,
     setCoreDuration,
-    punchCount,
     setPunchCount,
   } = context;
 
@@ -109,6 +97,7 @@ function MeasuringPage({}: MeasuringPageProps) {
 
   useEffect(() => {
     if (currentStep === MeasuringStep.FINISH) {
+      navigate('/result');
     }
   }, [currentStep]);
 

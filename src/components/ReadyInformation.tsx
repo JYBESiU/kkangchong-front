@@ -23,7 +23,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     if (!isTimerReadyStep(step)) {
       const timer = setTimeout(() => {
         onNext();
-      }, 5000);
+      }, 10000);
       return () => clearTimeout(timer);
     }
   }, [step, onNext]);
@@ -75,6 +75,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           ></iframe>
         </div>
       )}
+
       <Text textAlign="center">{getNotice(step)}</Text>
       <SubNoticeText step={step} />
 
