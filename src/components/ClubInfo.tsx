@@ -12,7 +12,6 @@ export interface ClubInfoProps {
 function ClubInfo({ name, location, time, imageUrl }: ClubInfoProps) {
   return (
     <ClubContainer>
-      <ClubImage src={imageUrl || '/images/sample.png'} alt={name} />
       <ClubDetails>
         <ClubName>{name}</ClubName>
         <Text fontSize={14} color="grey2">

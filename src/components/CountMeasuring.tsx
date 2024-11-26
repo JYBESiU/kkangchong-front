@@ -85,7 +85,7 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
         </Text>
       )}
       {stage === 'input' && (
-        <>
+        <Wrapper>
           <Top>
             <Text>10초간 몇 번 팔을 뻗었나요?</Text>
             <Text fontSize={80} fontWeight={700} color="blue3">
@@ -111,7 +111,7 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
               </Key>
             </KeyPad>
           </Bottom>
-        </>
+        </Wrapper>
       )}
     </Root>
   );
@@ -120,6 +120,15 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
 export default CountMeasuring;
 
 const Root = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
