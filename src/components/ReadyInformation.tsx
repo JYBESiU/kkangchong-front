@@ -3,6 +3,8 @@ import { isTimerReadyStep, MeasuringStep } from 'utils/measuringStep';
 import { Button, Text } from './shared';
 import { useEffect, useState } from 'react';
 import SubNoticeText from './SubNoticeLineBreak';
+import { Stepper1 } from './icons';
+import { Icon } from './IconContext';
 
 const Root = styled.div`
   display: flex;
@@ -37,6 +39,16 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     <Root>
       {step === MeasuringStep.MOVE_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '161px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <Icon icon="Stepper1" />
+          </div>
           <video
             src="/videos/Start.mp4"
             autoPlay
@@ -49,6 +61,16 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.ARM_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '161px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <Icon icon="Stepper2" />
+          </div>
           <video
             src="/videos/Armraise.mp4"
             autoPlay
@@ -61,6 +83,16 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.ROTATE_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '161px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <Icon icon="Stepper3" />
+          </div>
           <video
             src="/videos/Turnwaist.mp4"
             autoPlay
@@ -73,6 +105,16 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.TILT_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '161px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <Icon icon="Stepper4" />
+          </div>
           <video
             src="/videos/Tiltbody.mp4"
             autoPlay
@@ -85,6 +127,16 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.CORE_STRENGTH_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '161px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <Icon icon="Stepper5" />
+          </div>
           <video
             src="/videos/Core.mp4"
             autoPlay
@@ -97,6 +149,16 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.PUNCH_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '161px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <Icon icon="Stepper6" />
+          </div>
           <video
             src="/videos/Armstretch.mp4"
             autoPlay
