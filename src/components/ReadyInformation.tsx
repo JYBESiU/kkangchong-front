@@ -3,8 +3,8 @@ import { isTimerReadyStep, MeasuringStep } from 'utils/measuringStep';
 import { Button, Text } from './shared';
 import { useEffect, useState } from 'react';
 import SubNoticeText from './SubNoticeLineBreak';
-import { Stepper1 } from './icons';
 import { Icon } from './IconContext';
+import { useNavigate } from 'react-router-dom';
 
 const Root = styled.div`
   display: flex;
@@ -35,10 +35,30 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     setIsWindow(true);
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleToHome = () => {
+    navigate('/');
+  };
+
   return (
     <Root>
       {step === MeasuringStep.MOVE_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '64px',
+              left: '323px',
+            }}
+          >
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+            />
+          </div>
           <div
             style={{
               position: 'absolute',
@@ -64,6 +84,20 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
+              top: '64px',
+              left: '323px',
+            }}
+          >
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+            />
+          </div>
+          <div
+            style={{
+              position: 'absolute',
               top: '161px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -83,6 +117,20 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.ROTATE_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '64px',
+              left: '323px',
+            }}
+          >
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+            />
+          </div>
           <div
             style={{
               position: 'absolute',
@@ -108,6 +156,20 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
+              top: '64px',
+              left: '323px',
+            }}
+          >
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+            />
+          </div>
+          <div
+            style={{
+              position: 'absolute',
               top: '161px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -130,6 +192,20 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
+              top: '64px',
+              left: '323px',
+            }}
+          >
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+            />
+          </div>
+          <div
+            style={{
+              position: 'absolute',
               top: '161px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -149,6 +225,20 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.PUNCH_READY && isWindow && (
         <div>
+          <div
+            style={{
+              position: 'absolute',
+              top: '64px',
+              left: '323px',
+            }}
+          >
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+            />
+          </div>
           <div
             style={{
               position: 'absolute',

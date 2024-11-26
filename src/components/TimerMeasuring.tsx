@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Text } from './shared';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
 export interface TimerMeasuringProps {
   onComplete: (data: number) => void;
@@ -65,8 +66,28 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
   const seconds = String(Math.floor(time / 100)).padStart(1, '0');
   const milliseconds = Math.floor((time % 100) / 10);
 
+  const navigate = useNavigate();
+
+  const handleToHome = () => {
+    navigate('/');
+  };
+
   return (
     <Root>
+      <div
+        style={{
+          position: 'absolute',
+          top: '64px',
+          left: '323px',
+        }}
+      >
+        <Button
+          height={60}
+          label={'취소'}
+          onClick={handleToHome}
+          variant="text"
+        />
+      </div>
       {stage === 'ready' && (
         <Text fontSize={80} fontWeight={700} color="blue3">
           준비
