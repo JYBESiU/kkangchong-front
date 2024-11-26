@@ -83,6 +83,30 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           />
         </div>
       )}
+      {step === MeasuringStep.CORE_STRENGTH_READY && isWindow && (
+        <div>
+          <video
+            src="/videos/Core.mp4"
+            autoPlay
+            loop
+            muted
+            height="376"
+            width="671"
+          />
+        </div>
+      )}
+      {step === MeasuringStep.PUNCH_READY && isWindow && (
+        <div>
+          <video
+            src="/videos/Armstretch.mp4"
+            autoPlay
+            loop
+            muted
+            height="376"
+            width="671"
+          />
+        </div>
+      )}
 
       <Text textAlign="center">{getNotice(step)}</Text>
       <SubNoticeText step={step} />
