@@ -6,6 +6,7 @@ import * as posenet from '@tensorflow-models/posenet';
 import { MeasurementContext } from './MeasurementContext';
 import NoticeText from './NoticeLineBreak';
 import { Icon } from './IconContext';
+import { transform } from 'typescript';
 
 const VideoElement = styled.video`
   display: flex;
@@ -15,6 +16,7 @@ const VideoElement = styled.video`
   align-items: center;
   top: 0;
   height: 100vh;
+  transform: scaleX(-1);
 `;
 const CameraMeasureText = styled.div`
   font-family: 'Noto Sans KR', sans-serif;
@@ -117,8 +119,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
         if (videoRef.current) {
           if (!videoRef.current.srcObject) {
             videoRef.current.srcObject = stream;
-            await videoRef.current.play(); // Start playing once the stream is set
-            console.log('Webcam stream started.');
+            await videoRef.current.play();
           }
         }
       } catch (error) {
