@@ -13,7 +13,8 @@ const MeasureDataContainer = styled.div`
 
 // 왼쪽 Text 스타일
 const LeftText = styled.div`
-  width: 80px;
+  width: 60px;
+  flex-shrink: 0;
   color: var(--black, #222325);
   font-family: 'Noto Sans KR';
   font-size: 16px;
@@ -41,7 +42,7 @@ const Frame = styled.div`
 
 // 좌측 글자 스타일
 const LeftFrameText = styled.div`
-  width: 80px;
+  width: 40px;
   color: var(--black, #222325);
   text-align: center;
   font-family: 'Noto Sans KR';
@@ -54,7 +55,7 @@ const LeftFrameText = styled.div`
 // 중앙 사각형 컨테이너 스타일
 const RectangleContainer = styled.div`
   display: flex;
-  width: 140px; /* 고정 폭 */
+  width: 150px; /* 고정 폭 */
   height: 8px;
   align-items: center;
   gap: 0; /* 사각형 사이 간격 없음 */
@@ -116,14 +117,14 @@ const MeasureData: React.FC<MeasureDataProps> = ({
 
   const calculateWidth = (percentage: string) => {
     const number = parsePercentage(percentage);
-    return (number / 100) * 140;
+    return (number / 100) * 150;
   };
 
   const topBlueWidthPx = calculateWidth(topRightText);
-  const topWhiteWidthPx = 140 - topBlueWidthPx;
+  const topWhiteWidthPx = 150 - topBlueWidthPx;
 
   const bottomGreyWidthPx = calculateWidth(bottomRightText);
-  const bottomWhiteWidthPx = 140 - bottomGreyWidthPx;
+  const bottomWhiteWidthPx = 150 - bottomGreyWidthPx;
 
   return (
     <MeasureDataContainer>

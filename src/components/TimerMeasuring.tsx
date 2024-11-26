@@ -3,13 +3,13 @@ import { Button, Text } from './shared';
 import styled from '@emotion/styled';
 
 export interface TimerMeasuringProps {
-  onComplete: VoidFunction;
+  onComplete: (data: number) => void;
 }
 
 function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
   const [isFinished, setIsFinished] = useState(false);
   const [time, setTime] = useState(0);
-  // Number((time/100).toFixed(1)) 이 값으로 설정하기
+
   const maxTime = 5999;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -63,7 +63,11 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
           width={314}
           height={60}
           label={isFinished ? '다음' : '측정 완료'}
-          onClick={isFinished ? onComplete : handleFinish}
+          onClick={
+            isFinished
+              ? () => onComplete(Number((time / 100).toFixed(1)))
+              : handleFinish
+          }
         />
         <Button
           variant={'secondary'}

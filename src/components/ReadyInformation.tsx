@@ -23,7 +23,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     if (!isTimerReadyStep(step)) {
       const timer = setTimeout(() => {
         onNext();
-      }, 5000);
+      }, 10000);
       return () => clearTimeout(timer);
     }
   }, [step, onNext]);
@@ -75,6 +75,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           ></iframe>
         </div>
       )}
+
       <Text textAlign="center">{getNotice(step)}</Text>
       <SubNoticeText step={step} />
 
@@ -116,7 +117,7 @@ const getNotice = (step: MeasuringStep) => {
               등을 등받이에서 떼고
               허리를 곧게 세운
               시간을 측정하세요.`;
-    case MeasuringStep.ARM_STRENGTH_READY:
+    case MeasuringStep.PUNCH_READY:
       return `순발력을 측정합니다.
               영상과 같이 10초 동안
               팔을 최대한 빠르게 반복하여 뻗고
