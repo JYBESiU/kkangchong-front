@@ -12,6 +12,7 @@ import styled from '@emotion/styled';
 import { MeasurementContext } from 'components/MeasurementContext';
 import CountMeasuring from 'components/CountMeasuring';
 import { useNavigate } from 'react-router-dom';
+import { measureKey, saveToLocalStorage } from 'utils/storage';
 
 export interface MeasuringPageProps {}
 
@@ -98,6 +99,27 @@ function MeasuringPage({}: MeasuringPageProps) {
   useEffect(() => {
     if (currentStep === MeasuringStep.FINISH) {
       navigate('/result');
+
+      const {
+        leftArmRotationValue,
+        rightArmRotationValue,
+        leftWaistRotationValue,
+        rightWaistRotationValue,
+        leftWaistTiltValue,
+        rightWaistTiltValue,
+        coreDuration,
+        punchCount,
+      } = context;
+      saveToLocalStorage(measureKey, {
+        leftArmRotationValue,
+        rightArmRotationValue,
+        leftWaistRotationValue,
+        rightWaistRotationValue,
+        leftWaistTiltValue,
+        rightWaistTiltValue,
+        coreDuration,
+        punchCount,
+      });
     }
   }, [currentStep]);
 

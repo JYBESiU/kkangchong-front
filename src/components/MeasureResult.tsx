@@ -6,8 +6,7 @@ import { colors } from 'utils/color';
 import { Button, Text } from './shared';
 import { RecommendResult, RecommendSports } from 'types';
 import RecommendCard from './measure/RecommendCard';
-import { MeasurementContext } from './MeasurementContext';
-import { useContext } from 'react';
+import { getFromLocalStorage, measureKey } from 'utils/storage';
 
 const Container = styled.div`
   display: flex;
@@ -55,10 +54,7 @@ interface MeasureResultProps {
 }
 const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
   const navigate = useNavigate();
-  const context = useContext(MeasurementContext);
-  if (!context) {
-    throw new Error('MeasuringPage must be used within a MeasurementProvider.');
-  }
+
   const {
     leftArmRotationValue,
     rightArmRotationValue,
@@ -68,36 +64,36 @@ const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
     rightWaistTiltValue,
     coreDuration,
     punchCount,
-  } = context;
+  } = getFromLocalStorage(measureKey);
 
   const measureDataList = [
     {
-      leftText: '상체',
+      leftText: '팔  ',
       topLeftText: '좌',
-      topRightText: `${((leftArmRotationValue! / 180) * 100).toFixed(0)}%`,
+      topRightText: `${getArmRotationPercentage(leftArmRotationValue)}%`,
       bottomLeftText: '우',
-      bottomRightText: '90%',
-    },
-    {
-      leftText: '하체',
-      topLeftText: '좌',
-      topRightText: '85%',
-      bottomLeftText: '우',
-      bottomRightText: '80%',
+      bottomRightText: `${getArmRotationPercentage(rightArmRotationValue)}%`,
     },
     {
       leftText: '허리',
       topLeftText: '좌',
-      topRightText: '75%',
+      topRightText: `${getWaistRotationPercentage(leftWaistRotationValue)}%`,
       bottomLeftText: '우',
-      bottomRightText: '70%',
+      bottomRightText: `${getWaistRotationPercentage(rightWaistRotationValue)}%`,
+    },
+    {
+      leftText: '상체',
+      topLeftText: '좌',
+      topRightText: `${getWaistTiltPercentage(leftWaistTiltValue)}%`,
+      bottomLeftText: '우',
+      bottomRightText: `${getWaistTiltPercentage(rightWaistTiltValue)}%`,
     },
     {
       leftText: '근력',
-      topLeftText: '좌',
-      topRightText: '65%',
-      bottomLeftText: '우',
-      bottomRightText: '60%',
+      topLeftText: '코어',
+      topRightText: `${getCorePercentage(coreDuration)}%`,
+      bottomLeftText: '팔',
+      bottomRightText: `${getPunchPercentage(punchCount)}%`,
     },
   ];
 
@@ -181,3 +177,23 @@ const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
 };
 
 export default MeasureResult;
+
+const getArmRotationPercentage = (value: number) => {
+  return ((value / 180) * 100).toFixed(0);
+};
+
+const getWaistRotationPercentage = (value: number) => {
+  return ((value / 70) * 100).toFixed(0);
+};
+
+const getWaistTiltPercentage = (value: number) => {
+  return ((value / 80) * 100).toFixed(0);
+};
+
+const getCorePercentage = (value: number) => {
+  return ((value / 60) * 100).toFixed(0);
+};
+
+const getPunchPercentage = (value: number) => {
+  return ((value / 30) * 100).toFixed(0);
+};
