@@ -8,25 +8,37 @@ export interface TimerMeasuringProps {
 
 function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
   const [isFinished, setIsFinished] = useState(false);
+  const [stage, setStage] = useState<'ready' | 'start' | 'counting'>('ready');
   const [time, setTime] = useState(0);
 
   const maxTime = 5999;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => {
-        if (prevTime >= maxTime) {
-          clearInterval(timer);
-          return prevTime;
-        }
-        return prevTime + 1;
-      });
-    }, 10);
-    timerRef.current = timer;
+    let stageTimer: NodeJS.Timeout;
+    if (stage === 'ready') {
+      stageTimer = setTimeout(() => setStage('start'), 2000);
+      return () => clearTimeout(stageTimer);
+    } else if (stage === 'start') {
+      stageTimer = setTimeout(() => setStage('counting'), 2000);
+      return () => clearTimeout(stageTimer);
+    } else if (stage === 'counting') {
+      const timer = setInterval(() => {
+        setTime((prevTime) => {
+          if (prevTime >= maxTime) {
+            clearInterval(timer);
+            return prevTime;
+          }
+          return prevTime + 1;
+        });
+      }, 10);
+      timerRef.current = timer;
+      return () => clearInterval(timer);
+    } else {
+    }
+  }, [stage]);
 
-    return () => clearInterval(timer);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleFinish = () => {
     setIsFinished(true);
@@ -55,28 +67,40 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
 
   return (
     <Root>
-      <Flex>
-        <Text fontSize={80} fontWeight={700} color={'blue3'}>
-          {seconds}.{milliseconds} 초
+      {stage === 'ready' && (
+        <Text fontSize={80} fontWeight={700} color="blue3">
+          준비
         </Text>
-        <Button
-          width={314}
-          height={60}
-          label={isFinished ? '다음' : '측정 완료'}
-          onClick={
-            isFinished
-              ? () => onComplete(Number((time / 100).toFixed(1)))
-              : handleFinish
-          }
-        />
-        <Button
-          variant={'secondary'}
-          width={314}
-          height={60}
-          label={'다시하기'}
-          onClick={handleRetry}
-        />
-      </Flex>
+      )}
+      {stage === 'start' && (
+        <Text fontSize={80} fontWeight={700} color="blue3">
+          시작
+        </Text>
+      )}
+      {stage === 'counting' && (
+        <Flex>
+          <Text fontSize={80} fontWeight={700} color={'blue3'}>
+            {seconds}.{milliseconds} 초
+          </Text>
+          <Button
+            width={314}
+            height={60}
+            label={isFinished ? '다음' : '측정 완료'}
+            onClick={
+              isFinished
+                ? () => onComplete(Number((time / 100).toFixed(1)))
+                : handleFinish
+            }
+          />
+          <Button
+            variant={'secondary'}
+            width={314}
+            height={60}
+            label={'다시하기'}
+            onClick={handleRetry}
+          />
+        </Flex>
+      )}
       {isFinished && (
         <Wrapper>
           <Text>코어 힘 측정이 {'\n'}완료되었습니다</Text>
@@ -98,8 +122,12 @@ const Flex = styled.div`
 `;
 
 const Root = styled.div`
-  position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 `;
 
 const Wrapper = styled.div`
