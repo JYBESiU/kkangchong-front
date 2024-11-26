@@ -184,11 +184,11 @@ const getArmRotationPercentage = (value: number) => {
 };
 
 const getWaistRotationPercentage = (value: number) => {
-  return ((value / 70) * 100).toFixed(0);
+  return ((Math.max(value, 80) / 80) * 100).toFixed(0);
 };
 
 const getWaistTiltPercentage = (value: number) => {
-  return ((value / 80) * 100).toFixed(0);
+  return ((Math.max(value, 80) / 50) * 100).toFixed(0);
 };
 
 const getCorePercentage = (value: number) => {
@@ -196,5 +196,5 @@ const getCorePercentage = (value: number) => {
 };
 
 const getPunchPercentage = (value: number) => {
-  return ((value / 30) * 100).toFixed(0);
+  return ((Math.max(value, 30) / 30) * 100).toFixed(0);
 };
