@@ -1,23 +1,59 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import MeasureResult from 'components/MeasureResult';
 import RecommendSport from 'components/RecommendSport';
 import { Text } from 'components/shared';
 import { useEffect, useState } from 'react';
 import { RecommendResult, RecommendSports } from 'types';
 import { colors } from 'utils/color';
+import { getFromLocalStorage, measureKey } from 'utils/storage';
 
 export interface ResultPageProps {}
 
 function ResultPage({}: ResultPageProps) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingByTimer, setIsLoadingByTimer] = useState(true);
+  const [isLoadingByReq, setIsLoadingByReq] = useState(false);
   const [selectedSports, setSelectedSports] = useState<RecommendSports | null>(
     null
   );
+  const isLoading = isLoadingByTimer || isLoadingByReq;
+
+  const [recommendResult, setRecommendResult] =
+    useState<RecommendResult | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setIsLoadingByTimer(false);
     }, 5000);
+
+    const fetchRecommend = async () => {
+      setIsLoadingByReq(true);
+
+      const {
+        leftArmRotationValue,
+        rightArmRotationValue,
+        leftWaistRotationValue,
+        rightWaistRotationValue,
+        leftWaistTiltValue,
+        rightWaistTiltValue,
+        coreDuration,
+        punchCount,
+      } = getFromLocalStorage(measureKey);
+      const { data } = await axios.post<RecommendResult>('/recommend', {
+        arm_angle: (leftArmRotationValue + rightArmRotationValue) / 2,
+        torso_left_angle: leftWaistRotationValue,
+        torso_right_angle: rightWaistRotationValue,
+        body_left_tilt: leftWaistTiltValue,
+        body_right_tilt: rightWaistTiltValue,
+        core_strength_time: coreDuration,
+        punch_count: punchCount,
+      });
+
+      setRecommendResult(data);
+      setIsLoadingByReq(false);
+    };
+
+    fetchRecommend();
 
     return () => clearTimeout(timer);
   }, []);
@@ -48,7 +84,7 @@ function ResultPage({}: ResultPageProps) {
         />
       ) : (
         <MeasureResult
-          recommend={recommendDummy}
+          recommend={recommendResult!}
           handleCardClick={handleCardClick}
         />
       )}
