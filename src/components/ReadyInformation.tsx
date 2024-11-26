@@ -3,6 +3,8 @@ import { isTimerReadyStep, MeasuringStep } from 'utils/measuringStep';
 import { Button, Text } from './shared';
 import { useEffect, useState } from 'react';
 import SubNoticeText from './SubNoticeLineBreak';
+import { Stepper1 } from './icons';
+import { Icon } from './IconContext';
 
 const Root = styled.div`
   display: flex;

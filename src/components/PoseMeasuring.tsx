@@ -513,7 +513,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           display: 'block',
           width: '393px',
           height: '852px',
-          filter: 'brightness(25%)',
+          filter: 'brightness(60%)',
           opacity: '100%',
           zIndex: 1,
         }}
@@ -529,22 +529,22 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           }}
         >
           {step === MeasuringStep.MOVE_MEASURE && (
-            <Icon icon="MoveMeasureVector" />
+            <Icon icon="MoveMeasureVector" transform="scale(1.3)" />
           )}
           {step === MeasuringStep.ARM_MEASURE && (
-            <Icon icon="ArmMeasureVector" />
+            <Icon icon="ArmMeasureVector" transform="scale(1.3)" />
           )}
           {step === MeasuringStep.ROTATE_MEASURE_LEFT && (
-            <Icon icon="RotateLeftVector" />
+            <Icon icon="RotateLeftVector" transform="scale(1.3)" />
           )}
           {step === MeasuringStep.ROTATE_MEASURE_RIGHT && (
-            <Icon icon="RotateRightVector" />
+            <Icon icon="RotateRightVector" transform="scale(1.3)" />
           )}
           {step === MeasuringStep.TILT_MEASURE_LEFT && (
-            <Icon icon="TiltLeftVector" />
+            <Icon icon="TiltLeftVector" transform="scale(1.3)" />
           )}
           {step === MeasuringStep.TILT_MEASURE_RIGHT && (
-            <Icon icon="TiltRightVector" />
+            <Icon icon="TiltRightVector" transform="scale(1.3)" />
           )}
         </div>
         <TimerText>{timerCount}</TimerText>
