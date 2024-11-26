@@ -6,7 +6,6 @@ import * as posenet from '@tensorflow-models/posenet';
 import { MeasurementContext } from './MeasurementContext';
 import NoticeText from './NoticeLineBreak';
 import { Icon } from './IconContext';
-import { relative } from 'path';
 
 const VideoElement = styled.video`
   display: flex;
@@ -82,7 +81,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   useEffect(() => {
     setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
     setIsChecking(false);
-    setValidDataCount(0);
     measuredDataRef.current = [];
     measuredSecondRef.current = [];
   }, [step]);

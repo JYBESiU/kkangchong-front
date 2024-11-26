@@ -149,30 +149,8 @@ function MeasuringPage({}: MeasuringPageProps) {
           onComplete={handleComplete}
         />
       )}
-      {/**currentStep === MeasuringStep.CORE_STRENGTH_READY && <TimerMeasuring />*/}
-      {/* Final Step: Display all measurements */}
       {isTimerMeasureStep(currentStep) && (
-        <div>
-          <h2>All measurements are complete!</h2>
-          <TimerMeasuring onComplete={() => handleComplete} />
-          <div>
-            <h3>Summary of Measurements:</h3>
-            <p>
-              Original Wrist Length: {originalWristLength?.toFixed(2)} pixels
-            </p>
-            <p>
-              Left Waist Rotation: {leftWaistRotationValue?.toFixed(2)} degrees
-            </p>
-            <p>
-              Right Waist Rotation: {rightWaistRotationValue?.toFixed(2)}{' '}
-              degrees
-            </p>
-            <p>Left Torso Rotation: {leftWaistTiltValue?.toFixed(2)} degrees</p>
-            <p>
-              Right Torso Rotation: {rightWaistTiltValue?.toFixed(2)} degrees
-            </p>
-          </div>
-        </div>
+        <TimerMeasuring onComplete={() => handleComplete} />
       )}
       {currentStep === MeasuringStep.FINISH && <div>finish</div>}
     </Root>
