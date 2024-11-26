@@ -152,6 +152,7 @@ const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
           .filter((res) => res.score != 0)
           .map(({ name, score }) => (
             <RecommendCard
+              key={name}
               name={name}
               score={score}
               handleClick={handleCardClick(name)}
