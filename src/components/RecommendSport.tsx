@@ -128,7 +128,7 @@ const RecommendSport = ({
         width={312}
         height={60}
         label={'이전으로'}
-        onClick={handleBottomButtonClick}
+        onClick={handleBackClick}
       />
     </Container>
   );
