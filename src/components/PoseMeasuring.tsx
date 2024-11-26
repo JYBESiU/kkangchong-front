@@ -1,13 +1,44 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
-import { Text } from './shared';
 import { isCameraMeasureStep, MeasuringStep } from 'utils/measuringStep';
 import styled from '@emotion/styled';
 import * as posenet from '@tensorflow-models/posenet';
 import { MeasurementContext } from './MeasurementContext';
+import NoticeText from './NoticeLineBreak';
+import { Icon } from './IconContext';
 
-const Root = styled.div`
-  position: relative;
+const VideoElement = styled.video`
+  display: flex;
+  flex-shrink: 0.5;
+  flex-direction: column;
+  object-fit: cover;
+  align-items: center;
+  top: 0;
+  height: 100vh;
+`;
+const CameraMeasureText = styled.div`
+  font-family: 'Noto Sans KR', sans-serif;
+  position: absolute;
+  top: 211px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  z-index: 2;
+  text-align: center;
+  white-space: nowrap;
+`;
+const TimerText = styled.div`
+  font-family: 'Noto Sans KR', sans-serif;
+  position: absolute;
+  top: 211;
+  left: 50%;
+  transform: translate(-50%, 190px);
+  font-size: 80px;
+  font-weight: 700;
+  color: white;
+  z-index: 2;
   text-align: center;
 `;
 
@@ -35,10 +66,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   } = context;
   const [timerCount, setTimerCount] = useState<number | null>(null);
   const [isChecking, setIsChecking] = useState(false);
-  const [validDataCount, setValidDataCount] = useState(0);
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const latestPoseRef = useRef<posenet.Pose | null>(null);
 
   const measuredDataRef = useRef<number[]>([]);
   const measuredSecondRef = useRef<number[]>([]);
@@ -46,10 +73,21 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   // Maximum number of attempts to prevent infinite loops
   const MAX_ATTEMPTS = 30;
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const latestPoseRef = useRef<posenet.Pose | null>(null);
+
+  // Maximum number of attempts to prevent infinite loops
+
   useEffect(() => {
     setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
     setIsChecking(false);
-    setValidDataCount(0);
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
+  }, [step]);
+
+  useEffect(() => {
+    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
+    setIsChecking(false);
     measuredDataRef.current = [];
     measuredSecondRef.current = [];
   }, [step]);
@@ -71,18 +109,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   }, [timerCount, step]);
 
   useEffect(() => {
-    let net: posenet.PoseNet | null = null;
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-
-    if (!isChecking) {
-      return;
-    }
-
-    let checkCounter = 0;
-    measuredDataRef.current = [];
-    measuredSecondRef.current = [];
-
-    // Start webcam stream
     const startWebcam = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -96,10 +122,24 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           }
         }
       } catch (error) {
-        console.error('Error accessing webcam:', error);
-        onComplete(0); // Exit if webcam access fails
+        console.error('Webcam error:', error);
       }
     };
+    startWebcam();
+  }, []);
+
+  useEffect(() => {
+    let net: posenet.PoseNet | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    if (!isChecking) {
+      return;
+    }
+
+    let checkCounter = 0;
+    let validDataCount = 0;
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
 
     // Load PoseNet model
     const loadModel = async () => {
@@ -151,14 +191,12 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
     };
 
     const init = async () => {
-      await startWebcam();
       await loadModel();
       startPoseEstimation();
     };
 
     init();
 
-    // Measurement interval setup (adjusted to 500ms for better responsiveness)
     intervalId = setInterval(() => {
       const pose = latestPoseRef.current;
       if (pose) {
@@ -249,6 +287,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             // Store the angles
             measuredDataRef.current.push(leftArmAngle);
             measuredSecondRef.current.push(rightArmAngle);
+            validDataCount += 1;
 
             // Log the angles
             console.log(
@@ -268,6 +307,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             rightWrist?.score >= minConfidence
           ) {
             measuredDataRef.current.push(wristLength);
+            validDataCount += 1;
             console.log(
               `ROTATE_MEASURE_FRONT - Wrist Length: ${wristLength.toFixed(2)} pixels`
             );
@@ -286,6 +326,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
               measuredDataRef.current.push(
                 (Math.acos(wristLength / originalWristLength) * 180) / Math.PI
               );
+              validDataCount += 1;
             } else {
               console.log('Original Wrist Length not set. ');
             }
@@ -309,6 +350,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
               angle = 180 - angle;
             }
             measuredDataRef.current.push(angle);
+            validDataCount += 1;
 
             // Log the angle
             console.log(
@@ -324,32 +366,14 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             );
           }
         }
-
-        let anyMeasurementTaken = false;
-        if (
-          isCameraMeasureStep(step) &&
-          measuredDataRef.current.length > validDataCount
-        ) {
-          if (
-            step === MeasuringStep.ARM_MEASURE &&
-            measuredSecondRef.current.length > validDataCount
-          ) {
-            anyMeasurementTaken = true;
-          } else {
-            anyMeasurementTaken = true;
-          }
-        }
-
-        if (anyMeasurementTaken) {
-          checkCounter += 1;
-          setValidDataCount((prev) => prev + 1);
-          console.log(`Measurement count: ${checkCounter}`);
-        } else {
-          console.log('No valid measurements taken in this interval.');
-        }
+        checkCounter += 1;
 
         // After collecting 10 measurements or reaching max attempts, calculate averages
-        if (checkCounter >= 10 || validDataCount >= MAX_ATTEMPTS) {
+        if (
+          step === MeasuringStep.MOVE_MEASURE ||
+          validDataCount >= 10 ||
+          checkCounter >= MAX_ATTEMPTS
+        ) {
           console.log(
             'Reached 10 measurements or max attempts. Calculating averages...'
           );
@@ -357,7 +381,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             clearInterval(intervalId);
           }
           setIsChecking(false);
-          setValidDataCount(0);
 
           const handleMeasure = (): number => {
             let data = 0;
@@ -474,44 +497,79 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   ]);
 
   return (
-    <Root>
-      <Text fontWeight={700}>{getNotice(step)}</Text>
-      <Text fontSize={80} fontWeight={700}>
-        {timerCount}
-      </Text>
-      {/* Video Element for Debugging */}
-      <video
+    <div
+      style={{
+        backgroundColor: 'transparent',
+        position: 'relative',
+        textAlign: 'center',
+      }}
+    >
+      <VideoElement
         ref={videoRef}
         style={{
+          top: 0,
+          position: 'relative',
           display: 'block',
-          margin: '20px auto',
-          width: '640px',
-          height: '480px',
-          border: '2px solid #000',
+          width: '393px',
+          height: '852px',
+          filter: 'brightness(25%)',
+          opacity: '100%',
+          zIndex: 1,
         }}
       />
-    </Root>
+      <CameraMeasureText>
+        <NoticeText step={step} />
+        <div
+          style={{
+            position: 'absolute',
+            top: '337px',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          {step === MeasuringStep.MOVE_MEASURE && (
+            <Icon icon="MoveMeasureVector" />
+          )}
+          {step === MeasuringStep.ARM_MEASURE && (
+            <Icon icon="ArmMeasureVector" />
+          )}
+          {step === MeasuringStep.ROTATE_MEASURE_LEFT && (
+            <Icon icon="RotateLeftVector" />
+          )}
+          {step === MeasuringStep.ROTATE_MEASURE_RIGHT && (
+            <Icon icon="RotateRightVector" />
+          )}
+          {step === MeasuringStep.TILT_MEASURE_LEFT && (
+            <Icon icon="TiltLeftVector" />
+          )}
+          {step === MeasuringStep.TILT_MEASURE_RIGHT && (
+            <Icon icon="TiltRightVector" />
+          )}
+        </div>
+        <TimerText>{timerCount}</TimerText>
+      </CameraMeasureText>
+    </div>
   );
 }
 
 export default PoseMeasuring;
 
-const getNotice = (step: MeasuringStep) => {
+export const getNotice = (step: MeasuringStep) => {
   switch (step) {
     case MeasuringStep.MOVE_MEASURE:
-      return `선에 맞춰 뒤로 이동하세요`;
+      return `선에 맞춰\n뒤로 이동하세요`;
     case MeasuringStep.ARM_MEASURE:
-      return `어깨와 팔꿈치가 보이도록 팔을 양 옆으로 최대한 드세요`;
+      return `어깨와 팔꿈치가 보이도록\n팔을 양 옆으로\n최대한 드세요`;
     case MeasuringStep.ROTATE_MEASURE_FRONT:
-      return `양 손을 어깨에 올리고 정면을 바라보세요`;
+      return `양 손을 어깨에 올리고\n정면을 바라보세요`;
     case MeasuringStep.ROTATE_MEASURE_LEFT:
-      return `양 손을 어깨에 올리고 허리를 왼쪽으로 돌리세요`;
+      return `양 손을 어깨에 올리고\n허리를 왼쪽으로\n돌리세요`;
     case MeasuringStep.ROTATE_MEASURE_RIGHT:
-      return `양 손을 어깨에 올리고 허리를 오른쪽으로 돌리세요`;
+      return `양 손을 어깨에 올리고\n허리를 오른쪽으로\n돌리세요`;
     case MeasuringStep.TILT_MEASURE_LEFT:
-      return `상체를 왼쪽으로 기울이세요`;
+      return `상체를 왼쪽으로\n기울이세요`;
     case MeasuringStep.TILT_MEASURE_RIGHT:
-      return `상체를 오른쪽으로 기울이세요`;
+      return `상체를 오른쪽으로\n기울이세요`;
     default:
       return `지시에 따라 주세요`;
   }

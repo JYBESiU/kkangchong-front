@@ -79,6 +79,24 @@ function MeasuringPage({}: MeasuringPageProps) {
   };
 
   useEffect(() => {
+    if (isTimerActive) {
+      if (timer > 0) {
+        console.log(`Timer active: ${timer} seconds remaining.`);
+        const timeoutId = setTimeout(() => {
+          setTimer((prev) => prev - 1);
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+      } else {
+        // Timer has finished, proceed to next step
+        console.log('Timer finished. Proceeding to the next step.');
+        setIsTimerActive(false);
+        setTimer(5); // Reset timer for the next step
+        //goNextStep();
+      }
+    }
+  }, [isTimerActive, timer]);
+
+  useEffect(() => {
     if (currentStep === MeasuringStep.FINISH) {
       console.log('All measurements completed.');
       console.log('Summary of Measurements:');
@@ -124,42 +142,17 @@ function MeasuringPage({}: MeasuringPageProps) {
       {isReadyStep(currentStep) && (
         <ReadyInformation step={currentStep} onNext={goNextStep} />
       )}
-      {currentStep === MeasuringStep.MOVE_MEASURE && (
-        <ReadyInformation step={currentStep} onNext={goNextStep} />
+      {isCameraMeasureStep(currentStep) && (
+        <PoseMeasuring
+          key={currentStep}
+          step={currentStep}
+          onComplete={handleComplete}
+        />
       )}
-      {isCameraMeasureStep(currentStep) &&
-        currentStep !== MeasuringStep.MOVE_MEASURE && (
-          <PoseMeasuring
-            key={currentStep}
-            step={currentStep}
-            onComplete={handleComplete}
-          />
-        )}
-      {/**currentStep === MeasuringStep.CORE_STRENGTH_READY && <TimerMeasuring />*/}
-      {/* Final Step: Display all measurements */}
       {isTimerMeasureStep(currentStep) && (
-        <div>
-          <h2>All measurements are complete!</h2>
-          <TimerMeasuring onComplete={() => handleComplete} />
-          <div>
-            <h3>Summary of Measurements:</h3>
-            <p>
-              Original Wrist Length: {originalWristLength?.toFixed(2)} pixels
-            </p>
-            <p>
-              Left Waist Rotation: {leftWaistRotationValue?.toFixed(2)} degrees
-            </p>
-            <p>
-              Right Waist Rotation: {rightWaistRotationValue?.toFixed(2)}{' '}
-              degrees
-            </p>
-            <p>Left Torso Rotation: {leftWaistTiltValue?.toFixed(2)} degrees</p>
-            <p>
-              Right Torso Rotation: {rightWaistTiltValue?.toFixed(2)} degrees
-            </p>
-          </div>
-        </div>
+        <TimerMeasuring onComplete={() => handleComplete} />
       )}
+      {currentStep === MeasuringStep.FINISH && <div>finish</div>}
     </Root>
   );
 }
@@ -167,7 +160,6 @@ function MeasuringPage({}: MeasuringPageProps) {
 export default MeasuringPage;
 
 const Root = styled.div`
-  height: 100vh;
-  width: 100%;
-  max-width: 400px;
+  height: 852px;
+  width: 393px;
 `;
