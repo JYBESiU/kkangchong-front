@@ -10,6 +10,7 @@ import {
 } from 'utils/measuringStep';
 import styled from '@emotion/styled';
 import { MeasurementContext } from 'components/MeasurementContext';
+import CountMeasuring from 'components/CountMeasuring';
 
 export interface MeasuringPageProps {}
 
@@ -45,6 +46,10 @@ function MeasuringPage({}: MeasuringPageProps) {
     setRightWaistRotationValue,
     setLeftWaistTiltValue,
     setRightWaistTiltValue,
+    coreDuration,
+    setCoreDuration,
+    punchCount,
+    setPunchCount,
   } = context;
 
   // Function to navigate to the next step
@@ -72,6 +77,12 @@ function MeasuringPage({}: MeasuringPageProps) {
       case MeasuringStep.TILT_MEASURE_RIGHT:
         setRightWaistTiltValue(data);
         break;
+      case MeasuringStep.CORE_STRENGTH_TIMER:
+        setCoreDuration(data);
+        break;
+      case MeasuringStep.PUNCH_TIMER:
+        setPunchCount(data);
+        break;
       default:
         break;
     }
@@ -98,44 +109,8 @@ function MeasuringPage({}: MeasuringPageProps) {
 
   useEffect(() => {
     if (currentStep === MeasuringStep.FINISH) {
-      console.log('All measurements completed.');
-      console.log('Summary of Measurements:');
-      console.log('Arm Rotation Value:', armRotationValue);
-      console.log('Original Wrist Length:', originalWristLength);
-      console.log('Left Waist Rotation:', leftWaistRotationValue);
-      console.log('Right Waist Rotation:', rightWaistRotationValue);
-      console.log('Left Waist Tilt:', leftWaistTiltValue);
-      console.log('Right Waist Tilt:', rightWaistTiltValue);
-      // Add Timer measurement value
-      // Add navigation to last page
     }
-  }, [
-    currentStep,
-    armRotationValue,
-    originalWristLength,
-    leftWaistRotationValue,
-    rightWaistRotationValue,
-    leftWaistTiltValue,
-    rightWaistTiltValue,
-  ]);
-
-  useEffect(() => {
-    if (isTimerActive) {
-      if (timer > 0) {
-        console.log(`Timer active: ${timer} seconds remaining.`);
-        const timeoutId = setTimeout(() => {
-          setTimer((prev) => prev - 1);
-        }, 1000);
-        return () => clearTimeout(timeoutId);
-      } else {
-        // Timer has finished, proceed to next step
-        console.log('Timer finished. Proceeding to the next step.');
-        setIsTimerActive(false);
-        setTimer(5); // Reset timer for the next step
-        //goNextStep();
-      }
-    }
-  }, [isTimerActive, timer]);
+  }, [currentStep]);
 
   return (
     <Root>
@@ -149,8 +124,11 @@ function MeasuringPage({}: MeasuringPageProps) {
           onComplete={handleComplete}
         />
       )}
-      {isTimerMeasureStep(currentStep) && (
-        <TimerMeasuring onComplete={() => handleComplete} />
+      {currentStep === MeasuringStep.CORE_STRENGTH_TIMER && (
+        <TimerMeasuring onComplete={handleComplete} />
+      )}
+      {currentStep === MeasuringStep.PUNCH_TIMER && (
+        <CountMeasuring onComplete={handleComplete} />
       )}
       {currentStep === MeasuringStep.FINISH && <div>finish</div>}
     </Root>
@@ -160,6 +138,6 @@ function MeasuringPage({}: MeasuringPageProps) {
 export default MeasuringPage;
 
 const Root = styled.div`
-  height: 852px;
-  width: 393px;
+  height: 100vh;
+  width: 100%;
 `;

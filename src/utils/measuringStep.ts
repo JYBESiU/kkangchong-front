@@ -12,8 +12,8 @@ export enum MeasuringStep {
   TILT_MEASURE_RIGHT = 10,
   CORE_STRENGTH_READY = 11,
   CORE_STRENGTH_TIMER = 12,
-  ARM_STRENGTH_READY = 13,
-  ARM_STRENGTH_TIMER = 14,
+  PUNCH_READY = 13,
+  PUNCH_TIMER = 14,
   FINISH = 15,
 }
 
@@ -35,7 +35,4 @@ export const isTimerMeasureStep = (step: MeasuringStep) =>
   timerMeasureSteps.includes(step);
 
 export const isTimerReadyStep = (step: MeasuringStep) =>
-  [
-    MeasuringStep.CORE_STRENGTH_READY,
-    MeasuringStep.ARM_STRENGTH_READY,
-  ].includes(step);
+  [MeasuringStep.CORE_STRENGTH_READY, MeasuringStep.PUNCH_READY].includes(step);

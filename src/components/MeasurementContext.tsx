@@ -17,6 +17,10 @@ interface MeasurementContextProps {
   setLeftWaistTiltValue: (value: number | null) => void;
   rightWaistTiltValue: number | null;
   setRightWaistTiltValue: (value: number | null) => void;
+  coreDuration: number | null;
+  setCoreDuration: (value: number | null) => void;
+  punchCount: number | null;
+  setPunchCount: (value: number | null) => void;
 }
 
 export const MeasurementContext = createContext<
@@ -48,6 +52,8 @@ export const MeasurementProvider: React.FC<{ children: ReactNode }> = ({
   const [rightWaistTiltValue, setRightWaistTiltValue] = useState<number | null>(
     null
   );
+  const [coreDuration, setCoreDuration] = useState<number | null>(null);
+  const [punchCount, setPunchCount] = useState<number | null>(null);
 
   return (
     <MeasurementContext.Provider
@@ -68,6 +74,10 @@ export const MeasurementProvider: React.FC<{ children: ReactNode }> = ({
         setLeftWaistTiltValue,
         rightWaistTiltValue,
         setRightWaistTiltValue,
+        coreDuration,
+        setCoreDuration,
+        punchCount,
+        setPunchCount,
       }}
     >
       {children}
