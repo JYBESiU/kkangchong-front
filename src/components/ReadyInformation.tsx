@@ -37,42 +37,50 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     <Root>
       {step === MeasuringStep.MOVE_READY && isWindow && (
         <div>
-          <iframe
-            height="377"
-            width="671px"
-            src="https://www.youtube.com/embed/XP0Sc6WAh0A?autoplay=1&mute=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          ></iframe>
+          <video
+            src="/videos/Start.mp4"
+            autoPlay
+            loop
+            muted
+            height="376"
+            width="671"
+          />
         </div>
       )}
       {step === MeasuringStep.ARM_READY && isWindow && (
         <div>
-          <iframe
-            height="377px"
-            width="671px"
-            src="https://www.youtube.com/embed/qGh0-mqbjb8?autoplay=1&mute=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          ></iframe>
+          <video
+            src="/videos/Armraise.mp4"
+            autoPlay
+            loop
+            muted
+            height="376"
+            width="671"
+          />
         </div>
       )}
       {step === MeasuringStep.ROTATE_READY && isWindow && (
         <div>
-          <iframe
-            height="377px"
-            width="671px"
-            src="https://www.youtube.com/embed/oYQnLmo-Cm8?autoplay=1&mute=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          ></iframe>
+          <video
+            src="/videos/Turnwaist.mp4"
+            autoPlay
+            loop
+            muted
+            height="376"
+            width="671"
+          />
         </div>
       )}
       {step === MeasuringStep.TILT_READY && isWindow && (
         <div>
-          <iframe
-            height="377px"
-            width="671px"
-            src="https://www.youtube.com/embed/MaC9BJFeV-4?autoplay=1&mute=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          ></iframe>
+          <video
+            src="/videos/Tiltbody.mp4"
+            autoPlay
+            loop
+            muted
+            height="376"
+            width="671"
+          />
         </div>
       )}
 
