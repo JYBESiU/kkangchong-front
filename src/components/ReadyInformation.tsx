@@ -60,16 +60,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
               labelSize={16}
             />
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: '130px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <Icon icon="Stepper1" />
-          </div>
           <video
             src="/videos/Start.mp4"
             autoPlay
@@ -97,16 +87,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
               labelSize={16}
             />
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: '130px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <Icon icon="Stepper2" />
-          </div>
           <video
             src="/videos/Armraise.mp4"
             autoPlay
@@ -122,12 +102,17 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '130px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              top: '20px',
+              left: '323px',
             }}
           >
-            <Icon icon="Stepper3" />
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+              labelSize={16}
+            />
           </div>
           <video
             src="/videos/Turnwaist.mp4"
@@ -144,12 +129,17 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '130px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              top: '20px',
+              left: '323px',
             }}
           >
-            <Icon icon="Stepper4" />
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+              labelSize={16}
+            />
           </div>
           <video
             src="/videos/Tiltbody.mp4"
@@ -166,12 +156,17 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '130px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              top: '20px',
+              left: '323px',
             }}
           >
-            <Icon icon="Stepper5" />
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+              labelSize={16}
+            />
           </div>
           <video
             src="/videos/Core.mp4"
@@ -188,12 +183,17 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '130px',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              top: '20px',
+              left: '323px',
             }}
           >
-            <Icon icon="Stepper6" />
+            <Button
+              height={60}
+              label={'취소'}
+              onClick={handleToHome}
+              variant="text"
+              labelSize={16}
+            />
           </div>
           <video
             src="/videos/Armstretch.mp4"
