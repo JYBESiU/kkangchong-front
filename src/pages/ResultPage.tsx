@@ -24,7 +24,7 @@ function ResultPage({}: ResultPageProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoadingByTimer(false);
-    }, 5000);
+    }, 7000);
 
     const fetchRecommend = async () => {
       setIsLoadingByReq(true);
@@ -66,7 +66,7 @@ function ResultPage({}: ResultPageProps) {
     <Root>
       {isLoading ? (
         <Loading>
-          <img src="/images/wheelchair.png" width={130} height={130} />
+          <img src="/images/wheelchair_move.png" width={400} height={200} />
           <Text textAlign="center">
             신체 데이터를 바탕으로
             <br /> 운동을 선정하고 있어요
