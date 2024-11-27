@@ -77,6 +77,15 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const latestPoseRef = useRef<posenet.Pose | null>(null);
 
+  // Maximum number of attempts to prevent infinite loops
+
+  useEffect(() => {
+    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
+    setIsChecking(false);
+    measuredDataRef.current = [];
+    measuredSecondRef.current = [];
+  }, [step]);
+
   useEffect(() => {
     setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
     setIsChecking(false);
@@ -167,7 +176,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           if (videoRef.current && net) {
             try {
               const pose = await net.estimateSinglePose(videoRef.current, {
-                flipHorizontal: false,
+                flipHorizontal: true,
               });
               latestPoseRef.current = pose;
             } catch (poseError) {
@@ -208,7 +217,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
         const leftWrist = keypoints['leftWrist'];
         const rightWrist = keypoints['rightWrist'];
         let wristLength = 0;
-        let wristVector;
         console.log('Keypoints:', keypoints);
 
         if (
@@ -219,10 +227,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             leftWrist.position.x - rightWrist.position.x,
             leftWrist.position.y - rightWrist.position.y
           );
-          wristVector = {
-            x: leftWrist.position.x - rightWrist.position.x,
-            y: leftWrist.position.y - rightWrist.position.y,
-          };
         }
 
         if (step === MeasuringStep.ARM_MEASURE) {
@@ -322,7 +326,11 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
               console.log('Original Wrist Length not set. ');
             }
           } else {
-            console.log('ROTATE_MEASURE_LEFT - Wrist keypoints not detected.');
+            console.log(
+              `ROTATE_MEASURE_${
+                step === MeasuringStep.ROTATE_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
+              } - Wrist keypoints not detected.`
+            );
           }
         } else if (
           step === MeasuringStep.TILT_MEASURE_LEFT ||
@@ -330,20 +338,18 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
         ) {
           if (
             leftWrist?.score >= minConfidence &&
-            rightWrist?.score >= minConfidence &&
-            wristVector
+            rightWrist?.score >= minConfidence
           ) {
             const dx = rightWrist.position.x - leftWrist.position.x;
-            const invertedDy = -rightWrist.position.y + leftWrist.position.y; // y increases downward in image coordinates
-            let angle = Math.atan2(invertedDy, dx) * (180 / Math.PI);
-            angle = Math.abs(angle);
-            if (angle > 90) {
-              angle = 180 - angle;
-            }
+            const len = Math.hypot(
+              dx,
+              Math.abs(rightWrist.position.y - leftWrist.position.y)
+            );
+
+            const angle = Math.acos(dx / len) * (180 / Math.PI);
             measuredDataRef.current.push(angle);
             validDataCount += 1;
 
-            // Log the angle
             console.log(
               `TILT_MEASURE_${
                 step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
