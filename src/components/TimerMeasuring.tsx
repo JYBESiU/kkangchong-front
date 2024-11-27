@@ -61,8 +61,8 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
     timerRef.current = timer;
   };
 
-  const seconds = String(Math.floor(time / 100)).padStart(1, '0');
-  const milliseconds = Math.floor((time % 100) / 10);
+  const seconds = String(Math.floor(time / 100)).padStart(2, '0');
+  const milliseconds = String(Math.floor(time % 100)).padStart(2, '0');
 
   const navigate = useNavigate();
 
@@ -102,23 +102,34 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
           <Text fontSize={80} fontWeight={700} color={'blue3'}>
             {seconds}.{milliseconds} 초
           </Text>
-          <Button
-            width={314}
-            height={60}
-            label={isFinished ? '다음' : '측정 완료'}
-            onClick={
-              isFinished
-                ? () => onComplete(Number((time / 100).toFixed(1)))
-                : handleFinish
-            }
-          />
-          <Button
-            variant={'secondary'}
-            width={314}
-            height={60}
-            label={'다시하기'}
-            onClick={handleRetry}
-          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 10,
+              paddingTop: '200px',
+            }}
+          >
+            <Button
+              width={314}
+              height={60}
+              label={isFinished ? '다음' : '측정 완료'}
+              onClick={
+                isFinished
+                  ? () => onComplete(Number((time / 100).toFixed(1)))
+                  : handleFinish
+              }
+            />
+            <Button
+              variant={'secondary'}
+              width={314}
+              height={60}
+              label={'다시하기'}
+              onClick={handleRetry}
+            />
+          </div>
         </Flex>
       )}
       {isFinished && (
@@ -137,8 +148,9 @@ const Flex = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  padding-top: 200px;
   height: 100%;
+  position: relative;
 `;
 
 const Root = styled.div`

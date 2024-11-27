@@ -213,7 +213,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
         <Button
           width={'314px'}
           height={'60px'}
-          label={'시작하기'}
+          label={'측정 시작'}
           onClick={onNext}
         />
       )}

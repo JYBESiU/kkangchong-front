@@ -2,6 +2,7 @@ import React from 'react';
 import { MeasuringStep } from 'utils/measuringStep';
 import { getSubNotice } from './ReadyInformation';
 import styled from '@emotion/styled';
+import { colors } from 'utils/color';
 
 interface SubNoticeTextProps {
   step: MeasuringStep; // Ensure this is the correct type for the step
@@ -15,7 +16,7 @@ const SubText = styled.div`
   transform: translate(-50%, -50%);
   font-size: 16px;
   font-weight: 400;
-  color: blue;
+  color: ${colors.blue3};
   z-index: 2;
   text-align: center;
   white-space: nowrap;
