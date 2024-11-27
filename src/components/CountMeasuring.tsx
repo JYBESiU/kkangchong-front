@@ -74,7 +74,7 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
       <div
         style={{
           position: 'absolute',
-          top: '64px',
+          top: '20px',
           left: '323px',
         }}
       >
@@ -83,6 +83,7 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
           label={'취소'}
           onClick={handleToHome}
           variant="text"
+          labelSize={16}
         />
       </div>
       {stage === 'ready' && (
@@ -143,10 +144,12 @@ export default CountMeasuring;
 const Root = styled.div`
   height: 100%;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  width: 100%;
 `;
 
 const Wrapper = styled.div`
@@ -156,10 +159,11 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+  width: 100%;
 `;
 
 const Top = styled.div`
-  padding-top: 90px;
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   gap: 20px;

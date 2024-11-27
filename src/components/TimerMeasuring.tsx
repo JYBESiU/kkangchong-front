@@ -75,7 +75,7 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
       <div
         style={{
           position: 'absolute',
-          top: '64px',
+          top: '20px',
           left: '323px',
         }}
       >
@@ -84,6 +84,7 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
           label={'취소'}
           onClick={handleToHome}
           variant="text"
+          labelSize={16}
         />
       </div>
       {stage === 'ready' && (

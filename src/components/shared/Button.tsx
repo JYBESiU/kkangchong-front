@@ -7,6 +7,7 @@ export interface ButtonProps {
   width?: number | string;
   height: number | string;
   label: string;
+  labelSize?: number;
   onClick?: VoidFunction;
 }
 
@@ -15,6 +16,7 @@ function Button({
   width = '100%',
   height,
   label,
+  labelSize = 20,
   onClick,
 }: ButtonProps) {
   return (
@@ -24,7 +26,7 @@ function Button({
       height={height}
       onClick={onClick}
     >
-      <Text fontSize={20} color={variant === 'text' ? 'blue3' : 'white'}>
+      <Text fontSize={labelSize} color={variant === 'text' ? 'blue3' : 'white'}>
         {label}
       </Text>
     </StyledButton>
