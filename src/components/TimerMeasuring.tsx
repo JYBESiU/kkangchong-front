@@ -39,8 +39,6 @@ function TimerMeasuring({ onComplete }: TimerMeasuringProps) {
     }
   }, [stage]);
 
-  useEffect(() => {}, []);
-
   const handleFinish = () => {
     setIsFinished(true);
     clearInterval(timerRef.current!);

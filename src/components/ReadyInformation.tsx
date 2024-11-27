@@ -120,20 +120,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '64px',
-              left: '323px',
-            }}
-          >
-            <Button
-              height={60}
-              label={'취소'}
-              onClick={handleToHome}
-              variant="text"
-            />
-          </div>
-          <div
-            style={{
-              position: 'absolute',
               top: '161px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -153,20 +139,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.TILT_READY && isWindow && (
         <div>
-          <div
-            style={{
-              position: 'absolute',
-              top: '64px',
-              left: '323px',
-            }}
-          >
-            <Button
-              height={60}
-              label={'취소'}
-              onClick={handleToHome}
-              variant="text"
-            />
-          </div>
           <div
             style={{
               position: 'absolute',
@@ -192,20 +164,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '64px',
-              left: '323px',
-            }}
-          >
-            <Button
-              height={60}
-              label={'취소'}
-              onClick={handleToHome}
-              variant="text"
-            />
-          </div>
-          <div
-            style={{
-              position: 'absolute',
               top: '161px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
@@ -225,20 +183,6 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       )}
       {step === MeasuringStep.PUNCH_READY && isWindow && (
         <div>
-          <div
-            style={{
-              position: 'absolute',
-              top: '64px',
-              left: '323px',
-            }}
-          >
-            <Button
-              height={60}
-              label={'취소'}
-              onClick={handleToHome}
-              variant="text"
-            />
-          </div>
           <div
             style={{
               position: 'absolute',
@@ -271,6 +215,20 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           onClick={onNext}
         />
       )}
+      <div
+        style={{
+          position: 'absolute',
+          top: '64px',
+          left: '323px',
+        }}
+      >
+        <Button
+          height={60}
+          label={'취소'}
+          onClick={handleToHome}
+          variant="text"
+        />
+      </div>
     </Root>
   );
 }
