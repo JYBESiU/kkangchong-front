@@ -62,7 +62,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -98,7 +98,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -120,7 +120,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -142,7 +142,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -164,7 +164,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -186,7 +186,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}

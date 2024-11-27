@@ -77,15 +77,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const latestPoseRef = useRef<posenet.Pose | null>(null);
 
-  // Maximum number of attempts to prevent infinite loops
-
-  useEffect(() => {
-    setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
-    setIsChecking(false);
-    measuredDataRef.current = [];
-    measuredSecondRef.current = [];
-  }, [step]);
-
   useEffect(() => {
     setTimerCount(step === MeasuringStep.MOVE_MEASURE ? 15 : 5);
     setIsChecking(false);
