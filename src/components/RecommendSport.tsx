@@ -35,6 +35,7 @@ const Contents = styled.div`
   flex-direction: column;
   padding: 0 22px;
   gap: 20px;
+  margin-bottom: 40px;
 `;
 
 const VideoWrapper = styled.div`

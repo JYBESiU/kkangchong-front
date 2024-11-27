@@ -21,3 +21,22 @@ export enum RecommendSports {
   DANCING_SPORTS = '댄스스포츠',
   ATHLETICS = '육상',
 }
+
+export const changeSportName = (originName: RecommendSports) => {
+  switch (originName) {
+    case RecommendSports.BASKETBALL:
+      return '농구';
+    case RecommendSports.TABLE_TENNIS:
+      return '탁구';
+    case RecommendSports.RUGBY:
+      return '럭비';
+    case RecommendSports.FENCING:
+      return '펜싱';
+    case RecommendSports.DANCING_SPORTS:
+      return '댄스 스포츠';
+    case RecommendSports.ATHLETICS:
+      return '육상';
+    default:
+      return '';
+  }
+};

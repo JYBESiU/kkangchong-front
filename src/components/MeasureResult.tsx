@@ -4,9 +4,15 @@ import MeasureData from './measure/MeasureData';
 import { useNavigate } from 'react-router-dom';
 import { colors } from 'utils/color';
 import { Button, Text } from './shared';
-import { RecommendResult, RecommendSports } from 'types';
+import { changeSportName, RecommendResult, RecommendSports } from 'types';
 import RecommendCard from './measure/RecommendCard';
-import { getFromLocalStorage, measureKey } from 'utils/storage';
+import {
+  getFromLocalStorage,
+  measureKey,
+  recommendKey,
+  saveToLocalStorage,
+} from 'utils/storage';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -53,7 +59,6 @@ interface MeasureResultProps {
   handleCardClick: (name: RecommendSports) => VoidFunction;
 }
 const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
-  console.log('recommend: ', recommend);
   const navigate = useNavigate();
 
   const {
@@ -124,6 +129,15 @@ const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
       score: recommend.athletics_score,
     },
   ];
+
+  useEffect(() => {
+    saveToLocalStorage(
+      recommendKey,
+      recommendResults
+        .filter((res) => res.score != 0)
+        .map((e) => changeSportName(e.name))
+    );
+  }, [recommend]);
 
   const handleTopBoxClick = () => navigate('/clubs');
   const handleBottomBoxClick = () => navigate('/measuring');

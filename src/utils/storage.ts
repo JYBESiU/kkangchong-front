@@ -23,3 +23,4 @@ export function getFromLocalStorage(key: string) {
 }
 
 export const measureKey = 'measureResult';
+export const recommendKey = 'recommendResult';
