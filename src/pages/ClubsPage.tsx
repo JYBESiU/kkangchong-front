@@ -3,12 +3,14 @@ import axios from 'axios';
 import ClubInfo from 'components/ClubInfo';
 import Tag from 'components/Tag';
 import { useEffect, useState } from 'react';
-import { Club } from 'types';
+import { Club, RecommendSports } from 'types';
+import { getFromLocalStorage, recommendKey } from 'utils/storage';
 
 export interface ClubsPageProps {}
 
 function ClubsPage({}: ClubsPageProps) {
-  const [selectedSports, setSelectedSports] = useState('농구');
+  const sportsList: RecommendSports[] = getFromLocalStorage(recommendKey);
+  const [selectedSports, setSelectedSports] = useState(sportsList[0]);
   const [clubs, setClubs] = useState<Club[]>([]);
 
   useEffect(() => {

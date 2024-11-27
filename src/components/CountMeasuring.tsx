@@ -35,9 +35,9 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
               setStage('end');
               return prev;
             }
-            return +(prev + 0.1).toFixed(1); // 소수점 1자리 고정
+            return +(prev + 0.01).toFixed(2); // 소수점 1자리 고정
           });
-        }, 100);
+        }, 10);
         break;
 
       case 'end':
@@ -98,7 +98,7 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
       )}
       {stage === 'counting' && (
         <Text fontSize={80} fontWeight={700} color="blue3">
-          {time.toFixed(1)}초
+          {time.toFixed(2)}초
         </Text>
       )}
       {stage === 'end' && (
