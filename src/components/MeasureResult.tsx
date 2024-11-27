@@ -53,6 +53,7 @@ interface MeasureResultProps {
   handleCardClick: (name: RecommendSports) => VoidFunction;
 }
 const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
+  console.log('recommend: ', recommend);
   const navigate = useNavigate();
 
   const {
@@ -179,22 +180,41 @@ const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
 
 export default MeasureResult;
 
+const MAX_ARM_ROTATION = 180;
+
 const getArmRotationPercentage = (value: number) => {
-  return ((value / 180) * 100).toFixed(0);
+  return (
+    ((value > MAX_ARM_ROTATION ? MAX_ARM_ROTATION : value) / MAX_ARM_ROTATION) *
+    100
+  ).toFixed(0);
 };
+
+const MAX_WAIST_ROTATION = 80;
 
 const getWaistRotationPercentage = (value: number) => {
-  return ((value / 70) * 100).toFixed(0);
+  return (
+    ((value > MAX_WAIST_ROTATION ? MAX_WAIST_ROTATION : value) /
+      MAX_WAIST_ROTATION) *
+    100
+  ).toFixed(0);
 };
 
+const MAX_WAIST_TILT = 50;
+
 const getWaistTiltPercentage = (value: number) => {
-  return ((value / 80) * 100).toFixed(0);
+  return (
+    ((value > MAX_WAIST_TILT ? MAX_WAIST_TILT : value) / MAX_WAIST_TILT) *
+    100
+  ).toFixed(0);
 };
 
 const getCorePercentage = (value: number) => {
   return ((value / 60) * 100).toFixed(0);
 };
 
+const MAX_PUNCH = 40;
 const getPunchPercentage = (value: number) => {
-  return ((value / 30) * 100).toFixed(0);
+  return (((value > MAX_PUNCH ? MAX_PUNCH : value) / MAX_PUNCH) * 100).toFixed(
+    0
+  );
 };

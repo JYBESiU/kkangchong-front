@@ -48,7 +48,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '64px',
+              top: '20px',
               left: '323px',
             }}
           >
@@ -57,12 +57,13 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
               label={'취소'}
               onClick={handleToHome}
               variant="text"
+              labelSize={16}
             />
           </div>
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -84,7 +85,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '64px',
+              top: '20px',
               left: '323px',
             }}
           >
@@ -93,12 +94,13 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
               label={'취소'}
               onClick={handleToHome}
               variant="text"
+              labelSize={16}
             />
           </div>
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -120,7 +122,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -142,7 +144,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -164,7 +166,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -186,7 +188,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           <div
             style={{
               position: 'absolute',
-              top: '161px',
+              top: '130px',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
@@ -218,7 +220,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
       <div
         style={{
           position: 'absolute',
-          top: '64px',
+          top: '20px',
           left: '323px',
         }}
       >
@@ -227,6 +229,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
           label={'취소'}
           onClick={handleToHome}
           variant="text"
+          labelSize={16}
         />
       </div>
     </Root>
