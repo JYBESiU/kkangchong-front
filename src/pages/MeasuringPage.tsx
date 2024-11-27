@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PoseMeasuring from 'components/PoseMeasuring';
 import ReadyInformation from 'components/ReadyInformation';
 import TimerMeasuring from 'components/TimerMeasuring';
 import {
   isCameraMeasureStep,
   isReadyStep,
-  isTimerMeasureStep,
   MeasuringStep,
 } from 'utils/measuringStep';
 import styled from '@emotion/styled';

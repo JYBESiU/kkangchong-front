@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { Text } from './shared';
+import { Button, Text } from './shared';
 import { colors } from 'utils/color';
+import { useNavigate } from 'react-router-dom';
 
 export interface CountMeasuringProps {
   onComplete: (data: number) => void;
@@ -62,8 +63,28 @@ function CountMeasuring({ onComplete }: CountMeasuringProps) {
     setCount((prev) => prev.slice(0, -1));
   };
 
+  const navigate = useNavigate();
+
+  const handleToHome = () => {
+    navigate('/');
+  };
+
   return (
     <Root>
+      <div
+        style={{
+          position: 'absolute',
+          top: '64px',
+          left: '323px',
+        }}
+      >
+        <Button
+          height={60}
+          label={'취소'}
+          onClick={handleToHome}
+          variant="text"
+        />
+      </div>
       {stage === 'ready' && (
         <Text fontSize={80} fontWeight={700} color="blue3">
           준비

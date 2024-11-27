@@ -6,7 +6,6 @@ import * as posenet from '@tensorflow-models/posenet';
 import { MeasurementContext } from './MeasurementContext';
 import NoticeText from './NoticeLineBreak';
 import { Icon } from './IconContext';
-import { transform } from 'typescript';
 
 const VideoElement = styled.video`
   display: flex;
