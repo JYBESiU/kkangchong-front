@@ -70,16 +70,16 @@ export const generateMeasureDataList = (data: MeasureStorageData) => [
   {
     leftText: '허리',
     topLeftText: '좌',
-    topRightText: `${getWaistRotationPercentage(data.leftWaistRotationValue)}%`,
+    topRightText: `${getWaistRotationPercentage(data.leftRotationValue)}%`,
     bottomLeftText: '우',
-    bottomRightText: `${getWaistRotationPercentage(data.rightWaistRotationValue)}%`,
+    bottomRightText: `${getWaistRotationPercentage(data.rightRotationValue)}%`,
   },
   {
     leftText: '상체',
     topLeftText: '좌',
-    topRightText: `${getWaistTiltPercentage(data.leftWaistTiltValue)}%`,
+    topRightText: `${getWaistTiltPercentage(data.leftTiltValue)}%`,
     bottomLeftText: '우',
-    bottomRightText: `${getWaistTiltPercentage(data.rightWaistTiltValue)}%`,
+    bottomRightText: `${getWaistTiltPercentage(data.rightTiltValue)}%`,
   },
   {
     leftText: '근력',

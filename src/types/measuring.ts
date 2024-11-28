@@ -1,10 +1,10 @@
 export interface MeasureStorageData {
   leftArmRotationValue: number;
   rightArmRotationValue: number;
-  leftWaistRotationValue: number;
-  rightWaistRotationValue: number;
-  leftWaistTiltValue: number;
-  rightWaistTiltValue: number;
+  leftRotationValue: number;
+  rightRotationValue: number;
+  leftTiltValue: number;
+  rightTiltValue: number;
   coreDuration: number;
   punchCount: number;
 }

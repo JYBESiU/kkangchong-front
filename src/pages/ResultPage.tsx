@@ -32,19 +32,19 @@ function ResultPage({}: ResultPageProps) {
       const {
         leftArmRotationValue,
         rightArmRotationValue,
-        leftWaistRotationValue,
-        rightWaistRotationValue,
-        leftWaistTiltValue,
-        rightWaistTiltValue,
+        leftRotationValue,
+        rightRotationValue,
+        leftTiltValue,
+        rightTiltValue,
         coreDuration,
         punchCount,
       } = getFromLocalStorage<MeasureStorageData>(measureKey)!;
       const { data } = await axios.post<RecommendResult>('/recommend', {
         arm_angle: (leftArmRotationValue + rightArmRotationValue) / 2,
-        torso_left_angle: leftWaistRotationValue,
-        torso_right_angle: rightWaistRotationValue,
-        body_left_tilt: leftWaistTiltValue,
-        body_right_tilt: rightWaistTiltValue,
+        torso_left_angle: leftRotationValue,
+        torso_right_angle: rightRotationValue,
+        body_left_tilt: leftTiltValue,
+        body_right_tilt: rightTiltValue,
         core_strength_time: coreDuration,
         punch_count: punchCount,
       });

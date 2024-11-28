@@ -59,12 +59,12 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
     setLeftArmRotationValue,
     setRightArmRotationValue,
     setArmRotationValue,
-    originalWristLength,
-    setOriginalWristLength,
-    setLeftWaistRotationValue,
-    setRightWaistRotationValue,
-    setLeftWaistTiltValue,
-    setRightWaistTiltValue,
+    originalShoulderLength,
+    setOriginalShoulderLength,
+    setLeftRotationValue,
+    setRightRotationValue,
+    setLeftTiltValue,
+    setRightTiltValue,
   } = context;
   const [timerCount, setTimerCount] = useState<number | null>(null);
   const [isChecking, setIsChecking] = useState(false);
@@ -217,16 +217,16 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
         const rightElbow = keypoints['rightElbow'];
         const leftWrist = keypoints['leftWrist'];
         const rightWrist = keypoints['rightWrist'];
-        let wristLength = 0;
+        let shoulderLength = 0;
         console.log('Keypoints:', keypoints);
 
         if (
-          leftWrist?.score >= minConfidence &&
-          rightWrist?.score >= minConfidence
+          leftShoulder?.score >= minConfidence &&
+          rightShoulder?.score >= minConfidence
         ) {
-          wristLength = Math.hypot(
-            leftWrist.position.x - rightWrist.position.x,
-            leftWrist.position.y - rightWrist.position.y
+          shoulderLength = Math.hypot(
+            leftShoulder.position.x - rightShoulder.position.x,
+            leftShoulder.position.y - rightShoulder.position.y
           );
         }
 
@@ -299,13 +299,13 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           }
         } else if (step === MeasuringStep.ROTATE_MEASURE_FRONT) {
           if (
-            leftWrist?.score >= minConfidence &&
-            rightWrist?.score >= minConfidence
+            leftShoulder?.score >= minConfidence &&
+            rightShoulder?.score >= minConfidence
           ) {
-            measuredDataRef.current.push(wristLength);
+            measuredDataRef.current.push(shoulderLength);
             validDataCount += 1;
             console.log(
-              `ROTATE_MEASURE_FRONT - Wrist Length: ${wristLength.toFixed(2)} pixels`
+              `ROTATE_MEASURE_FRONT - Shoulder Length: ${shoulderLength.toFixed(2)} pixels`
             );
           } else {
             console.log('ROTATE_MEASURE_FRONT - Wrist keypoints not detected.');
@@ -315,12 +315,13 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           step === MeasuringStep.ROTATE_MEASURE_RIGHT
         ) {
           if (
-            leftWrist?.score >= minConfidence &&
-            rightWrist?.score >= minConfidence
+            leftShoulder?.score >= minConfidence &&
+            rightShoulder?.score >= minConfidence
           ) {
-            if (originalWristLength) {
+            if (originalShoulderLength) {
               measuredDataRef.current.push(
-                (Math.acos(wristLength / originalWristLength) * 180) / Math.PI
+                (Math.acos(shoulderLength / originalShoulderLength) * 180) /
+                  Math.PI
               );
               validDataCount += 1;
             } else {
@@ -330,7 +331,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             console.log(
               `ROTATE_MEASURE_${
                 step === MeasuringStep.ROTATE_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
-              } - Wrist keypoints not detected.`
+              } - Shoulder keypoints not detected.`
             );
           }
         } else if (
@@ -338,13 +339,13 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           step === MeasuringStep.TILT_MEASURE_RIGHT
         ) {
           if (
-            leftWrist?.score >= minConfidence &&
-            rightWrist?.score >= minConfidence
+            leftShoulder?.score >= minConfidence &&
+            rightShoulder?.score >= minConfidence
           ) {
-            const dx = rightWrist.position.x - leftWrist.position.x;
+            const dx = rightShoulder.position.x - leftShoulder.position.x;
             const len = Math.hypot(
               dx,
-              Math.abs(rightWrist.position.y - leftWrist.position.y)
+              Math.abs(rightShoulder.position.y - leftShoulder.position.y)
             );
 
             const angle = Math.acos(dx / len) * (180 / Math.PI);
@@ -354,7 +355,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             console.log(
               `TILT_MEASURE_${
                 step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
-              } - Wrist Angle: ${angle.toFixed(2)} degrees`
+              } - Shoulder Angle: ${angle.toFixed(2)} degrees`
             );
           } else {
             console.log(
@@ -427,28 +428,28 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
                 data = avgData;
                 switch (step) {
                   case MeasuringStep.ROTATE_MEASURE_FRONT:
-                    if (setOriginalWristLength) {
-                      setOriginalWristLength(avgData);
+                    if (setOriginalShoulderLength) {
+                      setOriginalShoulderLength(avgData);
                     }
                     break;
                   case MeasuringStep.ROTATE_MEASURE_LEFT:
-                    if (setLeftWaistRotationValue) {
-                      setLeftWaistRotationValue(avgData);
+                    if (setLeftRotationValue) {
+                      setLeftRotationValue(avgData);
                     }
                     break;
                   case MeasuringStep.ROTATE_MEASURE_RIGHT:
-                    if (setRightWaistRotationValue) {
-                      setRightWaistRotationValue(avgData);
+                    if (setRightRotationValue) {
+                      setRightRotationValue(avgData);
                     }
                     break;
                   case MeasuringStep.TILT_MEASURE_LEFT:
-                    if (setLeftWaistTiltValue) {
-                      setLeftWaistTiltValue(avgData);
+                    if (setLeftTiltValue) {
+                      setLeftTiltValue(avgData);
                     }
                     break;
                   case MeasuringStep.TILT_MEASURE_RIGHT:
-                    if (setRightWaistTiltValue) {
-                      setRightWaistTiltValue(avgData);
+                    if (setRightTiltValue) {
+                      setRightTiltValue(avgData);
                     }
                     break;
                   default:
@@ -487,11 +488,11 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
     isChecking,
     step,
     onComplete,
-    setOriginalWristLength,
-    setLeftWaistRotationValue,
-    setRightWaistRotationValue,
-    setLeftWaistTiltValue,
-    setRightWaistTiltValue,
+    setOriginalShoulderLength,
+    setLeftRotationValue,
+    setRightRotationValue,
+    setLeftTiltValue,
+    setRightTiltValue,
   ]);
 
   return (
