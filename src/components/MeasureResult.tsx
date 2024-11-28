@@ -4,7 +4,12 @@ import MeasureData from './measure/MeasureData';
 import { useNavigate } from 'react-router-dom';
 import { colors } from 'utils/color';
 import { Button, Text } from './shared';
-import { changeSportName, RecommendResult, RecommendSports } from 'types';
+import {
+  changeSportName,
+  MeasureStorageData,
+  RecommendResult,
+  RecommendSports,
+} from 'types';
 import RecommendCard from './measure/RecommendCard';
 import {
   getFromLocalStorage,
@@ -13,6 +18,7 @@ import {
   saveToLocalStorage,
 } from 'utils/storage';
 import { useEffect } from 'react';
+import { generateMeasureDataList } from 'utils/measuring';
 
 const Container = styled.div`
   display: flex;
@@ -61,47 +67,8 @@ interface MeasureResultProps {
 const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
   const navigate = useNavigate();
 
-  const {
-    leftArmRotationValue,
-    rightArmRotationValue,
-    leftWaistRotationValue,
-    rightWaistRotationValue,
-    leftWaistTiltValue,
-    rightWaistTiltValue,
-    coreDuration,
-    punchCount,
-  } = getFromLocalStorage(measureKey);
-
-  const measureDataList = [
-    {
-      leftText: '팔  ',
-      topLeftText: '좌',
-      topRightText: `${getArmRotationPercentage(leftArmRotationValue)}%`,
-      bottomLeftText: '우',
-      bottomRightText: `${getArmRotationPercentage(rightArmRotationValue)}%`,
-    },
-    {
-      leftText: '허리',
-      topLeftText: '좌',
-      topRightText: `${getWaistRotationPercentage(leftWaistRotationValue)}%`,
-      bottomLeftText: '우',
-      bottomRightText: `${getWaistRotationPercentage(rightWaistRotationValue)}%`,
-    },
-    {
-      leftText: '상체',
-      topLeftText: '좌',
-      topRightText: `${getWaistTiltPercentage(leftWaistTiltValue)}%`,
-      bottomLeftText: '우',
-      bottomRightText: `${getWaistTiltPercentage(rightWaistTiltValue)}%`,
-    },
-    {
-      leftText: '근력',
-      topLeftText: '코어',
-      topRightText: `${getCorePercentage(coreDuration)}%`,
-      bottomLeftText: '팔',
-      bottomRightText: `${getPunchPercentage(punchCount)}%`,
-    },
-  ];
+  const measuredData = getFromLocalStorage<MeasureStorageData>(measureKey);
+  const measureDataList = generateMeasureDataList(measuredData!);
 
   const recommendResults = [
     {
@@ -193,42 +160,3 @@ const MeasureResult = ({ recommend, handleCardClick }: MeasureResultProps) => {
 };
 
 export default MeasureResult;
-
-const MAX_ARM_ROTATION = 180;
-
-const getArmRotationPercentage = (value: number) => {
-  return (
-    ((value > MAX_ARM_ROTATION ? MAX_ARM_ROTATION : value) / MAX_ARM_ROTATION) *
-    100
-  ).toFixed(0);
-};
-
-const MAX_WAIST_ROTATION = 80;
-
-const getWaistRotationPercentage = (value: number) => {
-  return (
-    ((value > MAX_WAIST_ROTATION ? MAX_WAIST_ROTATION : value) /
-      MAX_WAIST_ROTATION) *
-    100
-  ).toFixed(0);
-};
-
-const MAX_WAIST_TILT = 50;
-
-const getWaistTiltPercentage = (value: number) => {
-  return (
-    ((value > MAX_WAIST_TILT ? MAX_WAIST_TILT : value) / MAX_WAIST_TILT) *
-    100
-  ).toFixed(0);
-};
-
-const getCorePercentage = (value: number) => {
-  return ((value / 60) * 100).toFixed(0);
-};
-
-const MAX_PUNCH = 40;
-const getPunchPercentage = (value: number) => {
-  return (((value > MAX_PUNCH ? MAX_PUNCH : value) / MAX_PUNCH) * 100).toFixed(
-    0
-  );
-};

@@ -8,14 +8,14 @@ export function saveToLocalStorage<T>(key: string, value: T): void {
   }
 }
 
-export function getFromLocalStorage(key: string) {
+export function getFromLocalStorage<T>(key: string) {
   try {
     const jsonValue = localStorage.getItem(key);
     if (!jsonValue) {
       console.warn(`${key}에 해당하는 데이터가 없습니다.`);
       return null;
     }
-    return JSON.parse(jsonValue);
+    return JSON.parse(jsonValue) as T;
   } catch (error) {
     console.error('로컬 스토리지에서 데이터 가져오는 중 오류 발생:', error);
     return null;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MeasuringStep } from 'utils/measuringStep';
+import { MeasuringStep } from 'types';
 import { getSubNotice } from './ReadyInformation';
 import styled from '@emotion/styled';
 import { colors } from 'utils/color';

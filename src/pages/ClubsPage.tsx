@@ -9,7 +9,7 @@ import { getFromLocalStorage, recommendKey } from 'utils/storage';
 export interface ClubsPageProps {}
 
 function ClubsPage({}: ClubsPageProps) {
-  const sportsList: RecommendSports[] = getFromLocalStorage(recommendKey);
+  const sportsList = getFromLocalStorage<RecommendSports[]>(recommendKey)!;
   const [selectedSports, setSelectedSports] = useState(sportsList[0]);
   const [clubs, setClubs] = useState<Club[]>([]);
 

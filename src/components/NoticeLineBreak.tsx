@@ -1,6 +1,6 @@
 import React from 'react';
-import { MeasuringStep } from 'utils/measuringStep';
 import { getNotice } from './PoseMeasuring';
+import { MeasuringStep } from 'types';
 
 interface NoticeTextProps {
   step: MeasuringStep;
