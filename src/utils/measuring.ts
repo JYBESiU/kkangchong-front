@@ -29,23 +29,19 @@ const getArmRotationPercentage = (value: number) => {
   ).toFixed(0);
 };
 
-const MAX_WAIST_ROTATION = 80;
+const MAX_ROTATION = 50;
 
 const getWaistRotationPercentage = (value: number) => {
   return (
-    ((value > MAX_WAIST_ROTATION ? MAX_WAIST_ROTATION : value) /
-      MAX_WAIST_ROTATION) *
+    ((value > MAX_ROTATION ? MAX_ROTATION : value) / MAX_ROTATION) *
     100
   ).toFixed(0);
 };
 
-const MAX_WAIST_TILT = 50;
+const MAX_TILT = 45;
 
 const getWaistTiltPercentage = (value: number) => {
-  return (
-    ((value > MAX_WAIST_TILT ? MAX_WAIST_TILT : value) / MAX_WAIST_TILT) *
-    100
-  ).toFixed(0);
+  return (((value > MAX_TILT ? MAX_TILT : value) / MAX_TILT) * 100).toFixed(0);
 };
 
 const getCorePercentage = (value: number) => {
