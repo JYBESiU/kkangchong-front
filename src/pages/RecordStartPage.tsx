@@ -47,33 +47,6 @@ const Root = styled.div`
   align-items: center;
   height: 100vh;
   width: 393px;
-  height: 852px;
+  height: 100%;
   background-color: ${colors.blue1};
 `;
-
-const IconOneElement = (
-  <div
-    style={{
-      width: 88.7,
-      height: 63.9,
-      position: 'absolute',
-      left: 113,
-      top: 189,
-    }}
-  >
-    <Icon icon="PageWithCurl" />
-  </div>
-);
-const IconTwoElement = (
-  <div
-    style={{
-      width: 33.1,
-      height: 53.79,
-      position: 'absolute',
-      left: 77,
-      top: 246,
-    }}
-  >
-    <Icon icon="MagnifyingGlassTiltedRight" />
-  </div>
-);

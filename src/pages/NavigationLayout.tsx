@@ -3,8 +3,15 @@ import BottomNavigation from '../components/shared/BottomNavigation';
 
 function NavigationLayout() {
   return (
-    <div>
-      <Outlet />
+    <div style={{ height: '100vh', overflow: 'hidden' }}>
+      <div
+        style={{
+          height: 'calc(100% - 56px)',
+          overflow: 'auto',
+        }}
+      >
+        <Outlet />
+      </div>
       <BottomNavigation />
     </div>
   );

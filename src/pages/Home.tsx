@@ -16,7 +16,7 @@ function Home() {
     <Root>
       {IconOneElement}
       {IconTwoElement}
-      <div style={{ height: '297px' }} />
+      <div style={{ height: '208px' }} />
       <Text fontSize={24} fontWeight={700}>
         AI 맞춤 운동 추천
       </Text>
@@ -26,7 +26,7 @@ function Home() {
         <br />
         사용자의 신체 능력을 측정하고
         <br />
-        맞춤 운동 동호회를 추천해줘요
+        맞춤 운동 동호회를 추천해줘요.
       </Text>
 
       <Button
@@ -43,13 +43,13 @@ export default Home;
 
 const Root = styled.div`
   display: flex;
-  gap: 32px;
+  gap: 40px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 393px;
-  height: 852px;
+  height: 100%;
   background-color: ${colors.blue1};
 `;
 
@@ -60,7 +60,7 @@ const IconOneElement = (
       height: 63.9,
       position: 'absolute',
       left: 113,
-      top: 189,
+      top: 135,
     }}
   >
     <Icon icon="PageWithCurl" />
@@ -73,7 +73,7 @@ const IconTwoElement = (
       height: 53.79,
       position: 'absolute',
       left: 77,
-      top: 246,
+      top: 192,
     }}
   >
     <Icon icon="MagnifyingGlassTiltedRight" />

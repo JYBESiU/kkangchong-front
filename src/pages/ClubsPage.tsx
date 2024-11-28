@@ -52,19 +52,17 @@ function ClubsPage({}: ClubsPageProps) {
 
 export default ClubsPage;
 
-const sportsList = ['농구', '럭비', '탁구', '펜싱', '육상', '댄스스포츠'];
-
 const Root = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
   max-width: 400px;
 `;
 
 const ClubList = styled.div`
   flex: 1;
   overflow: hidden;
+  padding-top: 8px;
 `;
 
 const TagContainer = styled.div`
