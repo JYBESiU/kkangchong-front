@@ -7,6 +7,10 @@ import { MeasurementContext } from './MeasurementContext';
 import NoticeText from './NoticeLineBreak';
 import { Icon } from './IconContext';
 
+export const dotProduct = (vec1: number[], vec2: number[]): number => {
+  return vec1.reduce((sum, value, index) => sum + value * vec2[index], 0);
+};
+
 const VideoElement = styled.video`
   display: flex;
   flex-shrink: 0.5;
@@ -208,7 +212,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           {} as { [key: string]: posenet.Keypoint }
         );
 
-        const minConfidence = 0.6; // Adjusted to increase keypoint detection
+        const minConfidence = 0.77; // Increase keypoint detection
 
         const leftShoulder = keypoints['leftShoulder'];
         const rightShoulder = keypoints['rightShoulder'];
@@ -216,16 +220,16 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
         const rightElbow = keypoints['rightElbow'];
         const leftWrist = keypoints['leftWrist'];
         const rightWrist = keypoints['rightWrist'];
-        let wristLength = 0;
         console.log('Keypoints:', keypoints);
+        let wristLength = 0;
 
         if (
           leftWrist?.score >= minConfidence &&
           rightWrist?.score >= minConfidence
         ) {
           wristLength = Math.hypot(
-            leftWrist.position.x - rightWrist.position.x,
-            leftWrist.position.y - rightWrist.position.y
+            rightWrist.position.x - leftWrist.position.x,
+            rightWrist.position.y - leftWrist.position.y
           );
         }
 
@@ -236,48 +240,33 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             rightElbow?.score >= minConfidence &&
             rightShoulder?.score >= minConfidence
           ) {
-            // Left arm vector (shoulder to elbow)
-            const leftArmVector = {
-              x: leftElbow.position.x - leftShoulder.position.x,
-              y: leftElbow.position.y - leftShoulder.position.y,
-            };
-            const leftArmLength = Math.hypot(leftArmVector.x, leftArmVector.y);
-
-            // Right arm vector (shoulder to elbow)
-            const rightArmVector = {
-              x: rightElbow.position.x - rightShoulder.position.x,
-              y: rightElbow.position.y - rightShoulder.position.y,
-            };
-            const rightArmLength = Math.hypot(
-              rightArmVector.x,
-              rightArmVector.y
+            const leftArmVector = [
+              leftElbow.position.x - leftShoulder.position.x,
+              leftElbow.position.y - leftShoulder.position.y,
+            ];
+            const leftArmLength = Math.hypot(
+              leftArmVector[0],
+              leftArmVector[1]
             );
+            const rightArmVector = [
+              rightElbow.position.x - rightShoulder.position.x,
+              rightElbow.position.y - rightShoulder.position.y,
+            ];
+            const rightArmLength = Math.hypot(
+              rightArmVector[0],
+              rightArmVector[1]
+            );
+
             // Reference vector (positive y-axis)
-            const refVector = { x: 0, y: 1 };
-            const refLength = 1; // Since the reference vector is (0, 1)
+            const refVector = [0, 1];
             /** the y is smaller value when it is higher */
 
-            let leftArmAngle = 0;
-            let rightArmAngle = 0;
-
-            if (leftArmLength > 0) {
-              const dotProduct =
-                leftArmVector.x * refVector.x + leftArmVector.y * refVector.y;
-              const cosTheta = dotProduct / (leftArmLength * refLength);
-              const angleRad = Math.acos(cosTheta);
-              leftArmAngle = (angleRad * 180) / Math.PI;
-            } else {
-              console.log('Left arm vector length is zero.');
-            }
-            if (rightArmLength > 0) {
-              const dotProduct =
-                rightArmVector.x * refVector.x + rightArmVector.y * refVector.y;
-              const cosTheta = dotProduct / (rightArmLength * refLength);
-              const angleRad = Math.acos(cosTheta);
-              rightArmAngle = (angleRad * 180) / Math.PI;
-            } else {
-              console.log('Right arm vector length is zero.');
-            }
+            const leftDotProd = dotProduct(leftArmVector, refVector);
+            const leftArmAngle =
+              (Math.acos(leftDotProd / leftArmLength) * 180) / Math.PI;
+            const rightDotProd = dotProduct(rightArmVector, refVector);
+            const rightArmAngle =
+              (Math.acos(rightDotProd / rightArmLength) * 180) / Math.PI;
 
             // Store the angles
             measuredDataRef.current.push(leftArmAngle);
@@ -336,24 +325,45 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
           step === MeasuringStep.TILT_MEASURE_LEFT ||
           step === MeasuringStep.TILT_MEASURE_RIGHT
         ) {
+          const refVec = [1, 0];
           if (
             leftWrist?.score >= minConfidence &&
             rightWrist?.score >= minConfidence
           ) {
-            const dx = rightWrist.position.x - leftWrist.position.x;
-            const len = Math.hypot(
-              dx,
-              Math.abs(rightWrist.position.y - leftWrist.position.y)
-            );
-
-            const angle = Math.acos(dx / len) * (180 / Math.PI);
-            measuredDataRef.current.push(angle);
-            validDataCount += 1;
-
+            const wristVector = [
+              rightWrist.position.x - leftWrist.position.x,
+              -rightWrist.position.y + leftWrist.position.y,
+            ];
+            const wristDotProd = dotProduct(wristVector, refVec);
+            const wristAngle =
+              (Math.acos(wristDotProd / wristLength) * 180) / Math.PI;
+            measuredDataRef.current.push(wristAngle);
             console.log(
               `TILT_MEASURE_${
                 step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
-              } - Wrist Angle: ${angle.toFixed(2)} degrees`
+              } - Angle: ${wristAngle.toFixed(2)} degrees`
+            );
+          } else if (
+            leftShoulder?.score >= minConfidence &&
+            rightShoulder?.score >= minConfidence
+          ) {
+            const shoulderVector = [
+              rightShoulder.position.x - leftShoulder.position.x,
+              -rightShoulder.position.y + leftShoulder.position.y,
+            ];
+            const shoulderDotProd = dotProduct(shoulderVector, refVec);
+            const shoulderAngle =
+              (Math.acos(
+                shoulderDotProd /
+                  Math.hypot(shoulderVector[0], shoulderVector[1])
+              ) *
+                180) /
+              Math.PI;
+            measuredDataRef.current.push(shoulderAngle);
+            console.log(
+              `TILT_MEASURE_${
+                step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
+              } - Angle: ${shoulderAngle.toFixed(2)} degrees`
             );
           } else {
             console.log(
