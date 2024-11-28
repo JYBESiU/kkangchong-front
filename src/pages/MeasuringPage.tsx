@@ -29,11 +29,11 @@ function MeasuringPage({}: MeasuringPageProps) {
   }
   const {
     setArmRotationValue,
-    setOriginalWristLength,
-    setLeftWaistRotationValue,
-    setRightWaistRotationValue,
-    setLeftWaistTiltValue,
-    setRightWaistTiltValue,
+    setOriginalShoulderLength,
+    setLeftRotationValue,
+    setRightRotationValue,
+    setLeftTiltValue,
+    setRightTiltValue,
     setCoreDuration,
     setPunchCount,
   } = context;
@@ -49,19 +49,19 @@ function MeasuringPage({}: MeasuringPageProps) {
         setArmRotationValue(data);
         break;
       case MeasuringStep.ROTATE_MEASURE_FRONT:
-        setOriginalWristLength(data);
+        setOriginalShoulderLength(data);
         break;
       case MeasuringStep.ROTATE_MEASURE_LEFT:
-        setLeftWaistRotationValue(data);
+        setLeftRotationValue(data);
         break;
       case MeasuringStep.ROTATE_MEASURE_RIGHT:
-        setRightWaistRotationValue(data);
+        setRightRotationValue(data);
         break;
       case MeasuringStep.TILT_MEASURE_LEFT:
-        setLeftWaistTiltValue(data);
+        setLeftTiltValue(data);
         break;
       case MeasuringStep.TILT_MEASURE_RIGHT:
-        setRightWaistTiltValue(data);
+        setRightTiltValue(data);
         break;
       case MeasuringStep.CORE_STRENGTH_TIMER:
         setCoreDuration(data);
@@ -98,20 +98,20 @@ function MeasuringPage({}: MeasuringPageProps) {
       const {
         leftArmRotationValue,
         rightArmRotationValue,
-        leftWaistRotationValue,
-        rightWaistRotationValue,
-        leftWaistTiltValue,
-        rightWaistTiltValue,
+        leftRotationValue,
+        rightRotationValue,
+        leftTiltValue,
+        rightTiltValue,
         coreDuration,
         punchCount,
       } = context;
       saveToLocalStorage(measureKey, {
         leftArmRotationValue,
         rightArmRotationValue,
-        leftWaistRotationValue,
-        rightWaistRotationValue,
-        leftWaistTiltValue,
-        rightWaistTiltValue,
+        leftRotationValue,
+        rightRotationValue,
+        leftTiltValue,
+        rightTiltValue,
         coreDuration,
         punchCount,
       });

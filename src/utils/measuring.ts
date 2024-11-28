@@ -29,23 +29,19 @@ const getArmRotationPercentage = (value: number) => {
   ).toFixed(0);
 };
 
-const MAX_WAIST_ROTATION = 80;
+const MAX_ROTATION = 50;
 
 const getWaistRotationPercentage = (value: number) => {
   return (
-    ((value > MAX_WAIST_ROTATION ? MAX_WAIST_ROTATION : value) /
-      MAX_WAIST_ROTATION) *
+    ((value > MAX_ROTATION ? MAX_ROTATION : value) / MAX_ROTATION) *
     100
   ).toFixed(0);
 };
 
-const MAX_WAIST_TILT = 50;
+const MAX_TILT = 45;
 
 const getWaistTiltPercentage = (value: number) => {
-  return (
-    ((value > MAX_WAIST_TILT ? MAX_WAIST_TILT : value) / MAX_WAIST_TILT) *
-    100
-  ).toFixed(0);
+  return (((value > MAX_TILT ? MAX_TILT : value) / MAX_TILT) * 100).toFixed(0);
 };
 
 const getCorePercentage = (value: number) => {
@@ -70,16 +66,16 @@ export const generateMeasureDataList = (data: MeasureStorageData) => [
   {
     leftText: '허리',
     topLeftText: '좌',
-    topRightText: `${getWaistRotationPercentage(data.leftWaistRotationValue)}%`,
+    topRightText: `${getWaistRotationPercentage(data.leftRotationValue)}%`,
     bottomLeftText: '우',
-    bottomRightText: `${getWaistRotationPercentage(data.rightWaistRotationValue)}%`,
+    bottomRightText: `${getWaistRotationPercentage(data.rightRotationValue)}%`,
   },
   {
     leftText: '상체',
     topLeftText: '좌',
-    topRightText: `${getWaistTiltPercentage(data.leftWaistTiltValue)}%`,
+    topRightText: `${getWaistTiltPercentage(data.leftTiltValue)}%`,
     bottomLeftText: '우',
-    bottomRightText: `${getWaistTiltPercentage(data.rightWaistTiltValue)}%`,
+    bottomRightText: `${getWaistTiltPercentage(data.rightTiltValue)}%`,
   },
   {
     leftText: '근력',

@@ -7,16 +7,16 @@ interface MeasurementContextProps {
   setRightArmRotationValue: (value: number | null) => void;
   armRotationValue: number | null;
   setArmRotationValue: (value: number | null) => void;
-  originalWristLength: number | null;
-  setOriginalWristLength: (value: number | null) => void;
-  leftWaistRotationValue: number | null;
-  setLeftWaistRotationValue: (value: number | null) => void;
-  rightWaistRotationValue: number | null;
-  setRightWaistRotationValue: (value: number | null) => void;
-  leftWaistTiltValue: number | null;
-  setLeftWaistTiltValue: (value: number | null) => void;
-  rightWaistTiltValue: number | null;
-  setRightWaistTiltValue: (value: number | null) => void;
+  originalShoulderLength: number | null;
+  setOriginalShoulderLength: (value: number | null) => void;
+  leftRotationValue: number | null;
+  setLeftRotationValue: (value: number | null) => void;
+  rightRotationValue: number | null;
+  setRightRotationValue: (value: number | null) => void;
+  leftTiltValue: number | null;
+  setLeftTiltValue: (value: number | null) => void;
+  rightTiltValue: number | null;
+  setRightTiltValue: (value: number | null) => void;
   coreDuration: number | null;
   setCoreDuration: (value: number | null) => void;
   punchCount: number | null;
@@ -64,16 +64,16 @@ export const MeasurementProvider: React.FC<{ children: ReactNode }> = ({
         setRightArmRotationValue,
         armRotationValue,
         setArmRotationValue,
-        originalWristLength,
-        setOriginalWristLength,
-        leftWaistRotationValue,
-        setLeftWaistRotationValue,
-        rightWaistRotationValue,
-        setRightWaistRotationValue,
-        leftWaistTiltValue,
-        setLeftWaistTiltValue,
-        rightWaistTiltValue,
-        setRightWaistTiltValue,
+        originalShoulderLength: originalWristLength,
+        setOriginalShoulderLength: setOriginalWristLength,
+        leftRotationValue: leftWaistRotationValue,
+        setLeftRotationValue: setLeftWaistRotationValue,
+        rightRotationValue: rightWaistRotationValue,
+        setRightRotationValue: setRightWaistRotationValue,
+        leftTiltValue: leftWaistTiltValue,
+        setLeftTiltValue: setLeftWaistTiltValue,
+        rightTiltValue: rightWaistTiltValue,
+        setRightTiltValue: setRightWaistTiltValue,
         coreDuration,
         setCoreDuration,
         punchCount,
