@@ -12,7 +12,6 @@ const HeaderContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-// 우측 텍스트 스타일
 const Box = styled.div`
   display: flex;
   justify-content: center;
@@ -23,14 +22,33 @@ const Box = styled.div`
   background-color: ${colors.blue1};
 `;
 
-interface MeasureHeaderProps {}
+interface MeasureHeaderProps {
+  withArrow?: boolean;
+}
 
-const MeasureHeader: React.FC<MeasureHeaderProps> = ({}) => {
+const MeasureHeader = ({ withArrow }: MeasureHeaderProps) => {
   return (
     <HeaderContainer>
       <Text fontWeight={700}>측정 결과</Text>
       <Box>
+        {withArrow && (
+          <img
+            style={{ marginRight: '4px', marginTop: '2px', width: '22px' }}
+            src={'/images/back_button.svg'}
+          />
+        )}
         <Text fontSize={16}>{new Date().toLocaleDateString()}</Text>
+        {withArrow && (
+          <img
+            style={{
+              marginLeft: '4px',
+              marginTop: '2px',
+              width: '22px',
+              transform: 'rotate(180deg)',
+            }}
+            src={'/images/back_button.svg'}
+          />
+        )}
       </Box>
     </HeaderContainer>
   );

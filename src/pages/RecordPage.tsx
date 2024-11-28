@@ -5,7 +5,7 @@ import { generateMeasureDataList } from 'utils/measuring';
 import { getFromLocalStorage, measureKey } from 'utils/storage';
 import styled from '@emotion/styled';
 import { colors } from 'utils/color';
-import { Text } from 'components/shared';
+import { Button, Text } from 'components/shared';
 
 export interface RecordPageProps {}
 
@@ -15,7 +15,7 @@ function RecordPage({}: RecordPageProps) {
 
   return (
     <Container>
-      <MeasureHeader />
+      <MeasureHeader withArrow />
 
       {measureDataList.map((data, index) => (
         <MeasureData
@@ -31,7 +31,36 @@ function RecordPage({}: RecordPageProps) {
 
       <Bottom>
         <Text fontWeight={700}>측정 기록</Text>
+
+        <Flex>
+          <Text fontSize={16} fontWeight={700}>
+            팔
+          </Text>
+          <img width={313} src={'/images/record_example.png'} />
+        </Flex>
+
+        <Flex>
+          <Text fontSize={16} fontWeight={700}>
+            허리
+          </Text>
+          <img width={313} src={'/images/record_example.png'} />
+        </Flex>
+
+        <Flex>
+          <Text fontSize={16} fontWeight={700}>
+            상체
+          </Text>
+          <img width={313} src={'/images/record_example.png'} />
+        </Flex>
+
+        <Flex>
+          <Text fontSize={16} fontWeight={700}>
+            근력
+          </Text>
+          <img width={313} src={'/images/record_example.png'} />
+        </Flex>
       </Bottom>
+      <Button height={60} width={313} label="결과 공유" />
     </Container>
   );
 }
@@ -41,6 +70,7 @@ export default RecordPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 40px;
   align-items: center;
 
   gap: 10px;
@@ -63,6 +93,17 @@ const MidBar = styled.div`
 `;
 
 const Bottom = styled.div`
-  padding: 00px 40px;
+  padding: 0px 40px;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
