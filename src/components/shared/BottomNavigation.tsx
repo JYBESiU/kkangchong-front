@@ -9,7 +9,7 @@ const NavBar = styled.nav`
   align-items: center;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 393px;
   height: 56px;
   background-color: white;
 `;

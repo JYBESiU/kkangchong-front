@@ -96,7 +96,7 @@ export default ResultPage;
 
 const Root = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 393px;
   max-width: 400px;
 `;
 

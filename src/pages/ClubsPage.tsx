@@ -56,7 +56,7 @@ const Root = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  width: 393px;
 `;
 
 const ClubList = styled.div`

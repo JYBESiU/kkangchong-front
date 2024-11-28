@@ -82,7 +82,7 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     width: 0;
   }
-  width: 100%;
+  width: 393px;
 `;
 
 const MidBar = styled.div`
