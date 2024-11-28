@@ -1,26 +1,60 @@
-import { Link, useLocation } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { colors } from 'utils/color';
+import { HomeIcon, ClubIcon, RecordIcon, UserIcon } from 'components/icons';
+
+const NavBar = styled.nav`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 56px;
+  background-color: white;
+  padding: 8px 0;
+`;
+
+const Item = styled.div<{ active?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  cursor: pointer;
+  font-size: 12px;
+  color: ${({ active }) => (active ? colors.blue3 : colors.grey2)};
+`;
 
 function BottomNavigation() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <nav style={{ position: 'fixed', bottom: 0, width: '100%' }}>
-      <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
-        홈
-      </Link>
-      <Link
-        to="/clubs"
-        className={location.pathname === '/clubs' ? 'active' : ''}
+    <NavBar>
+      <Item onClick={() => navigate('/')} active={location.pathname === '/'}>
+        <HomeIcon active={location.pathname === '/'} />홈
+      </Item>
+      <Item
+        onClick={() => navigate('/clubs')}
+        active={location.pathname === '/clubs'}
       >
-        클럽
-      </Link>
-      <Link
-        to="/record-start"
-        className={location.pathname === '/record-start' ? 'active' : ''}
+        <ClubIcon active={location.pathname === '/clubs'} />
+        맞춤 동호회
+      </Item>
+      <Item
+        onClick={() => navigate('/record-start')}
+        active={location.pathname === '/record-start'}
       >
-        기록
-      </Link>
-    </nav>
+        <RecordIcon active={location.pathname === '/record-start'} />
+        변화기록
+      </Item>
+      <Item>
+        <UserIcon />
+        마이페이지
+      </Item>
+    </NavBar>
   );
 }
 

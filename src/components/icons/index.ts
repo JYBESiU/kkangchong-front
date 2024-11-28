@@ -12,3 +12,8 @@ export { default as Stepper3 } from './Stepper3';
 export { default as Stepper4 } from './Stepper4';
 export { default as Stepper5 } from './Stepper5';
 export { default as Stepper6 } from './Stepper6';
+
+export { default as RecordIcon } from './RecordIcon';
+export { default as ClubIcon } from './ClubIcon';
+export { default as HomeIcon } from './HomeIcon';
+export { default as UserIcon } from './UserIcon';
