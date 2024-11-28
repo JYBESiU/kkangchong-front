@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import { isTimerReadyStep, MeasuringStep } from 'utils/measuringStep';
+import { isTimerReadyStep } from 'utils/measuring';
+import { MeasuringStep } from 'types';
+
 import { Button, Text } from './shared';
 import { useEffect, useState } from 'react';
 import SubNoticeText from './SubNoticeLineBreak';

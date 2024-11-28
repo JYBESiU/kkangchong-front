@@ -1,22 +1,21 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import PoseMeasuring from 'components/PoseMeasuring';
 import ReadyInformation from 'components/ReadyInformation';
 import TimerMeasuring from 'components/TimerMeasuring';
-import {
-  isCameraMeasureStep,
-  isReadyStep,
-  MeasuringStep,
-} from 'utils/measuringStep';
+import { isCameraMeasureStep, isReadyStep } from 'utils/measuring';
+import { MeasuringStep } from 'types';
 import styled from '@emotion/styled';
 import { MeasurementContext } from 'components/MeasurementContext';
 import CountMeasuring from 'components/CountMeasuring';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { measureKey, saveToLocalStorage } from 'utils/storage';
 
 export interface MeasuringPageProps {}
 
 function MeasuringPage({}: MeasuringPageProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const nextPage = searchParams.get('next') || 'result';
 
   const [currentStep, setCurrentStep] = useState<MeasuringStep>(
     MeasuringStep.MOVE_READY
@@ -24,7 +23,6 @@ function MeasuringPage({}: MeasuringPageProps) {
   const [timer, setTimer] = useState<number>(5); // 5 seconds countdown
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  // State for measurements
   const context = useContext(MeasurementContext);
   if (!context) {
     throw new Error('MeasuringPage must be used within a MeasurementProvider.');
@@ -97,8 +95,6 @@ function MeasuringPage({}: MeasuringPageProps) {
 
   useEffect(() => {
     if (currentStep === MeasuringStep.FINISH) {
-      navigate('/result');
-
       const {
         leftArmRotationValue,
         rightArmRotationValue,
@@ -119,8 +115,10 @@ function MeasuringPage({}: MeasuringPageProps) {
         coreDuration,
         punchCount,
       });
+
+      navigate(`/${nextPage}`); // next parameter에 따라 페이지 이동
     }
-  }, [currentStep]);
+  }, [currentStep, nextPage]);
 
   return (
     <Root>

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as tf from '@tensorflow/tfjs';
-import { isCameraMeasureStep, MeasuringStep } from 'utils/measuringStep';
+import { isCameraMeasureStep } from 'utils/measuring';
+import { MeasuringStep } from 'types';
 import styled from '@emotion/styled';
 import * as posenet from '@tensorflow-models/posenet';
 import { MeasurementContext } from './MeasurementContext';

@@ -3,22 +3,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button, Text } from 'components/shared';
 import { colors } from 'utils/color';
-import { Icon } from 'components/IconContext';
 
-function Home() {
+function RecordStartPage() {
   const navigate = useNavigate();
 
   const handleStartButton = () => {
-    navigate('/measuring?next=result');
+    navigate('/measuring?next=record');
   };
 
   return (
     <Root>
-      {IconOneElement}
-      {IconTwoElement}
-      <div style={{ height: '208px' }} />
+      <img src={'/images/memo.svg'} width={208} height={208} />
       <Text fontSize={24} fontWeight={700}>
-        AI 맞춤 운동 추천
+        변화 기록하기
       </Text>
 
       <Text textAlign={'center'}>
@@ -26,7 +23,7 @@ function Home() {
         <br />
         사용자의 신체 능력을 측정하고
         <br />
-        맞춤 운동 동호회를 추천해줘요.
+        신체 변화를 기록해요.
       </Text>
 
       <Button
@@ -39,7 +36,7 @@ function Home() {
   );
 }
 
-export default Home;
+export default RecordStartPage;
 
 const Root = styled.div`
   display: flex;
@@ -52,30 +49,3 @@ const Root = styled.div`
   height: 100%;
   background-color: ${colors.blue1};
 `;
-
-const IconOneElement = (
-  <div
-    style={{
-      width: 88.7,
-      height: 63.9,
-      position: 'absolute',
-      left: 113,
-      top: 135,
-    }}
-  >
-    <Icon icon="PageWithCurl" />
-  </div>
-);
-const IconTwoElement = (
-  <div
-    style={{
-      width: 33.1,
-      height: 53.79,
-      position: 'absolute',
-      left: 77,
-      top: 192,
-    }}
-  >
-    <Icon icon="MagnifyingGlassTiltedRight" />
-  </div>
-);

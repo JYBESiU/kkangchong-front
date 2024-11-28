@@ -4,7 +4,7 @@ import MeasureResult from 'components/MeasureResult';
 import RecommendSport from 'components/RecommendSport';
 import { Text } from 'components/shared';
 import { useEffect, useState } from 'react';
-import { RecommendResult, RecommendSports } from 'types';
+import { MeasureStorageData, RecommendResult, RecommendSports } from 'types';
 import { colors } from 'utils/color';
 import { getFromLocalStorage, measureKey } from 'utils/storage';
 
@@ -38,7 +38,7 @@ function ResultPage({}: ResultPageProps) {
         rightWaistTiltValue,
         coreDuration,
         punchCount,
-      } = getFromLocalStorage(measureKey);
+      } = getFromLocalStorage<MeasureStorageData>(measureKey)!;
       const { data } = await axios.post<RecommendResult>('/recommend', {
         arm_angle: (leftArmRotationValue + rightArmRotationValue) / 2,
         torso_left_angle: leftWaistRotationValue,
