@@ -338,6 +338,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             const wristAngle =
               (Math.acos(wristDotProd / wristLength) * 180) / Math.PI;
             measuredDataRef.current.push(wristAngle);
+            validDataCount += 1;
             console.log(
               `TILT_MEASURE_${
                 step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
@@ -360,6 +361,7 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
                 180) /
               Math.PI;
             measuredDataRef.current.push(shoulderAngle);
+            validDataCount += 1;
             console.log(
               `TILT_MEASURE_${
                 step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
