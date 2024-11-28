@@ -215,8 +215,6 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
         const rightShoulder = keypoints['rightShoulder'];
         const leftElbow = keypoints['leftElbow'];
         const rightElbow = keypoints['rightElbow'];
-        const leftWrist = keypoints['leftWrist'];
-        const rightWrist = keypoints['rightWrist'];
         let shoulderLength = 0;
         console.log('Keypoints:', keypoints);
 
@@ -237,48 +235,31 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             rightElbow?.score >= minConfidence &&
             rightShoulder?.score >= minConfidence
           ) {
-            // Left arm vector (shoulder to elbow)
-            const leftArmVector = {
-              x: leftElbow.position.x - leftShoulder.position.x,
-              y: leftElbow.position.y - leftShoulder.position.y,
-            };
-            const leftArmLength = Math.hypot(leftArmVector.x, leftArmVector.y);
-
-            // Right arm vector (shoulder to elbow)
-            const rightArmVector = {
-              x: rightElbow.position.x - rightShoulder.position.x,
-              y: rightElbow.position.y - rightShoulder.position.y,
-            };
-            const rightArmLength = Math.hypot(
-              rightArmVector.x,
-              rightArmVector.y
+            const leftArmVector = [
+              leftElbow.position.x - leftShoulder.position.x,
+              leftElbow.position.y - leftShoulder.position.y,
+            ];
+            const leftArmLength = Math.hypot(
+              leftArmVector[0],
+              leftArmVector[1]
             );
-            // Reference vector (positive y-axis)
-            const refVector = { x: 0, y: 1 };
-            const refLength = 1; // Since the reference vector is (0, 1)
-            /** the y is smaller value when it is higher */
+            const rightArmVector = [
+              rightElbow.position.x - rightShoulder.position.x,
+              rightElbow.position.y - rightShoulder.position.y,
+            ];
+            const rightArmLength = Math.hypot(
+              rightArmVector[0],
+              rightArmVector[1]
+            );
 
-            let leftArmAngle = 0;
-            let rightArmAngle = 0;
+            const refVector = [0, 1];
 
-            if (leftArmLength > 0) {
-              const dotProduct =
-                leftArmVector.x * refVector.x + leftArmVector.y * refVector.y;
-              const cosTheta = dotProduct / (leftArmLength * refLength);
-              const angleRad = Math.acos(cosTheta);
-              leftArmAngle = (angleRad * 180) / Math.PI;
-            } else {
-              console.log('Left arm vector length is zero.');
-            }
-            if (rightArmLength > 0) {
-              const dotProduct =
-                rightArmVector.x * refVector.x + rightArmVector.y * refVector.y;
-              const cosTheta = dotProduct / (rightArmLength * refLength);
-              const angleRad = Math.acos(cosTheta);
-              rightArmAngle = (angleRad * 180) / Math.PI;
-            } else {
-              console.log('Right arm vector length is zero.');
-            }
+            const leftDotProd = dotProduct(leftArmVector, refVector);
+            const leftArmAngle =
+              (Math.acos(leftDotProd / leftArmLength) * 180) / Math.PI;
+            const rightDotProd = dotProduct(rightArmVector, refVector);
+            const rightArmAngle =
+              (Math.acos(rightDotProd / rightArmLength) * 180) / Math.PI;
 
             // Store the angles
             measuredDataRef.current.push(leftArmAngle);
@@ -342,20 +323,28 @@ function PoseMeasuring({ step, onComplete }: PoseMeasuringProps) {
             leftShoulder?.score >= minConfidence &&
             rightShoulder?.score >= minConfidence
           ) {
-            const dx = rightShoulder.position.x - leftShoulder.position.x;
-            const len = Math.hypot(
-              dx,
-              Math.abs(rightShoulder.position.y - leftShoulder.position.y)
-            );
+            const refVec = [1, 0];
 
-            const angle = Math.acos(dx / len) * (180 / Math.PI);
-            measuredDataRef.current.push(angle);
+            const shoulderVector = [
+              rightShoulder.position.x - leftShoulder.position.x,
+              -rightShoulder.position.y + leftShoulder.position.y,
+            ];
+            const shoulderDotProd = dotProduct(shoulderVector, refVec);
+            const shoulderAngle =
+              (Math.acos(
+                shoulderDotProd /
+                  Math.hypot(shoulderVector[0], shoulderVector[1])
+              ) *
+                180) /
+              Math.PI;
+            measuredDataRef.current.push(shoulderAngle);
+
             validDataCount += 1;
 
             console.log(
               `TILT_MEASURE_${
                 step === MeasuringStep.TILT_MEASURE_LEFT ? 'LEFT' : 'RIGHT'
-              } - Shoulder Angle: ${angle.toFixed(2)} degrees`
+              } - Shoulder Angle: ${shoulderAngle.toFixed(2)} degrees`
             );
           } else {
             console.log(
@@ -572,4 +561,8 @@ export const getNotice = (step: MeasuringStep) => {
     default:
       return `지시에 따라 주세요`;
   }
+};
+
+const dotProduct = (vec1: number[], vec2: number[]): number => {
+  return vec1.reduce((sum, value, index) => sum + value * vec2[index], 0);
 };
