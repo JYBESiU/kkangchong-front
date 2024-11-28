@@ -9,7 +9,7 @@ function Home() {
   const navigate = useNavigate();
 
   const handleStartButton = () => {
-    navigate('/measuring');
+    navigate('/measuring?next=result');
   };
 
   return (

@@ -12,7 +12,6 @@ const NavBar = styled.nav`
   width: 100%;
   height: 56px;
   background-color: white;
-  padding: 8px 0;
 `;
 
 const Item = styled.div<{ active?: boolean }>`
@@ -24,6 +23,7 @@ const Item = styled.div<{ active?: boolean }>`
   height: 100%;
   cursor: pointer;
   font-size: 12px;
+  padding: 8px 0;
   color: ${({ active }) => (active ? colors.blue3 : colors.grey2)};
 `;
 

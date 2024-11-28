@@ -7,6 +7,7 @@ import ResultPage from 'pages/ResultPage';
 import { MeasurementProvider } from 'components/MeasurementContext';
 import NavigationLayout from 'pages/NavigationLayout';
 import RecordStartPage from 'pages/RecordStartPage';
+import RecordPage from 'pages/RecordPage';
 
 function Router() {
   return (
@@ -27,6 +28,7 @@ function Router() {
           }
         />
         <Route path="result" element={<ResultPage />} />
+        <Route path="record" element={<RecordPage />} />
       </Routes>
     </BrowserRouter>
   );

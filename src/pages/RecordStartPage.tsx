@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button, Text } from 'components/shared';
 import { colors } from 'utils/color';
-import { Icon } from 'components/IconContext';
 
 function RecordStartPage() {
   const navigate = useNavigate();
 
   const handleStartButton = () => {
-    navigate('/measuring');
+    navigate('/measuring?next=record');
   };
 
   return (
