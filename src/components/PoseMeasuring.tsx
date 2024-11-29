@@ -549,11 +549,11 @@ export const getNotice = (step: MeasuringStep) => {
     case MeasuringStep.ARM_MEASURE:
       return `어깨와 팔꿈치가 보이도록\n팔을 양 옆으로\n최대한 드세요`;
     case MeasuringStep.ROTATE_MEASURE_FRONT:
-      return `양 손을 어깨에 올리고\n정면을 바라보세요`;
+      return `허리를 곧게 펴고\n정면을 응시하세요`;
     case MeasuringStep.ROTATE_MEASURE_LEFT:
-      return `양 손을 어깨에 올리고\n허리를 왼쪽으로\n돌리세요`;
+      return `허리를 왼쪽으로\n돌리세요`;
     case MeasuringStep.ROTATE_MEASURE_RIGHT:
-      return `양 손을 어깨에 올리고\n허리를 오른쪽으로\n돌리세요`;
+      return `허리를 오른쪽으로\n돌리세요`;
     case MeasuringStep.TILT_MEASURE_LEFT:
       return `상체를 왼쪽으로\n기울이세요`;
     case MeasuringStep.TILT_MEASURE_RIGHT:

@@ -27,7 +27,7 @@ function ReadyInformation({ step, onNext }: ReadyInformationProps) {
     if (!isTimerReadyStep(step)) {
       const timer = setTimeout(() => {
         onNext();
-      }, 10000);
+      }, 7000);
       return () => clearTimeout(timer);
     }
   }, [step, onNext]);
@@ -252,11 +252,10 @@ const getNotice = (step: MeasuringStep) => {
               5초 후 촬영됩니다.`;
     case MeasuringStep.ROTATE_READY:
       return `허리를 편 후 정면을 바라보세요.
-              이후 손을 어깨에 올리고
-              허리를 한쪽으로 돌려주세요.
+              이후 허리를 한쪽으로 돌려주세요.
               5초 후 촬영됩니다.`;
     case MeasuringStep.TILT_READY:
-      return `어깨에 손을 올리고
+      return `정면을 응시하세요. 이후
               상체를 한쪽으로 기울여주세요.
               5초 후 촬영됩니다.`;
     case MeasuringStep.CORE_STRENGTH_READY:
@@ -276,10 +275,8 @@ export const getSubNotice = (step: MeasuringStep) => {
   switch (step) {
     case MeasuringStep.ARM_READY:
       return `어깨와 팔꿈치가 보여야 합니다.`;
-    case MeasuringStep.ROTATE_READY:
-      return `손을 어깨에 올리기 어려운 경우\n어깨의 방향에 따라 손을 이동해주세요.`;
     case MeasuringStep.TILT_READY:
-      return `측정 중 넘어지지 않도록 주의하세요!\n손을 어깨에 올리기 어려운 경우\n어깨의 방향에 따라 손을 이동해주세요.`;
+      return `측정 중 넘어지지 않도록 주의하세요!\n어깨가 화면 안에 보여야 합니다.`;
     default:
       ``;
   }
