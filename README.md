@@ -30,38 +30,6 @@ FitFor는 운동 진입 서비스를 휠체어 유저를 대상으로 최초로 
 
 ## 설치 및 실행 방법
 
-### 백엔드 설치 및 실행
-
-1. pyenv 설치
-   ```bash
-   # pyenv 설치 방법 (OS에 따라 다를 수 있음)
-   curl https://pyenv.run | bash
-   ```
-
-2. Python 3.11.2 설치
-   ```bash
-   pyenv install 3.11.2
-   pyenv global 3.11.2
-   ```
-
-3. 가상환경 설정
-   ```bash
-   python -m venv myenv
-   source myenv/bin/activate  # macOS/Linux
-   # myenv\Scripts\activate   # Windows
-   ```
-
-4. 의존성 설치
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. 서버 실행
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-### 프론트엔드 설치 및 실행
 
 1. Node.js 설치 (v18)
    - [Node.js 공식 웹사이트](https://nodejs.org/ko/)에서 다운로드 및 설치
@@ -141,39 +109,6 @@ FitFor is the first service targeting wheelchair users to simplify exercise init
 
 
 ## Installation and Execution
-
-### Backend Setup and Execution
-
-1. Install pyenv  
-   ```bash
-   curl https://pyenv.run | bash
-   ```
-
-2. Install Python 3.11.2  
-   ```bash
-   pyenv install 3.11.2
-   pyenv global 3.11.2
-   ```
-
-3. Set up a virtual environment  
-   ```bash
-   python -m venv myenv
-   source myenv/bin/activate  # macOS/Linux
-   # myenv\Scripts\activate   # Windows
-   ```
-
-4. Install dependencies  
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. Run the server  
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-
-### Frontend Setup and Execution
 
 1. Install Node.js (v18)  
    Download and install from [Node.js official website](https://nodejs.org/).
