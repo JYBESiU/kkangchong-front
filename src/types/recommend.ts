@@ -33,7 +33,7 @@ export const changeSportName = (originName: RecommendSports) => {
     case RecommendSports.FENCING:
       return '펜싱';
     case RecommendSports.DANCING_SPORTS:
-      return '댄스 스포츠';
+      return '댄스스포츠';
     case RecommendSports.ATHLETICS:
       return '육상';
     default:
