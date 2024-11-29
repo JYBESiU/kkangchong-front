@@ -36,6 +36,7 @@ function Button({
 export default Button;
 
 const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>`
+  flex-shrink: 0;
   width: ${({ width }) => (typeof width === 'number' ? `${width}px` : width)};
   height: ${({ height }) =>
     typeof height === 'number' ? `${height}px` : height};
